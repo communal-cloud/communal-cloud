@@ -28,7 +28,7 @@
                 {"name":"Bird" ,"type" : "VBNSD82"},
                 {"name":"Comment" ,"type" : "text"},
                 {"name":"Date" ,"type" : "date"},
-                {"name":"User" ,"type" : "text"}
+                {"name":"User" ,"type" : "ID"}
                ]
    
            }
