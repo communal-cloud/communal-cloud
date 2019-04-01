@@ -44,7 +44,7 @@
                 {   "id" : "IASU21",
                     "req_task" : null,
                     "name":"ShareBirdObservation",
-                    "roles" : ["Owner ID"],
+                    "roles" : ["Member ID"],
                     "fields" : [
                         {"id":"Bird Observation ID", "fields" : ["Photo", "Local Name"]}
                     ]
