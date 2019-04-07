@@ -1,229 +1,303 @@
 {
-    "users": [{
-            "id": "LVT233",
-            "name": "Levent Kıran",
-            "email": "leventkiran@hotmail.com.tr",
-            "email_verified": true,
-            "profile_picture_url": "https://scontent.fist2-3.fna.fbcdn.net/v/t1.0-1/p160x160/36750441_10216866603916790_5675646681475973120_n.jpg?_nc_cat=108&_nc_ht=scontent.fist2-3.fna&oh=1213e88e8161aa85eeddd589dc654969&oe=5D3ECEF6",
-            "password": "b919c52e5ebb114ddb83da1f6997db25",
-            "registered_on": "05-03-2019 22:58:48 GMT+2",
-            "system_role": "admin"
-        },
-        {
-            "id": "USA563",
-            "name": "Jimmy Carter",
-            "email": "jimmy.carter@gmail.com",
-            "email_verified": true,
-            "profile_picture_url": "http://www.gstatic.com/tv/thumb/persons/70269/70269_v9_ba.jpg",
-            "password": "b919c52e5ebb114ddb83da1f6997db25",
-            "registered_on": "30-03-2019 14:10:18 GMT+2",
-            "system_role": "user"
-        },
-        {
-            "id": "HDF375",
-            "name": "Bill Oddie",
-            "email": "bill.oddie@gmail.com",
-            "email_verified": true,
-            "profile_picture_url": "https://thehigh5club.files.wordpress.com/2013/09/bill-oddie-gear-diary.gif",
-            "password": "b919c52e5ebb114ddb83da1f6997db25",
-            "registered_on": "30-03-2019 14:10:18 GMT+2",
-            "system_role": "user"
-        }
-    ],
-    "communties": [{
-        "name": "Bird Watchers",
-        "purpose": "Stalking birds and specifying their names and collecting pictures",
-        "description": "Collecting bird data from around the world and learning which bird lives where",
-        "roles": [{
-                "id": "SFQ464",
-                "name": "Owner",
-                "system_defined": true
-            },
-            {
-                "id": "RTY526",
-                "name": "Observers",
-                "system_defined": true
-            }
-        ],
-        "categories": [{
-                "id": "ASCX12",
-                "name": "Birds"
-            },
-            {
-                "id": "BASJS13",
-                "name": "Photograph"
-            }
-        ],
-        "members": [{
-            "user": "USA563 User_Jimmy",
-            "role": "RTY526 Role_Observer",
-            "joined_on": "30.03.2019 14:37:28",
-            "banned": false
-        }],
-        "data_type": [{
-                "name": "Bird",
-                "id": "VBNSD51",
-                "fields": [{
-                        "id": "DSA745",
-                        "name": "Photo",
-                        "type": "image"
-                    },
-                    {
-                        "id": "DSA91",
-                        "name": "Local Name",
-                        "type": "text"
-                    },
-                    {
-                        "id": "DSA96",
-                        "name": "Diet",
-                        "enums": [{
-                            "Carnivore": "Etcil"
-                        }, {
-                            "Omnivore": "Etcil ve Otcul"
-                        }],
-                        "type": "text"
-                    },
-                    {
-                        "id": "DSA2355",
-                        "name": "Scientific Name",
-                        "type": "text"
-                    }
-                ]
-            },
-            {
-                "name": "Bird Observation",
-                "id": "VBNSD82",
-                "fields": [{
-                        "id": "DSA88123",
-                        "name": "Bird",
-                        "type": "DataType"
-                    },
-                    {
-                        "id": "DSA884",
-                        "name": "Location",
-                        "enums": ["Istanbul", "Adana", "Bayburt", "Bilecik"],
-                        "type": "geolocation"
-                    },
-                    {
-                        "id": "DSA465",
-                        "name": "Date Seen",
-                        "type": "datetime"
-                    }
-                ]
-            }
-        ],
-        "workflows": [{
-            "id": "KASIJ92",
-            "name": "Share Your Bird Observations",
-            "description": "Share the location and photos of birds that you have seen",
-            "assigned_roles": [
-                "RTY526 Role_Observer",
-                "SFQ464 Role_Creator"
-            ],
-            "assigned_users": null,
-            "tasks": [{
-                    "id": "IASU21",
-                    "predecessors": [],
-                    "input": {
-                        "preInput": [],
-                        "humanInput": {
-                            "id": "VBNSD82 Bird Observation",
-                            "fields": [{
-                                    "fieldID": "Photo",
-                                    "required": true
-                                },
-                                {
-                                    "fieldID": "Local Name",
-                                    "required": true
-                                }
-                            ]
-                        }
-
-                    },
-
-                    "name": "Submit the Observation"
-
-                },
-                {
-                    "id": "IASU22",
-                    "predecessors": ["IASU21"],
-                    "input": {
-                        "preInput": ["VBNSD82"],
-                        "humanInput": {
-                            "id": "VBNSD82 Bird Observation",
-                            "fields": [
-                                "Photo",
-                                "Local Name"
-                            ]
-                        }
-
-                    },
-
-                    "name": "Submit the Observation"
-
-                }
-            ]
-        }]
-    }],
-    "executions":[{
-            "id" : "KJSHI32",
-            "taskId" : "IASU21",
-            "executed_by": "USA563 User_Jimmy",
-            "executed_on" : "21.12.2018",
-            "data" : [
-                {
-                    "id": "HJD561",
-                    "field": "DSA96 Field_Local_Name",
-                    "value": "Eastern Rosella"
-                },
-                {
-                    "id": "HJD658",
-                    "field": "DSA2355 Field_Sci_Name",
-                    "value": "Platycercus eximius"
-                },
-                {
-                    "id": "HJD098",
-                    "field": "DSA884 Field_Location",
-                    "value": "41°17′S 174°27′E"
-                },
-                {
-                    "id": "HJD984",
-                    "field": "DSA745 Field_Photo",
-                    "value": "https://www.hbw.com/sites/default/files/styles/ibc_1k/public/ibc/p/eastern-rosella091021_6579.jpg?itok=HovG7H1p"
-                }
-            ]
-    },
-    {
-        "id" : "KJSHI33",
-        "taskId" : "IASU22",
-        "executed_by": "USA563 User_Jimmy",
-        "executed_on" : "22.12.2018",
-        "data" : [
-            {
-                "id": "YUU930",
-                "executed_by": "HDF375 User_Bill",
-                "field": "DSA745 Field_Photo",
-                "value": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Andean_Condor_in_flight.jpg/220px-Andean_Condor_in_flight.jpg"
-            },
-            {
-                "id": "YUU309",
-                "executed_by": "HDF375 User_Bill",
-                "field": "DSA96 Field_Local_Name",
-                "value": "Andean Condor"
-            },
-            {
-                "id": "YUU204",
-                "executedby": "HDF375 User_Bill",
-                "field": "DSA2355 Field_Sci_Name",
-                "value": "Vultur gryphus"
-            },
-            {
-                "id": "YUU945",
-                "executed_by": "HDF375 User_Bill",
-                "field": "DSA884 Field_Location",
-                "value": "12°2.6′S 77°1.7′W"
-            }
-        ]
-}
-    ]
+	"users": [
+		{
+			"id": "LVT233",
+			"name": "Levent Kıran",
+			"email": "leventkiran@hotmail.com.tr",
+			"email_verified": true,
+			"profile_picture_url": "https://scontent.fist2-3.fna.fbcdn.net/v/t1.0-1/p160x160/36750441_10216866603916790_5675646681475973120_n.jpg?_nc_cat=108&_nc_ht=scontent.fist2-3.fna&oh=1213e88e8161aa85eeddd589dc654969&oe=5D3ECEF6",
+			"password": "b919c52e5ebb114ddb83da1f6997db25",
+			"registered_on": "05-03-2019 22:58:48 GMT+2",
+			"system_role": "admin"
+		},
+		{
+			"id": "USA563",
+			"name": "Jimmy Carter",
+			"email": "jimmy.carter@gmail.com",
+			"email_verified": true,
+			"profile_picture_url": "http://www.gstatic.com/tv/thumb/persons/70269/70269_v9_ba.jpg",
+			"password": "b919c52e5ebb114ddb83da1f6997db25",
+			"registered_on": "30-03-2019 14:10:18 GMT+2",
+			"system_role": "user"
+		},
+		{
+			"id": "HDF375",
+			"name": "Bill Oddie",
+			"email": "bill.oddie@gmail.com",
+			"email_verified": true,
+			"profile_picture_url": "https://thehigh5club.files.wordpress.com/2013/09/bill-oddie-gear-diary.gif",
+			"password": "b919c52e5ebb114ddb83da1f6997db25",
+			"registered_on": "30-03-2019 14:10:18 GMT+2",
+			"system_role": "user"
+		}
+	],
+	"communties": [
+		{
+			"name": "Bird Watchers",
+			"purpose": "Stalking birds and specifying their names and collecting pictures",
+			"description": "Collecting bird data from around the world and learning which bird lives where",
+			"roles": [
+				{
+					"id": "SFQ464",
+					"name": "Owner",
+					"system_defined": true
+				},
+				{
+					"id": "RTY526",
+					"name": "Observers",
+					"system_defined": true
+				}
+			],
+			"categories": [
+				{
+					"id": "ASCX12",
+					"name": "Birds"
+				},
+				{
+					"id": "BASJS13",
+					"name": "Photograph"
+				}
+			],
+			"members": [
+				{
+					"user": "USA563 User_Jimmy",
+					"role": "RTY526 Role_Observer",
+					"joined_on": "30.03.2019 14:37:28",
+					"banned": false
+				},
+				{
+					"user": "HDF375 User_Bill",
+					"role": "RTY526 Role_Observer",
+					"joined_on": "30.03.2019 14:37:28",
+					"banned": false
+				}
+			],
+			"data_type": [
+				{
+					"name": "Bird",
+					"id": "VBNSD51",
+					"fields": [
+						{
+							"id": "DSA745",
+							"name": "Photo",
+							"type": "image"
+						},
+						{
+							"id": "DSA91",
+							"name": "Local Name",
+							"type": "text"
+						},
+						{
+							"id": "DSA96",
+							"name": "Diet",
+							"enums": [
+								{
+									"Carnivore": "Etcil"
+								},
+								{
+									"Omnivore": "Etcil ve Otcul"
+								}
+							],
+							"type": "text"
+						},
+						{
+							"id": "DSA2355",
+							"name": "Scientific Name",
+							"type": "text"
+						}
+					]
+				},
+				{
+					"name": "Bird Observation",
+					"id": "VBNSD82",
+					"fields": [
+						{
+							"id": "DSA88123",
+							"name": "Bird",
+							"type": "DataType"
+						},
+						{
+							"id": "DSA884",
+							"name": "Location",
+							"enums": [
+								{
+									"Istanbul": "Istanbul"
+								},
+								{
+									"Adana": "Adana"
+								},
+								{
+									"Bayburt": "Bayburt"
+								}
+							],
+							"type": "geolocation"
+						},
+						{
+							"id": "DSA465",
+							"name": "Date Seen",
+							"type": "datetime"
+						}
+					]
+				}
+			],
+			"workflows": [
+				{
+					"id": "KASIJ92",
+					"name": "Share Your Bird Observations",
+					"description": "Share the location and photos of birds that you have seen",
+					"assigned_roles": [
+						"RTY526 Role_Observer",
+						"SFQ464 Role_Creator"
+					],
+					"assigned_users": null,
+					"tasks": [
+						{
+							"id": "IASU21",
+							"available":true,
+							"available_till": "01.01.2020",
+							"available_times": 1000,
+							"predecessors": [],
+							"input": {
+								"preInput": [],
+								"humanInput": {
+									"id": "VBNSD82 Bird Observation",
+									"fields": [
+										{
+											"fieldID": "Photo",
+											"required": true
+										},
+										{
+											"fieldID": "Local Name",
+											"required": true
+										},
+										{
+											"fieldID": "Location",
+											"required": true
+										}
+									]
+								}
+							},
+							"name": "Submit the Observation"
+						},
+						{
+							"id": "OIP549",
+							"available":true,
+							"available_till": "01.01.2020",
+							"available_times": 1000,
+							"predecessors": [
+								"IASU21"
+							],
+							"input": {
+								"preInput": [
+									"VBNSD82"
+								],
+								"humanInput": {
+									"id": "VBNSD82 Bird Observation",
+									"fields": [
+										{
+											"fieldID": "Bionomial Name",
+											"required": true
+										},
+										{
+											"fieldID": "Local Name",
+											"required": true
+										}
+									]
+								}
+							},
+							"name": "Specify Bionomial Name"
+						}
+					]
+				}
+			]
+		}
+	],
+	"executions": [
+		{
+			"id": "KJSHI32",
+			"taskId": "IASU21",
+			"executed_by": "USA563 User_Jimmy",
+			"executed_on": "21.12.2018",
+			"data": [
+				{
+					"id": "HJD561",
+					"field": "DSA96 Field_Local_Name",
+					"value": "Eastern Rosella"
+				},
+			
+				{
+					"id": "HJD098",
+					"field": "DSA884 Field_Location",
+					"value": "41°17′S 174°27′E"
+				},
+				{
+					"id": "HJD984",
+					"field": "DSA745 Field_Photo",
+					"value": "https://www.hbw.com/sites/default/files/styles/ibc_1k/public/ibc/p/eastern-rosella091021_6579.jpg?itok=HovG7H1p"
+				}
+			]
+		},
+		{
+			"id": "KJSHI32",
+			"taskId": "OIP549",
+			"executed_by": "USA563 User_Jimmy",
+			"executed_on": "21.12.2018",
+			"data": [
+				{
+					"id": "HJD561",
+					"field": "VBNSD82 Field_Observation",
+					"value": "KJSHI32"
+				},
+				{
+					"id": "HJD658",
+					"field": "DSA2355 Field_Sci_Name",
+					"value": "Platycercus eximius"
+				}
+			]
+		},
+		{
+			"id": "YTRY54",
+			"taskId": "IASU21",
+			"executed_by": "USA563 User_Jimmy",
+			"executed_on": "22.12.2018",
+			"data": [
+				{
+					"id": "YUU930",
+					"executed_by": "HDF375 User_Bill",
+					"field": "DSA745 Field_Photo",
+					"value": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Andean_Condor_in_flight.jpg/220px-Andean_Condor_in_flight.jpg"
+				},
+				{
+					"id": "YUU309",
+					"executed_by": "HDF375 User_Bill",
+					"field": "DSA96 Field_Local_Name",
+					"value": "Andean Condor"
+				},
+				{
+					"id": "YUU945",
+					"executed_by": "HDF375 User_Bill",
+					"field": "DSA884 Field_Location",
+					"value": "12°2.6′S 77°1.7′W"
+				}
+			]
+		},
+		{
+			"id": "GFH567",
+			"taskId": "OIP549",
+			"executed_by": "USA563 User_Jimmy",
+			"executed_on": "21.12.2018",
+			"data": [
+				{
+					"id": "HJD561",
+					"field": "VBNSD82 Field_Observation",
+					"value": "YTRY54"
+				},
+				{
+					"id": "HJD658",
+					"field": "DSA2355 Field_Sci_Name",
+					"value": "Vultur gryphus"
+				}
+			]
+		}
+	]
 }
