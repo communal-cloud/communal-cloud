@@ -6,7 +6,7 @@
   <b-button v-b-modal.step1>Create Community</b-button>
 
   <!-- Modal Component -->
-  <b-modal  size="lg" hide-footer id="step1" title="Add Community  Step 1">
+  <b-modal  size="lg" hide-footer id="step1" title="Community Info">
    
     <b-input-group 
     prepend="Name" 
@@ -57,7 +57,7 @@
 
 
    <!-- Step 2 Modal Component -->
-  <b-modal  size="lg" hide-footer id="step2" title="Add Community  Step 2">
+  <b-modal  size="lg" hide-footer id="step2" title="Community Details">
    
     <b-input-group 
     prepend="Description" 
@@ -99,12 +99,18 @@
 
 
    <!-- Step 3 Modal Component -->
-  <b-modal  size="lg" hide-footer id="step3" title="Add Community  Step 3">
+  <b-modal  size="lg" hide-footer id="step3" title="Community Data Types">
  
   <b-list-group >
+    <b-input-group 
+    prepend="Data Type Name" 
+    class="mt-3"
+    id="data_type"
+   
+    ><b-form-input v-model="data_type_name" type="text" /></b-input-group>
   <b-list-group-item  href="#" v-for="data in community_data" :key="data" v-on:click="RemoveInput(data)">{{data}}</b-list-group-item>
+  <b-list-group-item  href="#" style="background: #eee">+ Add Another Data Type</b-list-group-item>
   </b-list-group> 
-  <>
    <b-list-group>
   <b-list-group-item href="#" v-on:click="AddInput('Text')">Text</b-list-group-item>
   <b-list-group-item href="#" v-on:click="AddInput('Number')" >Number</b-list-group-item>
@@ -112,9 +118,29 @@
   <b-list-group-item href="#" v-on:click="AddInput('Date')">Date</b-list-group-item>
   <b-list-group-item href="#" v-on:click="AddInput('GeoLocation')" >GeoLocation</b-list-group-item>
   <b-list-group-item href="#" v-on:click="AddInput('Boolean')" >Boolean</b-list-group-item>
+  <b-list-group-item style="background: #eee">- Data Templates -</b-list-group-item>
+  <b-list-group-item href="#" v-on:click="AddInput('RSVP')">RSVP</b-list-group-item>
+  <b-list-group-item href="#" v-on:click="AddInput('QA')" >Question & Answer</b-list-group-item>
 </b-list-group>
 
-     <b-button class="next" v-on:click="toggleModal('step3')" variant="outline-primary">Next</b-button>
+     <b-button class="next" v-on:click="toggleModal('step3'), toggleModal('step4')" variant="outline-primary">Next</b-button>
+  </b-modal>
+  
+   <!-- Step 4 Modal Component -->
+  <b-modal  size="lg" hide-footer id="step4" title="Community Tasks">
+ 
+ <b-input-group 
+    prepend="Task Name" 
+    class="mt-3"
+    id="data_type"
+   
+    ><b-form-input type="text" v-model="task_name" /></b-input-group>
+	<p>{{data_type_name}}</p>
+  <b-list-group >
+  <b-list-group-item  href="#" v-for="data in community_data" :key="data" v-on:click="RemoveInput(data)">{{data}}</b-list-group-item>
+  </b-list-group> 
+
+     <b-button class="next" v-on:click="toggleModal('step4')" variant="outline-primary">Next</b-button>
   </b-modal>
 </div>
 
@@ -136,9 +162,11 @@
         community_category : '',
         community_description:'',
         community_role:'',
-        community_roles:[],
+        community_roles:['owner', 'member'],
         community_categories:[],
         community_data:[],
+		data_type_name: '',
+		task_name: ''
       }
     },
     methods:{
