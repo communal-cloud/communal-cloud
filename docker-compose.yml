@@ -2,11 +2,19 @@ version: "3"
 
 services:
   api:
-    build:
-      context: .
-    ports:
-      - "8000:8000"
+    build: ./api
+    command: gunicorn app.wsgi
     volumes:
       - ./api:/api
-    command: >
-      sh -c "python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+  
+  nginx:
+    build: ./nginx
+    depends_on: 
+      - api
+    command: nginx -g 'daemon off;'
+    ports: 
+      - "80:80"
+    volumes: 
+      - ./api/static:/api/static
