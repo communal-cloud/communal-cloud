@@ -3,7 +3,7 @@ version: "3"
 services:
   api:
     build: ./api
-    command: gunicorn app.wsgi
+    command: gunicorn -c gunicorn.conf app.wsgi
     volumes:
       - ./api:/api
     ports:
@@ -17,4 +17,4 @@ services:
     ports: 
       - "80:80"
     volumes: 
-      - ./api/static:/api/static
+      - ./api/static:/api/static/
