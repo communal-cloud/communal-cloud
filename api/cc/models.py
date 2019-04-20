@@ -123,14 +123,14 @@ class Task(BaseModel):
 
 class ExecutionData(BaseModel):
 	Field = models.ForeignKey(DataField, blank=True, on_delete=models.DO_NOTHING)
-	DataGroup = models.ForeignKey("self", blank=True, on_delete=models.DO_NOTHING)
+	DataGroup = models.ForeignKey("self", blank=True, null=True, on_delete=models.DO_NOTHING)
 	Value = JSONField(default="{}")
 
 
 class Execution(BaseModel):
 	Task = models.ForeignKey(Task, blank=True, on_delete=models.DO_NOTHING)
 	Data = models.ManyToManyField(ExecutionData, blank=True)
-	ExecutedBy = models.ForeignKey(User, blank=True, on_delete=models.DO_NOTHING)
+	ExecutedBy = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
 
 
 class Community(BaseModel):
