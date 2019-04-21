@@ -4,7 +4,7 @@ from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.cc.Services.TaskService import TaskService
+from cc.Services.TaskService import TaskService
 
 
 class TaskController(APIView):
