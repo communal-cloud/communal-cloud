@@ -17,15 +17,15 @@ from django.contrib import admin
 from django.conf.urls import url, include
 from rest_framework import routers
 
-from api.cc.Controllers.CategoryController import CategoryController
-from api.cc.Controllers.CommunityController import CommunityController
-from api.cc.Controllers.DataController import DataController
-from api.cc.Controllers.ExecutionController import ExecutionController
-from api.cc.Controllers.RoleController import RoleController
-from api.cc.Controllers.ServiceController import ServiceController
-from api.cc.Controllers.TaskController import TaskController
-from api.cc.Controllers.UserController import UserController
-from api.cc.Controllers.WorkflowController import WorkflowController
+from cc.Controllers.CategoryController import CategoryController
+from cc.Controllers.CommunityController import CommunityController
+from cc.Controllers.DataController import DataController
+from cc.Controllers.ExecutionController import ExecutionController
+from cc.Controllers.RoleController import RoleController
+from cc.Controllers.ServiceController import ServiceController
+from cc.Controllers.TaskController import TaskController
+from cc.Controllers.UserController import UserController
+from cc.Controllers.WorkflowController import WorkflowController
 
 router = routers.DefaultRouter()
 
