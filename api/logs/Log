@@ -1,0 +1,11 @@
+Apr 21, Sun 18:19:06,336 - MARKDOWN - DEBUG - Successfuly imported extension module "markdown.extensions.toc".
+Apr 21, Sun 18:19:06,341 - MARKDOWN - DEBUG - Successfully loaded extension "markdown.extensions.toc.TocExtension".
+Apr 21, Sun 18:21:35,52 - MARKDOWN - DEBUG - Successfuly imported extension module "markdown.extensions.toc".
+Apr 21, Sun 18:21:35,52 - MARKDOWN - DEBUG - Successfully loaded extension "markdown.extensions.toc.TocExtension".
+Apr 21, Sun 18:36:13,833 - MARKDOWN - DEBUG - Successfuly imported extension module "markdown.extensions.toc".
+Apr 21, Sun 18:36:13,834 - MARKDOWN - DEBUG - Successfully loaded extension "markdown.extensions.toc.TocExtension".
+Apr 21, Sun 18:36:24,326 - ServiceController - INFO - Returning "pong" response to coming ping request
+Apr 21, Sun 18:36:24,328 - MARKDOWN - DEBUG - Successfuly imported extension module "markdown.extensions.toc".
+Apr 21, Sun 18:36:24,328 - MARKDOWN - DEBUG - Successfully loaded extension "markdown.extensions.toc.TocExtension".
+Apr 21, Sun 18:39:58,908 - MARKDOWN - DEBUG - Successfuly imported extension module "markdown.extensions.toc".
+Apr 21, Sun 18:39:58,909 - MARKDOWN - DEBUG - Successfully loaded extension "markdown.extensions.toc.TocExtension".
