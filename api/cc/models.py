@@ -105,7 +105,7 @@ class Task(BaseModel):
 	Name = models.CharField(max_length=50)
 	Description = models.CharField(max_length=5000)
 	Available = models.BooleanField(default=False)
-	AvailableTill = models.DateField(blank=True)
+	AvailableTill = models.DateField(blank=True, null=True)
 	AvailableTimes = models.IntegerField(default=0)
 	Workflow = models.ForeignKey(Workflow, blank=True, on_delete=models.DO_NOTHING)
 	AssignedUsers = models.ManyToManyField(User, blank=True)
@@ -135,10 +135,11 @@ class Execution(BaseModel):
 
 class Community(BaseModel):
 	Name = models.CharField(max_length=50)
-	Purpose = models.CharField(max_length=250)
-	Description = models.CharField(max_length=5000)
+	Purpose = models.CharField(max_length=250, blank=True, null=True)
+	Description = models.CharField(max_length=5000, blank=True, null=True)
 	Roles = models.ManyToManyField(Role, blank=True)
 	Categories = models.ManyToManyField(Category, blank=True)
+	IsCompleted = models.BooleanField(default=False)
 	
 	def __str__(self):
 		return u'Community {0} ({1})'.format(self.Name, self.id)

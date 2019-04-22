@@ -8,5 +8,10 @@ from cc.Services.CommunityService import CommunityService
 
 
 class CommunityController(APIView):
-	__logger = logging.getLogger('CommunityController')
-	__communityService = CommunityService.Instance()
+    __logger = logging.getLogger('CommunityController')
+    __communityService = CommunityService.Instance()
+
+    def post(self, request, format=None):
+        self.__communityService.Create(request.data)
+        result = None
+        return Response(result)

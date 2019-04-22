@@ -1,5 +1,7 @@
 import logging
 
+from cc.models import Category
+
 
 class CategoryService(object):
 	__instance = None
@@ -18,6 +20,10 @@ class CategoryService(object):
 	
 	def Search(self, word):
 		raise NotImplementedError
-
+	
 	def Create(self, category):
 		raise NotImplementedError
+	
+	def GetOrCreate(self, category):
+		model = Category.objects.get_or_create(Name=category.Name)
+		return model
