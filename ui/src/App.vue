@@ -16,11 +16,16 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           
-            <router-link class="navSelect" to="#">My Communities</router-link> 
+           
             <router-link  class="navSelect" to="/communities">All Communities</router-link> 
-            <router-link  class="navSelect" to="#">Events</router-link> 
-            <router-link  class="navSelect" to="create">Create</router-link> 
-            <router-link  class="navSelect" to="/about">About</router-link>
+         
+          
+             <router-link  class="navSelect" to="/create">Create Community</router-link>  
+            <router-link  class="navSelect" to="/createTask">Create Task</router-link> 
+             <router-link  class="navSelect" to="/createWorkflow">Create Workflow</router-link> 
+              <router-link  class="navSelect" to="/doTask">Do Task</router-link> 
+            
+         
 
           <b-nav-item-dropdown right>
             <!-- Using button-content slot -->
@@ -78,5 +83,8 @@
 .list-group{
       width: 45%;
       display: inline-block !important;
+}
+pre{
+  text-align: left;
 }
 </style>

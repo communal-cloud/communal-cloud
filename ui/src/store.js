@@ -5,6 +5,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    community_roles:['owner','member'],
+    community_data:[],
+    dataTypeName:"",
 
   },
   mutations: {
