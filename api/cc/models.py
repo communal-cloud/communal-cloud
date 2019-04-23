@@ -1,10 +1,13 @@
 from enum import Enum
 
-from django.contrib.auth.models import User
+from django.conf import settings
+from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
 
 from django.utils import timezone
 from jsonfield import JSONField
+
+from cc.UserManager import UserManager
 
 
 class ClassEnum(Enum):
@@ -16,6 +19,19 @@ class ClassEnum(Enum):
 	GeoLocation = 5
 	Relation = 6
 	User = 7
+
+
+class User(AbstractBaseUser):
+	username = models.CharField(max_length = 100, unique = True)
+	email = models.EmailField(unique = True)
+	name = models.CharField(max_length = 100, null=False)
+	is_superuser = models.BooleanField(null = True)
+	is_active = models.BooleanField(null = True)
+	
+	USERNAME_FIELD = 'email'
+	REQUIRED_FIELDS = [ 'username', 'name' ]
+
+	objects = UserManager()
 
 
 class BaseModel(models.Model):
@@ -108,7 +124,7 @@ class Task(BaseModel):
 	AvailableTill = models.DateField(blank=True, null=True)
 	AvailableTimes = models.IntegerField(default=0)
 	Workflow = models.ForeignKey(Workflow, blank=True, on_delete=models.DO_NOTHING)
-	AssignedUsers = models.ManyToManyField(User, blank=True)
+	AssignedUsers = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
 	AssignedRoles = models.ManyToManyField(Role, blank=True)
 	Predecessors = models.ManyToManyField("self", blank=True, symmetrical=False)
 	InputFields = models.ManyToManyField(DataField, related_name="InputFields", blank=True)
@@ -130,7 +146,7 @@ class ExecutionData(BaseModel):
 class Execution(BaseModel):
 	Task = models.ForeignKey(Task, blank=True, on_delete=models.DO_NOTHING)
 	Data = models.ManyToManyField(ExecutionData, blank=True)
-	ExecutedBy = models.ForeignKey(User, blank=True, null=True, on_delete=models.DO_NOTHING)
+	ExecutedBy = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.DO_NOTHING)
 
 
 class Community(BaseModel):
@@ -150,7 +166,7 @@ class Community(BaseModel):
 
 class Member(BaseModel):
 	Community = models.ForeignKey(Community, on_delete=models.DO_NOTHING)
-	User = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+	User = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
 	Roles = models.ManyToManyField(Role, blank=True)
 	Banned = models.BooleanField(default=False)
 	

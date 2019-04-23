@@ -1,5 +1,8 @@
 import logging
+from django.http import JsonResponse
 
+from cc.Serializers.RegisterSerializer import RegisterSerializer
+from rest_framework.authtoken.models import Token
 
 class UserService(object):
 	__instance = None
@@ -16,11 +19,19 @@ class UserService(object):
 			raise Exception("UserService is a singleton, use 'UserService.Instance()'")
 		UserService.__instance = self
 	
-	def Register(self, user):
-		raise NotImplementedError
+	def Register(self, userData):
+		registerSerializer = RegisterSerializer(data = userData)
+		registerSerializer.is_valid()
+		user = registerSerializer.create(registerSerializer.data)
+		user.is_active = True
+		user.set_password(user.password)
+		user.save()
+		return user
 	
 	def ActivateEmail(self, code):
 		raise NotImplementedError
 	
-	def Logout(self, user):
-		raise NotImplementedError
+	def Logout(self, userData):
+		token = Token(key = userData.auth_token.key)
+		token.delete()
+		return JsonResponse({'status':'OK' }, status=200)

@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls import url, include
 from rest_framework import routers
+from rest_framework.authtoken.views import ObtainAuthToken
 
 from cc.Controllers.CategoryController import CategoryController
 from cc.Controllers.CommunityController import CommunityController
@@ -25,15 +26,18 @@ from cc.Controllers.RoleController import RoleController
 from cc.Controllers.ServiceController import ServiceController
 from cc.Controllers.TaskController import TaskController
 from cc.Controllers.UserController import UserController
+from cc.Controllers.RegisterController import RegisterController
 from cc.Controllers.WorkflowController import WorkflowController
 
 router = routers.DefaultRouter()
+router.register(r'', UserController, basename='user')
 
 urlpatterns = [
 	url(r'^', include(router.urls)),
 	url(r'^admin/', admin.site.urls),
+	url(r'^user/login', ObtainAuthToken.as_view()),
+	url(r'^register/$', RegisterController.as_view()),
 	url(r'^service/$', ServiceController.as_view()),
-	url(r'^user/$', UserController.as_view()),
 	url(r'^category/$', CategoryController.as_view()),
 	url(r'^community/$', CommunityController.as_view()),
 	url(r'^data/$', DataController.as_view()),
