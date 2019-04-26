@@ -8,6 +8,14 @@ services:
       - ./api:/api
     ports:
       - "8000:8000"
+
+  web:
+    build: ./ui
+    command: sh -c "npm run serve"
+    volumes:
+      - ./ui:/ui
+    ports:
+      - "8080:8080"
   
   nginx:
     build: ./nginx
