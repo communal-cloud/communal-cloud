@@ -1,6 +1,7 @@
 from enum import Enum
 
 from django.conf import settings
+from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
 
@@ -21,18 +22,24 @@ class ClassEnum(Enum):
 	User = 7
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
 	username = models.CharField(max_length = 100, unique = True)
 	email = models.EmailField(unique = True)
 	name = models.CharField(max_length = 100, null=False)
 	is_superuser = models.BooleanField(null = True)
 	is_active = models.BooleanField(null = True)
+	is_staff = models.BooleanField(null = True)
 	
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELDS = [ 'username', 'name' ]
 
 	objects = UserManager()
 
+class ActivationToken(models.Model):
+	token = models.CharField(max_length = 50, unique = True, null=False)
+	userId = models.IntegerField(unique = True, null=False)
+
+	objects = models.Manager()
 
 class BaseModel(models.Model):
 	CreatedOn = models.DateTimeField(editable=False)
@@ -47,6 +54,7 @@ class BaseModel(models.Model):
 		self.ModifiedOn = timezone.now()
 		return super(BaseModel, self).save(*args, **kwargs)
 
+	objects = models.Manager()
 
 class Role(BaseModel):
 	Name = models.CharField(max_length=50)
@@ -154,7 +162,7 @@ class Community(BaseModel):
 	Purpose = models.CharField(max_length=250, blank=True, null=True)
 	Description = models.CharField(max_length=5000, blank=True, null=True)
 	Roles = models.ManyToManyField(Role, blank=True)
-	Categories = models.ManyToManyField(Category, blank=True)
+	Categories = models.ManyToManyField(Category, related_name="Categories", blank=True)
 	IsCompleted = models.BooleanField(default=False)
 	
 	def __str__(self):
