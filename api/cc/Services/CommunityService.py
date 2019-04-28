@@ -1,6 +1,7 @@
 import logging
 
 from cc.Services.CategoryService import CategoryService
+from cc.Services.RoleService import RoleService
 from cc.models import Community
 
 
@@ -8,6 +9,7 @@ class CommunityService(object):
 	__instance = None
 	__logger = logging.getLogger('CommunityService')
 	__categoryService = CategoryService.Instance()
+	__roleService = RoleService.Instance()
 	
 	@staticmethod
 	def Instance():
@@ -33,12 +35,19 @@ class CommunityService(object):
 		model = Community()
 		model.Name = community.get("Name", u"")
 		model.Description = community.get("Description", u"")
-		model.Categories=[]
-		for c in community.Categories:
-			category = self.__categoryService.GetOrCreate(c)
-			model.Categories.append(category)
-			
+		model.save()
+		for c in community.get("Categories", u""):
+			obj,created = self.__categoryService.GetOrCreate(c)
+			model.Categories.add(obj)
 		
+	
+	def CreateStep2(self, community):
+		model = Community.objects.get(pk=community.get("Id"))
+		model.Purpose = community.get("Purpose", u"")
+		model.save()
+		for r in community.get("Roles", u""):
+			obj,created = self.__roleService.GetOrCreate(r)
+			model.Roles.add(obj)
 
 	def Activate(self, community):
 		raise NotImplementedError

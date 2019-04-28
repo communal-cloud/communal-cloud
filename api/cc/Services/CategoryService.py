@@ -25,5 +25,5 @@ class CategoryService(object):
 		raise NotImplementedError
 	
 	def GetOrCreate(self, category):
-		model = Category.objects.get_or_create(Name=category.Name)
+		model = Category.objects.get_or_create(Name=category)
 		return model
