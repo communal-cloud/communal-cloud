@@ -1,9 +1,13 @@
 import logging
 
+from cc.Services.CategoryService import CategoryService
+from cc.models import Community
+
 
 class CommunityService(object):
 	__instance = None
 	__logger = logging.getLogger('CommunityService')
+	__categoryService = CategoryService.Instance()
 	
 	@staticmethod
 	def Instance():
@@ -26,7 +30,15 @@ class CommunityService(object):
 		raise NotImplementedError
 
 	def Create(self, community):
-		raise NotImplementedError
+		model = Community()
+		model.Name = community.get("Name", u"")
+		model.Description = community.get("Description", u"")
+		model.Categories=[]
+		for c in community.Categories:
+			category = self.__categoryService.GetOrCreate(c)
+			model.Categories.append(category)
+			
+		
 
 	def Activate(self, community):
 		raise NotImplementedError
