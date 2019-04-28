@@ -107,5 +107,8 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# Log Folders
+/api/logs
+
 # UI
 ui/node_modules/
