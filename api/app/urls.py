@@ -25,18 +25,17 @@ from cc.Controllers.ExecutionController import ExecutionController
 from cc.Controllers.RoleController import RoleController
 from cc.Controllers.ServiceController import ServiceController
 from cc.Controllers.TaskController import TaskController
-from cc.Controllers.UserController import UserController
-from cc.Controllers.RegisterController import RegisterController
+from cc.Controllers.UserController import UserAPIViewController, UserViewSetController
 from cc.Controllers.WorkflowController import WorkflowController
 
 router = routers.DefaultRouter()
-router.register(r'', UserController, basename='user')
+router.register(r'', UserViewSetController, basename='user')
 
 urlpatterns = [
 	url(r'^', include(router.urls)),
 	url(r'^admin/', admin.site.urls),
 	url(r'^user/login', ObtainAuthToken.as_view()),
-	url(r'^register/$', RegisterController.as_view()),
+	url(r'^user/$', UserAPIViewController.as_view()),
 	url(r'^service/$', ServiceController.as_view()),
 	url(r'^category/$', CategoryController.as_view()),
 	url(r'^community/$', CommunityController.as_view()),
