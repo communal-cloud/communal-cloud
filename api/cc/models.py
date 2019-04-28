@@ -154,7 +154,7 @@ class Community(BaseModel):
 	Purpose = models.CharField(max_length=250, blank=True, null=True)
 	Description = models.CharField(max_length=5000, blank=True, null=True)
 	Roles = models.ManyToManyField(Role, blank=True)
-	Categories = models.ManyToManyField(Category, blank=True)
+	Categories = models.ManyToManyField(Category, related_name="Categories", blank=True)
 	IsCompleted = models.BooleanField(default=False)
 	
 	def __str__(self):

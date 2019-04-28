@@ -1,5 +1,5 @@
 import logging
-
+from cc.models import Role
 
 class RoleService(object):
 	__instance = None
@@ -27,3 +27,7 @@ class RoleService(object):
 	
 	def Rename(self, role):
 		raise NotImplementedError
+	
+	def GetOrCreate(self, role):
+		model = Role.objects.get_or_create(Name=role)
+		return model
