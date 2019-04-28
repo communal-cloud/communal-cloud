@@ -14,3 +14,8 @@ class CategoryController(APIView):
 	__categoryService = CategoryService.Instance()
 	authentication_classes = (TokenAuthentication,)
 	permission_classes = (IsAuthenticated,)
+	
+	def post(self, request, format=None):
+		self.__categoryService.Create(request.data)
+		result = None
+		return Response(result)
