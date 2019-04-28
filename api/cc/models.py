@@ -1,6 +1,7 @@
 from enum import Enum
 
 from django.conf import settings
+from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
 
@@ -21,12 +22,13 @@ class ClassEnum(Enum):
 	User = 7
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
 	username = models.CharField(max_length = 100, unique = True)
 	email = models.EmailField(unique = True)
 	name = models.CharField(max_length = 100, null=False)
 	is_superuser = models.BooleanField(null = True)
 	is_active = models.BooleanField(null = True)
+	is_staff = models.BooleanField(null = True)
 	
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELDS = [ 'username', 'name' ]
