@@ -11,12 +11,11 @@ import CreateTask from './components/CreateTask.vue'
 import DoTask from './components/DoTask.vue'
 
 import SignIn from './components/SignIn.vue'
+import SignUp from './components/SignUp.vue'
 
 Vue.use(Router)
 
-const router = createRouter()
 
-sync(store, router)
 
 const routes = [
   {
@@ -28,6 +27,11 @@ const routes = [
     path: '/user/login',
     name: 'login',
     component: SignIn
+  },
+  {
+    path: '/user/register',
+    name: 'register',
+    component: SignUp
   },
   {
     path: '/communities',
@@ -64,22 +68,18 @@ const routes = [
   }
 ]
 
-export default router
-
-function createRouter () {
-  const router = new Router({
+export default  new Router({
     mode: 'history',
     routes,
-    base:'/'
+    base:'/',
+    beforeEach,
+    afterEach
   })
 
-  router.beforeEach(beforeEach)
-  router.afterEach(afterEach)
-
-  return router
-}
+ 
 
 async function beforeEach (to, from, next) {
+ 
   if (store.getters.token) {
     try {
       await store.dispatch('fetchUser')
