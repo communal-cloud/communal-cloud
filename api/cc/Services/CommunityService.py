@@ -33,21 +33,47 @@ class CommunityService(object):
 
 	def Create(self, community):
 		model = Community()
-		model.Name = community.get("Name", u"")
-		model.Description = community.get("Description", u"")
+		if "Name" in community:
+			model.Name = community.get("Name", u"")
+		else:
+			raise Exception("Name is required!")
+		if "Description" in community:
+			model.Description = community.get("Description", u"")
+		
+		if "Purpose" in community:
+			model.Purpose = community.get("Purpose", u"")
 		model.save()
-		for c in community.get("Categories", u""):
-			obj,created = self.__categoryService.GetOrCreate(c)
-			model.Categories.add(obj)
+		if "Categories" in community:
+			for c in community.get("Categories", u""):
+				obj,created = self.__categoryService.GetOrCreate(c)
+				model.Categories.add(obj)
+		
+		if "Roles" in community:
+			for r in community.get("Roles", u""):
+				obj, created = self.__roleService.GetOrCreate(r)
+				model.Roles.add(obj)
 		
 	
-	def CreateStep2(self, community):
-		model = Community.objects.get(pk=community.get("Id"))
-		model.Purpose = community.get("Purpose", u"")
+	def Update(self, community, id):
+		model = Community.objects.get(pk=id)
+		if "Name" in community:
+			model.Name = community.get("Name", u"")
+		#TODO: name can be changed if number of member of the group has less than n members.
+		if "Description" in community:
+			model.Description = community.get("Description", u"")
+		
+		if "Purpose" in community:
+			model.Purpose = community.get("Purpose", u"")
 		model.save()
-		for r in community.get("Roles", u""):
-			obj,created = self.__roleService.GetOrCreate(r)
-			model.Roles.add(obj)
+		if "Categories" in community:
+			for c in community.get("Categories", u""):
+				obj, created = self.__categoryService.GetOrCreate(c)
+				model.Categories.add(obj)
+		
+		if "Roles" in community:
+			for r in community.get("Roles", u""):
+				obj, created = self.__roleService.GetOrCreate(r)
+				model.Roles.add(obj)
 
 	def Activate(self, community):
 		raise NotImplementedError

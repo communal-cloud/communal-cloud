@@ -13,15 +13,16 @@ from cc.Services.CommunityService import CommunityService
 class CommunityController(APIView):
     __logger = logging.getLogger('CommunityController')
     __communityService = CommunityService.Instance()
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+  #  authentication_classes = (TokenAuthentication,)
+   # permission_classes = (IsAuthenticated,)
 
     def post(self, request, format=None):
         self.__communityService.Create(request.data)
         result = None
         return Response(result)
     
-    def put(self, request, format=None):
-        self.__communityService.CreateStep2(request.data)
+    def put(self, request, *args, **kwargs):
+        id = kwargs.get('id', 'Default Value if not there')
+        self.__communityService.Update(request.data, id)
         result = None
         return Response(result)

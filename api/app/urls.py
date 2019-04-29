@@ -38,7 +38,7 @@ urlpatterns = [
 	url(r'^user/$', UserAPIViewController.as_view()),
 	url(r'^service/$', ServiceController.as_view()),
 	url(r'^category/$', CategoryController.as_view()),
-	url(r'^community/$', CommunityController.as_view()),
+	url(r'^community/(?P<id>.+)/$', CommunityController.as_view()),
 	url(r'^data/$', DataController.as_view()),
 	url(r'^execution/$', ExecutionController.as_view()),
 	url(r'^role/$', RoleController.as_view()),
