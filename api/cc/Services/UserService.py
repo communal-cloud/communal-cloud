@@ -73,7 +73,7 @@ def SendActivationEmail(user, baseUrl):
 	subject = "Communal-Cloud Activation"
 	message = "Please activate your email to login by clicking the link below.\n\n" + activationLink
 	emailFrom = "noreply@communalcloud.net"
-	emailTo = ("olgukocoglu@gmail.com",)
+	emailTo = (user.email,)
 	send_mail(subject, message, emailFrom, emailTo)
 
 def GenerateAndSaveActivationToken(userId):
@@ -99,7 +99,7 @@ def SendForgotPasswordEmail(user, baseUrl):
 	+ "Username: " + user.username + "\n" \
 	+ "Password: " + newPassword
 	emailFrom = "noreply@communalcloud.net"
-	emailTo = ("olgukocoglu@gmail.com",)
+	emailTo = (user.email,)
 	send_mail(subject, message, emailFrom, emailTo)
 
 def GenerateAndSaveNewPassword(user):
