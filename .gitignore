@@ -90,6 +90,7 @@ env.bak/
 venv.bak/
 /.vscode
 /api/.vscode
+/api/static
 
 # ide
 .idea
