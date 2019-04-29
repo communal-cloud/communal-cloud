@@ -22,7 +22,7 @@ if __name__ == '__main__':
 	#   D - Days
 	#   midnight - roll over at midnight
 	#   W{0-6} - roll over on a certain day; 0 - Monday
-	log_file_name = 'logs\Log'
+	log_file_name = 'logs/Log'
 	logging_level = logging.DEBUG
 	
 	formatter = logging.Formatter(
