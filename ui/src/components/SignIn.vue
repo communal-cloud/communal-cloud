@@ -15,9 +15,8 @@
                                             id="fieldset1"
                                             description="Let us know your email."
                                             label="Enter your email"
-                                            label-for="input1"
-                                            :model="username">
-                                        <b-form-input />
+                                            label-for="input1">
+                                        <b-form-input v-model="username" />
                                     </b-input-group>
 
                                     <b-input-group
@@ -25,9 +24,8 @@
                                             class="mt-3"
                                             id="fieldset1"
                                             label="Enter your password"
-                                            label-for="input1"
-                                            :model="password">
-                                        <b-form-input type="password" />
+                                            label-for="input1">
+                                        <b-form-input type="password" v-model="password" />
                                     </b-input-group>
                                     <div class="kt-login__extra">
                                         <router-link to="/user/forgot" id="kt_login_forgot">Forget Password ?</router-link>
@@ -52,6 +50,7 @@
 
 <script>
   import axios from 'axios'
+  import store from '../store'
 
   export default {
     computed: {},
@@ -63,19 +62,20 @@
     },
       methods: {
           async signIn() {
-              console.log('sign In')
-
               try {
                   const {data} = await axios.post('http://api.communal-cloud.com/user/login', {
-
-                      body: {
-
-                          username: this.username,
-
-                          password: this.password
-                      }
+                      username: this.username,
+                      password: this.password
                   })
-                  console.log(data)
+
+                  if(data.token) {
+                      store.commit('save_token', {token:data.token, remember:true})
+
+                      this.$router.push('/home')
+                  }
+
+                  else
+                    console.log(data)
               } catch (e) {
                   console.log('FAIL')
                   console.log(e)
