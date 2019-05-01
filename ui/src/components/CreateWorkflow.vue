@@ -36,13 +36,13 @@
     >
     <b-form-input v-model="workflow_role" type="text" />
    <b-input-group-append>
-      <b-button v-on:click="AddWorkflowRole" variant="outline-success">Add</b-button>
+      <b-button variant="outline-success">Add</b-button>
     </b-input-group-append>
   </b-input-group>
 
 <ul id="categories">
       <li v-for="role in workflow_roles" :key="role">
-        <b-button v-on:click="RemoveWorkflowRole(role)">{{ role }}</b-button>
+        <b-button>{{ role }}</b-button>
       </li>
     </ul>
 
@@ -57,7 +57,7 @@
     >
     <b-form-input v-model="workflow_assign" type="text" />
    <b-input-group-append>
-      <b-button v-on:click="AddWorkflowAssign" variant="outline-success">Add</b-button>
+      <b-button variant="outline-success">Add</b-button>
     </b-input-group-append>
   </b-input-group>
   <ul id="categories">
