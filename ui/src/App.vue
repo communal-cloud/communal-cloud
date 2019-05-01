@@ -40,7 +40,7 @@
     <div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed ">
       <div class="kt-header-mobile__logo">
         <router-link to="/">
-          <img alt="Logo" src="/assets/media/logos/logo.png" />
+          <img alt="Logo" width="140" src="/assets/media/logos/logo.png" />
         </router-link>
       </div>
       <div class="kt-header-mobile__toolbar">
