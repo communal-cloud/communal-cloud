@@ -9,7 +9,6 @@
                                 <h3 class="kt-login__title">Sign In</h3>
                             </div>
                             <div class="kt-login__form">
-                                <form class="kt-form" action="">
                                     <b-input-group
                                             prepend="e-mail"
                                             class="mt-3"
@@ -17,9 +16,7 @@
                                             description="Let us know your email."
                                             label="Enter your email"
                                             label-for="input1"
-                                            :invalid-feedback="invalidFeedback"
-                                            :valid-feedback="validFeedback"
-                                            :state="state">
+                                            :model="username">
                                         <b-form-input />
                                     </b-input-group>
 
@@ -29,18 +26,15 @@
                                             id="fieldset1"
                                             label="Enter your password"
                                             label-for="input1"
-                                            :invalid-feedback="invalidFeedback"
-                                            :valid-feedback="validFeedback"
-                                            :state="state">
+                                            :model="password">
                                         <b-form-input type="password" />
                                     </b-input-group>
                                     <div class="kt-login__extra">
                                         <router-link to="/user/forgot" id="kt_login_forgot">Forget Password ?</router-link>
                                     </div>
                                     <div class="kt-login__actions">
-                                        <button id="kt_login_signin_submit" class="btn btn-brand btn-pill btn-elevate">Sign In</button>
+                                        <button id="kt_login_signin_submit" class="btn btn-brand btn-pill btn-elevate" v-on:click="signIn()">Sign In</button>
                                     </div>
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -57,28 +51,36 @@
 </template>
 
 <script>
+  import axios from 'axios'
+
   export default {
-    computed: {
-      state() {
-        return this.name.length >= 4 ? true : false
-      },
-      invalidFeedback() {
-        if (this.name.length > 4) {
-          return ''
-        } else if (this.name.length > 0) {
-          return 'Enter at least 4 characters'
-        } else {
-          return 'Please enter something'
-        }
-      },
-      validFeedback() {
-        return this.state === true ? 'Thank you' : ''
-      }
-    },
+    computed: {},
     data() {
       return {
-        name: ''
+          username:'',
+          password:''
       }
-    }
+    },
+      methods: {
+          async signIn() {
+              console.log('sign In')
+
+              try {
+                  const {data} = await axios.post('http://api.communal-cloud.com/user/login', {
+
+                      body: {
+
+                          username: this.username,
+
+                          password: this.password
+                      }
+                  })
+                  console.log(data)
+              } catch (e) {
+                  console.log('FAIL')
+                  console.log(e)
+              }
+          }
+      }
   }
 </script>
