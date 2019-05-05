@@ -12,6 +12,7 @@ from cc.Serializers.UserSerializer import UserSerializer
 from cc.Serializers.RegisterSerializer import RegisterSerializer
 from cc.CustomPermissions import IsPostOrIsAuthenticated
 from cc.models import User, ActivationToken
+import json
 
 class UserAPIViewController(APIView):
 	__logger = logging.getLogger('UserController')
@@ -26,17 +27,20 @@ class UserAPIViewController(APIView):
 
 	def post(self, request, format=None):
 		baseUrl = request.build_absolute_uri()
-		user = self.__userService.Register(request.data, baseUrl)
+		requestDataParsed = json.loads(request.body)
+		user = self.__userService.Register(requestDataParsed, baseUrl)
 		userSerialized = UserSerializer(user)
 		return Response(userSerialized.data)
 	
 	def put(self, request, format=None):
-		user = self.__userService.UpdateUser(request.user, request.data)
+		requestDataParsed = json.loads(request.body)
+		user = self.__userService.UpdateUser(request.user, requestDataParsed.data)
 		userSerialized = UserSerializer(user)
 		return Response(userSerialized.data)
 	
 	def delete(self, request, format=None):
-		return self.__userService.DeleteUser(request.user)
+		requestDataParsed = json.loads(request.body)
+		return self.__userService.DeleteUser(requestDataParsed.user)
 
 class UserViewSetController(ViewSet):
 	__logger = logging.getLogger('UserController')
@@ -49,7 +53,8 @@ class UserViewSetController(ViewSet):
 
 	@action(detail=True, methods=['post'])
 	def forgot_password(self, request, pk=None):
-		email = request.data['email']
+		requestDataParsed = json.loads(request.body)
+		email = requestDataParsed['email']
 		baseUrl = request.build_absolute_uri()
 		return self.__userService.ForgotPassword(email, baseUrl)
 

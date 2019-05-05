@@ -36,7 +36,7 @@
     >
     <b-form-input v-model="workflow_role" type="text" />
    <b-input-group-append>
-      <b-button  variant="outline-success">Add</b-button>
+      <b-button variant="outline-success">Add</b-button>
     </b-input-group-append>
   </b-input-group>
 
@@ -57,7 +57,7 @@
     >
     <b-form-input v-model="workflow_assign" type="text" />
    <b-input-group-append>
-      <b-button  variant="outline-success">Add</b-button>
+      <b-button variant="outline-success">Add</b-button>
     </b-input-group-append>
   </b-input-group>
   <ul id="categories">

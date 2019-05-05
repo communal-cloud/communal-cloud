@@ -24,6 +24,8 @@ class UserService(object):
 		UserService.__instance = self
 	
 	def Register(self, userData, baseUrl):
+		userData["groups"] = []
+		userData["user_permissions"] = []
 		registerSerializer = RegisterSerializer(data = userData)
 		registerSerializer.is_valid()
 		user = registerSerializer.create(registerSerializer.data)

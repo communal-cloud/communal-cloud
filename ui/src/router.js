@@ -15,8 +15,6 @@ import SignUp from './components/SignUp.vue'
 
 Vue.use(Router)
 
-
-
 const routes = [
   {
     path: '/',
@@ -27,6 +25,10 @@ const routes = [
     path: '/user/login',
     name: 'login',
     component: SignIn
+  },  {
+    path: '/user/register',
+    name: 'register',
+    component: SignUp
   },
   {
     path: '/user/register',
@@ -69,14 +71,13 @@ const routes = [
 ]
 
 export default  new Router({
-    mode: 'history',
-    routes,
-    base:'/',
-    beforeEach,
-    afterEach
-  })
+  mode: 'history',
+  routes,
+  base:'/',
+  beforeEach,
+  afterEach
+})
 
- 
 
 async function beforeEach (to, from, next) {
  

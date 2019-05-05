@@ -20,7 +20,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 
 from cc.Controllers.CategoryController import CategoryController
 from cc.Controllers.CommunityController import CommunityController
-from cc.Controllers.DataController import DataController
+from cc.Controllers.FieldClassController import FieldClassController
 from cc.Controllers.ExecutionController import ExecutionController
 from cc.Controllers.RoleController import RoleController
 from cc.Controllers.ServiceController import ServiceController
@@ -39,7 +39,7 @@ urlpatterns = [
 	url(r'^service/$', ServiceController.as_view()),
 	url(r'^category/$', CategoryController.as_view()),
 	url(r'^community/(?P<id>.+)/$', CommunityController.as_view()),
-	url(r'^data/$', DataController.as_view()),
+	url(r'^data/$', FieldClassController.as_view()),
 	url(r'^execution/$', ExecutionController.as_view()),
 	url(r'^role/$', RoleController.as_view()),
 	url(r'^task/$', TaskController.as_view()),
