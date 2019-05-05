@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+import json
 
 from cc.Services.DataService import DataService
 
@@ -23,4 +24,5 @@ class FieldClassController(APIView):
 		datatype=self.__dataService.createDataType(request.data)
 		for field in request.data.get("Fields",u""):
 			self.__dataService.createDataField(field,datatype)
+
 
