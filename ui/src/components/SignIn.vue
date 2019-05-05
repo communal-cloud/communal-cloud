@@ -64,6 +64,8 @@
                   if(data.token) {
                       store.commit('save_token', {token:data.token, remember:true})
 
+                      store.dispatch('fetchUser')
+
                       this.$router.push('/home')
                   }
 

@@ -11,7 +11,7 @@ export default new Vuex.Store({
     community_roles:['owner','member'],
     community_data:[],
     dataTypeName:"",
-    user: {},
+    user: null,
     token: Cookies.get('token')
   },
   getters: {
@@ -32,6 +32,7 @@ export default new Vuex.Store({
     fetch_user_failure (state) {
       state.token = null
       Cookies.remove('token')
+
     },
 
     logout (state) {
