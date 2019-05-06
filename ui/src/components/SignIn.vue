@@ -62,18 +62,29 @@
                   })
 
                   if(data.token) {
+                      console.log(data)
+
                       store.commit('save_token', {token:data.token, remember:true})
 
-                      store.dispatch('fetchUser')
+                      //CORS çözüldüğünde bu çalışacak
+                      //store.dispatch('fetchUser')
+
+                      //CORS çözüldüğünde bu silinecek
+                      store.commit('fetch_user_success', {user:{
+                          name:"Yener Ünver",
+                          username:"yenerunver",
+                          email:"yenerunver@hotmail.com"
+                      }})
 
                       this.$router.push('/home')
                   }
 
-                  else
-                    console.log(data)
+                  else {
+                      this.$swal('Wrong info!')
+                      console.log(data)
+                  }
               } catch (e) {
-                  console.log('FAIL')
-                  console.log(e)
+                  this.$swal(e.message)
               }
           }
       }

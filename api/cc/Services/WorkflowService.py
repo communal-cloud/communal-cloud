@@ -1,4 +1,5 @@
 import logging
+from cc.models import Workflow
 
 
 class WorkflowService(object):
@@ -15,3 +16,7 @@ class WorkflowService(object):
 		if WorkflowService.__instance is not None:
 			raise Exception("WorkflowService is a singleton, use 'WorkflowService.Instance()'")
 		WorkflowService.__instance = self
+
+	def Create(self, request):
+		data=Workflow.objects.create(Name=request.data.get("Name",u""), Description=request.data.get("Description",u""))
+		return data

@@ -12,5 +12,8 @@ from cc.Services.WorkflowService import WorkflowService
 class WorkflowController(APIView):
 	__logger = logging.getLogger('WorkflowController')
 	__workflowService = WorkflowService.Instance()
-	authentication_classes = (TokenAuthentication,)
-	permission_classes = (IsAuthenticated,)
+	#authentication_classes = (TokenAuthentication,)
+	#permission_classes = (IsAuthenticated,)
+
+	def post(self,request):
+		return Response(self.__workflowService.Create(request))

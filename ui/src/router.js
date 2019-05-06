@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import store from './store'
 import Router from 'vue-router'
-import { sync } from 'vuex-router-sync'
 
 import Home from './views/Home.vue'
 import Communities from './views/Communities.vue'
@@ -19,7 +18,10 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: Home
+    component: Home,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/user/login',
@@ -31,34 +33,44 @@ const routes = [
     component: SignUp
   },
   {
-    path: '/user/register',
-    name: 'register',
-    component: SignUp
-  },
-  {
     path: '/communities',
     name: 'community',
-    component: Communities
+    component: Communities,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/create',
     name: 'createCommunity',
-    component: CreateCommunity
+    component: CreateCommunity,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/createTask',
     name: 'createTask',
-    component: CreateTask
+    component: CreateTask,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/doTask',
     name: 'doTask',
-    component: DoTask
+    component: DoTask,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/createWorkflow',
     name: 'createWorkflow',
-    component: CreateWorkflow
+    component: CreateWorkflow,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/about',
@@ -66,7 +78,10 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+    component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 
@@ -80,8 +95,7 @@ export default  new Router({
 
 
 async function beforeEach (to, from, next) {
- 
-  if (store.getters.token) {
+  /*if (store.getters.token) {
     try {
       await store.dispatch('fetchUser')
     } catch (e) {
@@ -90,7 +104,11 @@ async function beforeEach (to, from, next) {
   }else{
     console.log("logged out");
   }
-  return next();
+  return next();*/
+  if (to.matched.some(record => record.meta.requiresAuth) && !store.getters.check)
+    this.$router.push('login')
+
+  return next()
 }
 
 async function afterEach (to, from, next) {
