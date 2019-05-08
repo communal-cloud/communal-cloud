@@ -4,6 +4,7 @@ services:
   api:
     build: ./api
     command: gunicorn -c gunicorn.conf app.wsgi
+    restart: always
     volumes:
       - ./api:/api
     ports:
@@ -11,14 +12,16 @@ services:
 
   web:
     build: ./ui
+    restart: always
     command: sh -c "npm run serve"
     volumes:
       - ./ui:/ui
     ports:
-      - "8080:8080"
-  
-  nginx:
+      - "8080:8080" 
+
+  nginx:    
     build: ./nginx
+    restart: always
     depends_on: 
       - api
     command: nginx -g 'daemon off;'
@@ -26,3 +29,4 @@ services:
       - "80:80"
     volumes: 
       - ./api/static:/api/static/
+
