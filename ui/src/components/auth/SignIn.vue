@@ -42,8 +42,8 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import store from '../store'
+  import axios from 'axios/index'
+  import store from '../../store'
 
   export default {
     computed: {},
