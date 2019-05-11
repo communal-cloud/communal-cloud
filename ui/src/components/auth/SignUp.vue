@@ -7,29 +7,45 @@
                         <div class="kt-login__signup">
                             <div class="kt-login__head">
                                 <h3 class="kt-login__title">Sign Up</h3>
-                                <div class="kt-login__desc">Enter your details to create your account:</div>
+                                <div class="form-group form-group-last">
+                                    <div class="alert alert-secondary" role="alert">
+                                        <div class="alert-text">
+                                            Enter your details to create your account
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="kt-login__form">
-                                <b-input-group
-                                        prepend="Name"
-                                        class="mt-3">
-                                    <b-form-input v-model="name" />
-                                </b-input-group>
-                                <b-input-group
-                                        prepend="E-mail Address"
-                                        class="mt-3">
-                                    <b-form-input v-model="email" />
-                                </b-input-group>
-                                <b-input-group
-                                        prepend="Password"
-                                        class="mt-3">
-                                    <b-form-input type="password" v-model="password" />
-                                </b-input-group>
+                                <b-form-group
+                                        label="Name"
+                                        class="text-left">
+                                    <b-form-input
+                                            placeholder="Please enter your name"
+                                            v-model="name"
+                                            class="form-control" />
+                                </b-form-group>
+                                <b-form-group
+                                        label="E-mail Address"
+                                        class="text-left">
+                                    <b-form-input
+                                            placeholder="Please enter your e-mail address"
+                                            type="email"
+                                            v-model="email"
+                                            class="form-control" />
+                                </b-form-group>
+                                <b-form-group
+                                        label="Password"
+                                        class="text-left">
+                                    <b-form-input
+                                            placeholder="Please enter your password"
+                                            type="password"
+                                            v-model="password"
+                                            class="form-control" />
+                                </b-form-group>
                                 <div class="kt-login__actions">
                                     <button id="kt_login_signup_submit" class="btn btn-brand btn-pill btn-elevate" v-on:click="signUp()">Sign Up</button>
                                     <router-link id="kt_login_signup_cancel" class="btn btn-outline-brand btn-pill" to="/user/login">Login</router-link>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -43,7 +59,6 @@
     import store from '../../store'
 
     export default {
-
         data() {
             return {
                 name:'',
@@ -53,17 +68,20 @@
         },
         methods:{
             async signUp(){
-                console.log()
                 try {
                     const { data } = await axios.post(process.env.VUE_APP_BASE_URL+'user/', {
                             name: this.name,
                             email: this.email,
                             password: this.password
                     })
-                    console.log(data)
+
+                    if(data.email)
+                        this.$swal("An activation mail has been sent to your e-mail address: " + data.email)
+
+                    else
+                        this.$swal("Wrong Info!")
                 } catch (e) {
-                    console.log('FAIL')
-                    console.log(e)
+                    this.$swal(e.message)
                 }
             }
         }
