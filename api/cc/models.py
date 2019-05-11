@@ -103,15 +103,6 @@ class DataField(BaseModel):
 		return u'{0} DataField {1} ({2})'.format(typeName, self.Name, self.id)
 
 
-class DataType(BaseModel):
-	Name = models.CharField(max_length=50)
-	Fields = models.ManyToManyField(DataField, blank=True)
-	
-	def __str__(self):
-		return u'DataType {0} ({1})'.format(self.Name, self.id)
-	
-	def __unicode__(self):
-		return u'DataType {0} ({1})'.format(self.Name, self.id)
 
 
 class Workflow(BaseModel):
@@ -172,14 +163,26 @@ class Community(BaseModel):
 		return u'Community {0} ({1})'.format(self.Name, self.id)
 
 
-class Member(BaseModel):
-	Community = models.ForeignKey(Community, on_delete=models.DO_NOTHING)
-	User = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-	Roles = models.ManyToManyField(Role, blank=True)
-	Banned = models.BooleanField(default=False)
-	
+class DataType(BaseModel):
+	Name = models.CharField(max_length=50)
+	Fields = models.ManyToManyField(DataField, blank=True)
+	Community_id = models.ForeignKey(Community, blank=True, default=1, on_delete=models.DO_NOTHING)
+
 	def __str__(self):
-		return u'{0} is member of {1}'.format(self.User.first_name, self.Community.Name)
-	
+		return u'DataType {0} ({1})'.format(self.Name, self.id)
+
 	def __unicode__(self):
-		return u'{0} is member of {1}'.format(self.User.first_name, self.Community.Name)
+		return u'DataType {0} ({1})'.format(self.Name, self.id)
+
+
+# class Member(BaseModel):
+# 	Community = models.ForeignKey(Community, on_delete=models.DO_NOTHING)
+# 	User = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+# 	Roles = models.ManyToManyField(Role, blank=True)
+# 	Banned = models.BooleanField(default=False)
+#
+# 	def __str__(self):
+# 		return u'{0} is member of {1}'.format(self.User.first_name, self.Community.Name)
+#
+# 	def __unicode__(self):
+# 		return u'{0} is member of {1}'.format(self.User.first_name, self.Community.Name)
