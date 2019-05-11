@@ -111,4 +111,5 @@ venv.bak/
 /api/logs
 
 # UI
+node_modules/
 ui/node_modules/

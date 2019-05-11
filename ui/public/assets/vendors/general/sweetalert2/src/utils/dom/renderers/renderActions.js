@@ -13,19 +13,14 @@ export const renderActions = (params) => {
     dom.show(actions)
   }
 
-  // Cancel button
-  if (params.showCancelButton) {
-    cancelButton.style.display = 'inline-block'
-  } else {
-    dom.hide(cancelButton)
-  }
+  // Custom class
+  dom.applyCustomClass(actions, params.customClass, 'actions')
 
   // Confirm button
-  if (params.showConfirmButton) {
-    confirmButton.style.removeProperty('display')
-  } else {
-    dom.hide(confirmButton)
-  }
+  dom.toggle(confirmButton, params.showConfirmButton, 'inline-block')
+
+  // Cancel button
+  dom.toggle(cancelButton, params.showCancelButton, 'inline-block')
 
   // Edit text on confirm and cancel buttons
   confirmButton.innerHTML = params.confirmButtonText
@@ -37,15 +32,11 @@ export const renderActions = (params) => {
 
   // Add buttons custom classes
   confirmButton.className = swalClasses.confirm
+  dom.applyCustomClass(confirmButton, params.customClass, 'confirmButton')
   dom.addClass(confirmButton, params.confirmButtonClass)
-  if (params.customClass) {
-    dom.addClass(confirmButton, params.customClass.confirmButton)
-  }
   cancelButton.className = swalClasses.cancel
+  dom.applyCustomClass(cancelButton, params.customClass, 'cancelButton')
   dom.addClass(cancelButton, params.cancelButtonClass)
-  if (params.customClass) {
-    dom.addClass(cancelButton, params.customClass.cancelButton)
-  }
 
   // Buttons styling
   if (params.buttonsStyling) {

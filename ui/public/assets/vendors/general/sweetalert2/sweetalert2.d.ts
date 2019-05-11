@@ -134,11 +134,13 @@ declare module 'sweetalert2' {
         function disableButtons(): void;
 
         /**
+         * @deprecated
          * Enables the "Confirm"-button only.
          */
         function enableConfirmButton(): void;
 
         /**
+         * @deprecated
          * Disables the "Confirm"-button only.
          */
         function disableConfirmButton(): void;
@@ -268,11 +270,13 @@ declare module 'sweetalert2' {
         function deleteQueueStep(index: number): void;
 
         /**
+         * @deprecated
          * Gets progress steps.
          */
         function getProgressSteps(): string[];
 
         /**
+         * @deprecated
          * Sets progress steps.
          *
          * @param steps The modal steps

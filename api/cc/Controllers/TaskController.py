@@ -12,5 +12,9 @@ from cc.Services.TaskService import TaskService
 class TaskController(APIView):
 	__logger = logging.getLogger('TaskController')
 	__taskService = TaskService.Instance()
-	authentication_classes = (TokenAuthentication,)
-	permission_classes = (IsAuthenticated,)
+	# authentication_classes = (TokenAuthentication,)
+	# permission_classes = (IsAuthenticated,)
+
+	def post(self, request, *args, **kwargs):
+		id = kwargs.get('id', '')
+		return Response(self.__taskService.Create(request, id))

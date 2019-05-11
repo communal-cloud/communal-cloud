@@ -53,7 +53,11 @@ export default new Vuex.Store({
 
     async fetchUser ({ commit }) {
       try {
+<<<<<<< HEAD
+        const { data } = await axios.get(process.env.VUE_APP_BASE_URL+'user', {
+=======
         const { data } = await axios.get(process.env.VUE_APP_BASE_URL+'user/', {
+>>>>>>> 4186bad479598ac4d39c1a766a4039dbd4ca8339
           headers: {
             Authorization: 'token ' + this.state.token
           }

@@ -3,12 +3,16 @@ import * as dom from '../../dom/index.js'
 export const renderTitle = (params) => {
   const title = dom.getTitle()
 
-  if (params.titleText) {
-    title.innerText = params.titleText
-  } else if (params.title) {
-    if (typeof params.title === 'string') {
-      params.title = params.title.split('\n').join('<br />')
-    }
+  dom.toggle(title, params.title || params.titleText)
+
+  if (params.title) {
     dom.parseHtmlToContainer(params.title, title)
   }
+
+  if (params.titleText) {
+    title.innerText = params.titleText
+  }
+
+  // Custom class
+  dom.applyCustomClass(title, params.customClass, 'title')
 }
