@@ -51,39 +51,34 @@ const sweetHTML = `
  </div>
 `.replace(/(^|\n)\s*/g, '')
 
-/*
- * Add modal + backdrop to DOM
- */
-export const init = (params) => {
-  // Clean up the old popup if it exists
-  const c = getContainer()
-  if (c) {
-    c.parentNode.removeChild(c)
-    removeClass(
-      [document.documentElement, document.body],
-      [
-        swalClasses['no-backdrop'],
-        swalClasses['toast-shown'],
-        swalClasses['has-column']
-      ]
-    )
-  }
-
-  /* istanbul ignore if */
-  if (isNodeEnv()) {
-    error('SweetAlert2 requires document to initialize')
+const resetOldContainer = () => {
+  const oldContainer = getContainer()
+  if (!oldContainer) {
     return
   }
 
-  const container = document.createElement('div')
-  container.className = swalClasses.container
-  container.innerHTML = sweetHTML
+  oldContainer.parentNode.removeChild(oldContainer)
+  removeClass(
+    [document.documentElement, document.body],
+    [
+      swalClasses['no-backdrop'],
+      swalClasses['toast-shown'],
+      swalClasses['has-column']
+    ]
+  )
+}
 
-  let targetElement = typeof params.target === 'string' ? document.querySelector(params.target) : params.target
-  targetElement.appendChild(container)
+let oldInputVal // IE11 workaround, see #1109 for details
+const resetValidationMessage = (e) => {
+  if (sweetAlert.isVisible() && oldInputVal !== e.target.value) {
+    sweetAlert.resetValidationMessage()
+  }
+  oldInputVal = e.target.value
+}
 
-  const popup = getPopup()
+const addInputChangeListeners = () => {
   const content = getContent()
+
   const input = getChildByClass(content, swalClasses.input)
   const file = getChildByClass(content, swalClasses.file)
   const range = content.querySelector(`.${swalClasses.range} input`)
@@ -91,26 +86,6 @@ export const init = (params) => {
   const select = getChildByClass(content, swalClasses.select)
   const checkbox = content.querySelector(`.${swalClasses.checkbox} input`)
   const textarea = getChildByClass(content, swalClasses.textarea)
-
-  // a11y
-  popup.setAttribute('role', params.toast ? 'alert' : 'dialog')
-  popup.setAttribute('aria-live', params.toast ? 'polite' : 'assertive')
-  if (!params.toast) {
-    popup.setAttribute('aria-modal', 'true')
-  }
-
-  // RTL
-  if (window.getComputedStyle(targetElement).direction === 'rtl') {
-    addClass(getContainer(), swalClasses.rtl)
-  }
-
-  let oldInputVal // IE11 workaround, see #1109 for details
-  const resetValidationMessage = (e) => {
-    if (sweetAlert.isVisible() && oldInputVal !== e.target.value) {
-      sweetAlert.resetValidationMessage()
-    }
-    oldInputVal = e.target.value
-  }
 
   input.oninput = resetValidationMessage
   file.onchange = resetValidationMessage
@@ -127,6 +102,47 @@ export const init = (params) => {
     resetValidationMessage(e)
     range.nextSibling.value = range.value
   }
+}
 
-  return popup
+const getTarget = (target) => typeof target === 'string' ? document.querySelector(target) : target
+
+const setupAccessibility = (params) => {
+  const popup = getPopup()
+
+  popup.setAttribute('role', params.toast ? 'alert' : 'dialog')
+  popup.setAttribute('aria-live', params.toast ? 'polite' : 'assertive')
+  if (!params.toast) {
+    popup.setAttribute('aria-modal', 'true')
+  }
+}
+
+const setupRTL = (targetElement) => {
+  if (window.getComputedStyle(targetElement).direction === 'rtl') {
+    addClass(getContainer(), swalClasses.rtl)
+  }
+}
+
+/*
+ * Add modal + backdrop to DOM
+ */
+export const init = (params) => {
+  // Clean up the old popup container if it exists
+  resetOldContainer()
+
+  /* istanbul ignore if */
+  if (isNodeEnv()) {
+    error('SweetAlert2 requires document to initialize')
+    return
+  }
+
+  const container = document.createElement('div')
+  container.className = swalClasses.container
+  container.innerHTML = sweetHTML
+
+  const targetElement = getTarget(params.target)
+  targetElement.appendChild(container)
+
+  setupAccessibility(params)
+  setupRTL(targetElement)
+  addInputChangeListeners()
 }

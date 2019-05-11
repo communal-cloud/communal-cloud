@@ -67,7 +67,21 @@
             }
         },
         methods:{
+           
             async signUp(){
+<<<<<<< HEAD
+=======
+                var reg = /^(?=.*\d)(?=.*[\-\\*\'#$%&()[\]{}=+/!^])(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{6,}$/
+                if(this.name.length<3){
+                     this.$swal('Name field must contain at least 3 characters !')
+                     return 0;
+                }
+                else if(reg.test(this.password) == false){
+                    this.$swal("Password must contain at least one of the -*'#$%&()[]{}=+/!^ characters at least one small and capital letter and number")
+                    return 0;
+                }
+                console.log()
+>>>>>>> 4186bad479598ac4d39c1a766a4039dbd4ca8339
                 try {
                     const { data } = await axios.post(process.env.VUE_APP_BASE_URL+'user/', {
                             name: this.name,

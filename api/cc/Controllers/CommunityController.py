@@ -1,5 +1,6 @@
 import logging
 
+from django.http import JsonResponse
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -18,9 +19,9 @@ class CommunityController(APIView):
 	# permission_classes = (IsAuthenticated,)
 	
 	def post(self, request, format=None):
-		community = self.__communityService.Create(request.data)
-		result = CommunitySerializer(community)
-		return Response(result)
+		self.__communityService.Create(request.data)
+		# result = CommunitySerializer(community)
+		return JsonResponse({'status': 'OK'}, status=200)
 	
 	def put(self, request, *args, **kwargs):
 		id = kwargs.get('id', '')

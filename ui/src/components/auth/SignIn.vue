@@ -70,7 +70,7 @@
       methods: {
           async signIn() {
               try {
-                  const {data} = await axios.post(process.env.VUE_APP_BASE_URL+'user/login', {
+                  const {data} = await axios.post(process.env.VUE_APP_BASE_URL+'user/login/', {
                       username: this.username,
                       password: this.password
                   })
