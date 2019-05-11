@@ -11,12 +11,7 @@
                             </div>
                             <div class="kt-login__form">
                                 <b-input-group
-                                        prepend="Nickname"
-                                        class="mt-3">
-                                    <b-form-input v-model="username" />
-                                </b-input-group>
-                                <b-input-group
-                                        prepend="Full Name"
+                                        prepend="Name"
                                         class="mt-3">
                                     <b-form-input v-model="name" />
                                 </b-input-group>
@@ -51,7 +46,6 @@
 
         data() {
             return {
-                username:'',
                 name:'',
                 email:'',
                 password:''
@@ -62,7 +56,6 @@
                 try {
                     const { data } = await axios.post('http://api.communal-cloud.com/user/', {
                             name: this.name,
-                            username : this.username,
                             email: this.email,
                             password: this.password
                     })
