@@ -43,5 +43,5 @@ urlpatterns = [
 	url(r'^execution/$', ExecutionController.as_view()),
 	url(r'^role/(?P<id>.+)/$', RoleController.as_view()),
 	url(r'^task/$', TaskController.as_view()),
-	url(r'^workflow/$', WorkflowController.as_view()),
+	url(r'^workflow/(?P<id>.+)/$', WorkflowController.as_view()),
 ]
