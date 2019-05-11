@@ -116,3 +116,4 @@ ui/node_modules/
 
 # Documentation
 documentation
+api/app/settings.py
