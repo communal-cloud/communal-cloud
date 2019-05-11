@@ -1,4 +1,8 @@
 from rest_framework import serializers
 
+from cc import models
+
+
 class CommunitySerializer(serializers.Serializer):
-    pass
+    class Meta:
+        model = models.Community
