@@ -53,13 +53,17 @@ export default new Vuex.Store({
 
     async fetchUser ({ commit }) {
       try {
+<<<<<<< HEAD
         const { data } = await axios.get(process.env.VUE_APP_BASE_URL+'user', {
+=======
+        const { data } = await axios.get('http://api.communal-cloud.com/user/', {
+>>>>>>> 42964996b55cdcbcdcb5a09f7d90ffc184d8fabc
           headers: {
             Authorization: 'token ' + this.state.token
           }
         })
 
-        commit("fetch_user_success", { user: data.user })
+        commit("fetch_user_success", { user: data })
       } catch (e) {
         commit("fetch_user_failure")
       }

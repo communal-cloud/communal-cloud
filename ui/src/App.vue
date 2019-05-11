@@ -1,41 +1,5 @@
 <template>
   <div id="app">
-    <!--<b-navbar toggleable="lg" type="dark" variant="info"  >
-      <b-navbar-brand href="#">Communal Cloud</b-navbar-brand>
-
-      <b-navbar-toggle target="nav_collapse"  />
-
-      <b-collapse is-nav id="nav_collapse">
-       
-       <b-nav-form >
-            <b-form-input size="sm" class="mr-sm-2" type="text" placeholder="Search" />
-            <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-          </b-nav-form>
-      
-
-        <b-navbar-nav class="ml-auto">
-          
-           
-            <router-link  class="navSelect" to="/communities">All Communities</router-link> 
-         
-          
-             <router-link  class="navSelect" to="/create">Create Community</router-link>  
-            <router-link  class="navSelect" to="/createTask">Create Task</router-link> 
-             <router-link  class="navSelect" to="/createWorkflow">Create Workflow</router-link> 
-              <router-link  class="navSelect" to="/doTask">Do Task</router-link> 
-            
-         
-
-          <b-nav-item-dropdown right>
-
-            <template slot="button-content"><em>User</em></template>
-            <b-dropdown-item href="#">Profile</b-dropdown-item>
-            <b-dropdown-item href="#">Signout</b-dropdown-item>
-          </b-nav-item-dropdown>
-        </b-navbar-nav>
-      </b-collapse>
-    </b-navbar>-->
-
     <!-- begin:: Header Mobile -->
     <div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed ">
       <div class="kt-header-mobile__logo">
@@ -108,16 +72,7 @@
                   <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px">
                     <span class="kt-header__topbar-welcome">Hi,</span>
                     <span class="kt-header__topbar-username">{{ store.getters.user.name }}</span>
-                  </div>
-                  <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl">
-                    <!--begin: Navigation -->
-                    <div class="kt-notification">
-                      <div class="kt-notification__custom">
-                        <router-link to="/user/logout" class="btn btn-label-brand btn-sm btn-bold">Sign Out</router-link>
-                      </div>
-                    </div>
-
-                    <!--end: Navigation -->
+                    <a class="kt-header__topbar-username" v-on:click="logout"><i class="fa fa-sign-out-alt"></i></a>
                   </div>
                 </div>
 
@@ -218,6 +173,13 @@ pre{
     store:store,
     data: () => ({
       store:store
-    })
+    }),
+    methods: {
+      logout(){
+        store.dispatch('logout')
+
+        this.$router.push('/user/login')
+      }
+    }
   }
 </script>

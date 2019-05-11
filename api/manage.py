@@ -15,26 +15,4 @@ if __name__ == '__main__':
 			"forget to activate a virtual environment?"
 		) from exc
 		
-	# Current 'when' events supported:
-	#   S - Seconds
-	#   M - Minutes
-	#   H - Hours
-	#   D - Days
-	#   midnight - roll over at midnight
-	#   W{0-6} - roll over on a certain day; 0 - Monday
-	log_file_name = 'logs\Log'
-	logging_level = logging.DEBUG
-	
-	formatter = logging.Formatter(
-		fmt='%(asctime)s,%(msecs)d - %(name)s - %(levelname)s - %(message)s',
-		datefmt='%b %d, %a %H:%M:%S'
-	)
-	
-	handler = logging.handlers.TimedRotatingFileHandler(log_file_name, when="midnight", interval=1)
-	handler.setFormatter(formatter)
-	handler.suffix = "%d.%B.%Y.log"
-	logger = logging.getLogger()
-	logger.addHandler(handler)
-	logger.setLevel(logging_level)
-	
 	execute_from_command_line(sys.argv)

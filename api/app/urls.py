@@ -39,9 +39,9 @@ urlpatterns = [
 	url(r'^service/$', ServiceController.as_view()),
 	url(r'^category/$', CategoryController.as_view()),
 	url(r'^community/(?P<id>.+)/$', CommunityController.as_view()),
-	url(r'^data/$', FieldClassController.as_view()),
+	url(r'^data/(?P<id>.+)/$', FieldClassController.as_view()),
 	url(r'^execution/$', ExecutionController.as_view()),
-	url(r'^role/$', RoleController.as_view()),
+	url(r'^role/(?P<id>.+)/$', RoleController.as_view()),
 	url(r'^task/$', TaskController.as_view()),
 	url(r'^workflow/$', WorkflowController.as_view()),
 ]

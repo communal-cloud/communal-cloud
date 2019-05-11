@@ -3,6 +3,7 @@ from cc.models import ClassEnum
 from cc.models import DataType
 from cc.models import DataField
 from cc.models import DataEnumeration
+from cc.models import Community
 import json
 class DataService(object):
 	__instance = None
@@ -22,8 +23,9 @@ class DataService(object):
 	def getEnum(self):
 		return {i.name: i.value for i in ClassEnum}
 
-	def createDataType(self,request):
-		return DataType.objects.create(Name=request.get("Name",u""))
+	def createDataType(self, request, id):
+		community=Community.objects.get(pk=id)
+		return DataType.objects.create(Name=request.get("Name",u""), Community_id=community)
 
 	def createDataField(self,request,datatype):
 		if "Enumerations" in request:

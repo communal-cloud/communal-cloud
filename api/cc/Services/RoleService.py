@@ -25,8 +25,11 @@ class RoleService(object):
 	def Create(self, name, communityId):
 		raise NotImplementedError
 	
-	def Rename(self, role):
-		raise NotImplementedError
+	def Update(self, role, id):
+		model = Role.objects.get(pk=id)
+		if "Name" in role:
+			model.Name = role.get("Name", u"")
+		model.save()
 	
 	def GetOrCreate(self, role):
 		model = Role.objects.get_or_create(Name=role)
