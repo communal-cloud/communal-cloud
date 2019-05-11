@@ -43,6 +43,6 @@ urlpatterns = [
 	url(r'^data/(?P<id>.+)/$', FieldClassController.as_view()),
 	url(r'^execution/$', ExecutionController.as_view()),
 	url(r'^role/(?P<id>.+)/$', RoleController.as_view()),
-	url(r'^task/$', TaskController.as_view()),
+	url(r'^task/(?P<id>.+)/$', TaskController.as_view()),
 	url(r'^workflow/(?P<id>.+)/$', WorkflowController.as_view()),
 ]
