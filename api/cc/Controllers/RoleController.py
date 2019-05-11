@@ -1,5 +1,6 @@
 import logging
 
+from django.http import JsonResponse
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -12,5 +13,10 @@ from cc.Services.RoleService import RoleService
 class RoleController(APIView):
 	__logger = logging.getLogger('RoleController')
 	__roleService = RoleService.Instance()
-	authentication_classes = (TokenAuthentication,)
-	permission_classes = (IsAuthenticated,)
+	# authentication_classes = (TokenAuthentication,)
+	# permission_classes = (IsAuthenticated,)
+
+	def put(self, request, *args, **kwargs):
+		id = kwargs.get('id', '')
+		self.__roleService.Update(request.data, id)
+		return JsonResponse({'status': 'OK'}, status=200)

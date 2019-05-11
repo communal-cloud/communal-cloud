@@ -6,25 +6,19 @@
                     <div class="kt-login__body">
                         <div class="kt-login__signin">
                             <div class="kt-login__head">
-                                <h3 class="kt-login__title">Sign In</h3>
+                                <h3 class="kt-login__title">Reset Password</h3>
                             </div>
                             <div class="kt-login__form">
                                 <b-input-group
                                         prepend="E-mail Address"
                                         class="mt-3">
-                                    <b-form-input v-model="username" />
-                                </b-input-group>
-
-                                <b-input-group
-                                        prepend="Password"
-                                        class="mt-3">
-                                    <b-form-input type="password" v-model="password" />
+                                    <b-form-input v-model="email" />
                                 </b-input-group>
                                 <div class="kt-login__extra">
-                                    <router-link to="/user/forgot" id="kt_login_forgot">Forget Password ?</router-link>
+                                    <router-link to="/user/login" id="kt_login_forgot">Already have an account ?</router-link>
                                 </div>
                                 <div class="kt-login__actions">
-                                    <button id="kt_login_signin_submit" class="btn btn-brand btn-pill btn-elevate" v-on:click="signIn()">Sign In</button>
+                                    <button id="kt_login_signin_submit" class="btn btn-brand btn-pill btn-elevate" v-on:click="forgot()">Reset</button>
                                 </div>
                             </div>
                         </div>
@@ -42,47 +36,24 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import store from '../store'
+  import axios from 'axios/index'
+  import store from '../../store'
 
   export default {
     computed: {},
     data() {
       return {
-          username:'',
-          password:''
+          email:''
       }
     },
       methods: {
-          async signIn() {
+          async forgot() {
               try {
-                  const {data} = await axios.post('http://api.communal-cloud.com/user/login', {
-                      username: this.username,
-                      password: this.password
+                  const {data} = await axios.post(process.env.VUE_APP_BASE_URL+'user/forgot_password', {
+                      email: this.email
                   })
 
-                  if(data.token) {
-                      console.log(data)
-
-                      store.commit('save_token', {token:data.token, remember:true})
-
-                      //CORS çözüldüğünde bu çalışacak
-                      //store.dispatch('fetchUser')
-
-                      //CORS çözüldüğünde bu silinecek
-                      store.commit('fetch_user_success', {user:{
-                          name:"Yener Ünver",
-                          username:"yenerunver",
-                          email:"yenerunver@hotmail.com"
-                      }})
-
-                      this.$router.push('/home')
-                  }
-
-                  else {
-                      this.$swal('Wrong info!')
-                      console.log(data)
-                  }
+                  console.log(data)
               } catch (e) {
                   this.$swal(e.message)
               }
