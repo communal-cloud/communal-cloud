@@ -32,7 +32,7 @@
                                 </b-input-group>
                                 <div class="kt-login__actions">
                                     <button id="kt_login_signup_submit" class="btn btn-brand btn-pill btn-elevate" v-on:click="signUp()">Sign Up</button>
-                                    <button id="kt_login_signup_cancel" class="btn btn-outline-brand btn-pill">Cancel</button>
+                                    <router-link id="kt_login_signup_cancel" class="btn btn-outline-brand btn-pill" to="/user/login">Login</router-link>
                                 </div>
 
                             </div>
@@ -44,8 +44,8 @@
     </div>
 </template>
 <script>
-    import axios from 'axios'
-    import store from '../store'
+    import axios from 'axios/index'
+    import store from '../../store'
 
     export default {
 

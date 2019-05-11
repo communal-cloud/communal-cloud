@@ -10,20 +10,10 @@ from cc.Serializers.CommunitySerializer import CommunitySerializer
 from cc.Services.CommunityService import CommunityService
 
 
-class CommunityController(APIView):
-	__logger = logging.getLogger('CommunityController')
+class MemberController(APIView):
+	__logger = logging.getLogger('MemberController')
 	__communityService = CommunityService.Instance()
 	
 	#  authentication_classes = (TokenAuthentication,)
 	# permission_classes = (IsAuthenticated,)
 	
-	def post(self, request, format=None):
-		community = self.__communityService.Create(request.data)
-		result = CommunitySerializer(community)
-		return Response(result)
-	
-	def put(self, request, *args, **kwargs):
-		id = kwargs.get('id', '')
-		community = self.__communityService.Update(request.data, id)
-		result = CommunitySerializer(community)
-		return Response(result)

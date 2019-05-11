@@ -1,18 +1,33 @@
-
-  <template>
-  <div class="home">
-   
-    <b-container class="bv-example-row">
-  
-  <b-row>
-    <community></community>
-     <community></community>
-      <community></community>
-    </b-row>
-
-
-  
-</b-container>
+<template>
+  <div class="kt-portlet kt-portlet--height-fluid">
+      <div class="kt-portlet__head">
+          <div class="kt-portlet__head-label">
+              <h3 class="kt-portlet__head-title">
+                  Available Communities
+              </h3>
+          </div>
+          <div class="kt-portlet__head-toolbar">
+              <a href="#" class="btn btn-label-brand btn-bold btn-sm dropdown-toggle">
+                  Search
+              </a>
+              <a href="#" class="btn btn-label-brand btn-bold btn-sm dropdown-toggle">
+                  Browse
+              </a>
+          </div>
+      </div>
+      <div class="kt-portlet__body kt-portlet__body--fluid">
+          <div class="kt-widget12">
+              <div class="kt-widget12__content">
+                  <div class="kt-widget12__item">
+                      <community></community>
+                      <community></community>
+                      <community></community>
+                      <community></community>
+                      <community></community>
+                  </div>
+              </div>
+          </div>
+      </div>
   </div>
 </template>
 
@@ -20,11 +35,38 @@
 // @ is an alias to /src
 
 import Community from '@/components/Community.vue'
+import axios from 'axios'
+import store from '../store'
 
 export default {
+    store:store,
   name: 'home',
   components: {
     Community
-  }
+  },
+    data() {
+        return {
+            communities:[]
+        }
+    },
+    methods:{
+      async getCommunities(){
+          try {
+              const {data} = await axios.get('http://api.communal-cloud.com/community', {
+                  headers: {
+                      Authorization: 'token ' + store.getters.token
+                  }
+              })
+
+              console.log(data)
+
+          } catch (e) {
+              this.$swal(e.message)
+          }
+      }
+    },
+    mounted(){
+        this.getCommunities()
+    }
 }
 </script>
