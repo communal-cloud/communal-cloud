@@ -11,12 +11,7 @@
                             </div>
                             <div class="kt-login__form">
                                 <b-input-group
-                                        prepend="Nickname"
-                                        class="mt-3">
-                                    <b-form-input v-model="username" />
-                                </b-input-group>
-                                <b-input-group
-                                        prepend="Full Name"
+                                        prepend="Name"
                                         class="mt-3">
                                     <b-form-input v-model="name" />
                                 </b-input-group>
@@ -51,18 +46,27 @@
 
         data() {
             return {
-                username:'',
                 name:'',
                 email:'',
                 password:''
             }
         },
         methods:{
+           
             async signUp(){
+                var reg = /^(?=.*\d)(?=.*[\-\\*\'#$%&()[\]{}=+/!^])(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{6,}$/
+                if(this.name.length<3){
+                     this.$swal('Name field must contain at least 3 characters !')
+                     return 0;
+                }
+                else if(reg.test(this.password) == false){
+                    this.$swal("Password must contain at least one of the -*'#$%&()[]{}=+/!^ characters at least one small and capital letter and number")
+                    return 0;
+                }
+                console.log()
                 try {
-                    const { data } = await axios.post('http://api.communal-cloud.com/user/', {
+                    const { data } = await axios.post(process.env.VUE_APP_BASE_URL+'user/', {
                             name: this.name,
-                            username : this.username,
                             email: this.email,
                             password: this.password
                     })
