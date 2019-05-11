@@ -105,13 +105,32 @@ class DataField(BaseModel):
 
 
 
+
+
+
+class Community(BaseModel):
+	Name = models.CharField(max_length=50)
+	Purpose = models.CharField(max_length=250, blank=True, null=True)
+	Description = models.CharField(max_length=5000, blank=True, null=True)
+	Roles = models.ManyToManyField(Role, blank=True)
+	Categories = models.ManyToManyField(Category, related_name="Categories", blank=True)
+	IsCompleted = models.BooleanField(default=False)
+	
+	def __str__(self):
+		return u'Community {0} ({1})'.format(self.Name, self.id)
+	
+	def __unicode__(self):
+		return u'Community {0} ({1})'.format(self.Name, self.id)
+
+
 class Workflow(BaseModel):
 	Name = models.CharField(max_length=50)
 	Description = models.CharField(max_length=5000)
-	
+	Community_id = models.ForeignKey(Community, blank=True, default=1, on_delete=models.DO_NOTHING)
+
 	def __str__(self):
 		return u'Workflow {0} ({1})'.format(self.Name, self.id)
-	
+
 	def __unicode__(self):
 		return u'Workflow {0} ({1})'.format(self.Name, self.id)
 
@@ -128,10 +147,10 @@ class Task(BaseModel):
 	Predecessors = models.ManyToManyField("self", blank=True, symmetrical=False)
 	InputFields = models.ManyToManyField(DataField, related_name="InputFields", blank=True)
 	OutputFields = models.ManyToManyField(DataField, related_name="OutputFields", blank=True)
-	
+
 	def __str__(self):
 		return u'Task {0} ({1})'.format(self.Name, self.id)
-	
+
 	def __unicode__(self):
 		return u'Task {0} ({1})'.format(self.Name, self.id)
 
@@ -146,21 +165,6 @@ class Execution(BaseModel):
 	Task = models.ForeignKey(Task, blank=True, on_delete=models.DO_NOTHING)
 	Data = models.ManyToManyField(ExecutionData, blank=True)
 	ExecutedBy = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.DO_NOTHING)
-
-
-class Community(BaseModel):
-	Name = models.CharField(max_length=50)
-	Purpose = models.CharField(max_length=250, blank=True, null=True)
-	Description = models.CharField(max_length=5000, blank=True, null=True)
-	Roles = models.ManyToManyField(Role, blank=True)
-	Categories = models.ManyToManyField(Category, related_name="Categories", blank=True)
-	IsCompleted = models.BooleanField(default=False)
-	
-	def __str__(self):
-		return u'Community {0} ({1})'.format(self.Name, self.id)
-	
-	def __unicode__(self):
-		return u'Community {0} ({1})'.format(self.Name, self.id)
 
 
 class DataType(BaseModel):
