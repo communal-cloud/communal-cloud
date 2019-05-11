@@ -59,8 +59,9 @@
         },
         methods:{
             async signUp(){
+                console.log()
                 try {
-                    const { data } = await axios.post('http://api.communal-cloud.com/user/', {
+                    const { data } = await axios.post(process.env.VUE_APP_BASE_URL+'user/', {
                             name: this.name,
                             username : this.username,
                             email: this.email,

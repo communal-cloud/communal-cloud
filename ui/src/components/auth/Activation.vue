@@ -42,7 +42,7 @@
       methods: {
           async activation() {
               try {
-                  const {data} = await axios.post('http://api.communal-cloud.com/user/activation?token='+this.$route.params.token)
+                  const {data} = await axios.post(process.env.VUE_APP_BASE_URL+'user/activation?token='+this.$route.params.token)
 
                   console.log(data)
               } catch (e) {
