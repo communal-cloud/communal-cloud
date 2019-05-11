@@ -113,6 +113,8 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'noreply@communalcloud.net'
 EMAIL_HOST_PASSWORD = 'cc'
 
+BASE_URL = 'http://communal-cloud.com/'
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
