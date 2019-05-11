@@ -26,9 +26,8 @@ class UserAPIViewController(APIView):
 		return Response(userJson.data)
 
 	def post(self, request, format=None):
-		baseUrl = request.build_absolute_uri()
 		requestDataParsed = json.loads(request.body)
-		user = self.__userService.Register(requestDataParsed, baseUrl)
+		user = self.__userService.Register(requestDataParsed)
 		userSerialized = UserSerializer(user)
 		return Response(userSerialized.data)
 	
