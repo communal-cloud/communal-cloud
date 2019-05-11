@@ -56,32 +56,21 @@
       methods: {
           async signIn() {
               try {
-                  const {data} = await axios.post('http://api.communal-cloud.com/user/login', {
+                  const {data} = await axios.post(process.env.VUE_APP_BASE_URL+'user/login/', {
                       username: this.username,
                       password: this.password
                   })
 
                   if(data.token) {
-                      console.log(data)
-
                       store.commit('save_token', {token:data.token, remember:true})
 
-                      //CORS çözüldüğünde bu çalışacak
-                      //store.dispatch('fetchUser')
+                      store.dispatch('fetchUser')
 
-                      //CORS çözüldüğünde bu silinecek
-                      store.commit('fetch_user_success', {user:{
-                          name:"Yener Ünver",
-                          username:"yenerunver",
-                          email:"yenerunver@hotmail.com"
-                      }})
-
-                      this.$router.push('/home')
+                      this.$router.push('/')
                   }
 
                   else {
                       this.$swal('Wrong info!')
-                      console.log(data)
                   }
               } catch (e) {
                   this.$swal(e.message)

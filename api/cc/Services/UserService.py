@@ -1,6 +1,7 @@
 import logging
 import string
 import random
+from django.conf import settings
 from django.http import JsonResponse
 from django.core.mail import send_mail
 
@@ -23,7 +24,7 @@ class UserService(object):
 			raise Exception("UserService is a singleton, use 'UserService.Instance()'")
 		UserService.__instance = self
 	
-	def Register(self, userData, baseUrl):
+	def Register(self, userData):
 		userData["groups"] = []
 		userData["user_permissions"] = []
 		registerSerializer = RegisterSerializer(data = userData)
@@ -31,7 +32,7 @@ class UserService(object):
 		user = registerSerializer.create(registerSerializer.data)
 		user.set_password(user.password)
 		user.save()
-		SendActivationEmail(user, baseUrl)
+		SendActivationEmail(user)
 		return user
 	
 	def UpdateUser(self, user, updateData):
@@ -61,7 +62,7 @@ class UserService(object):
 			user = User.objects.get(email = email)
 		except:
 			return JsonResponse({'status':'There is no user registered with that email address'}, status=422 )
-		SendForgotPasswordEmail(user, baseUrl)
+		SendForgotPasswordEmail(user)
 		return JsonResponse({'status':'OK' }, status=200)
 	
 	def Logout(self, userData):
@@ -69,9 +70,10 @@ class UserService(object):
 		token.delete()
 		return JsonResponse({'status':'OK' }, status=200)
 
-def SendActivationEmail(user, baseUrl):
+def SendActivationEmail(user):
+	baseUrl = settings.BASE_URL
 	token = GenerateAndSaveActivationToken(user.id)
-	activationLink = baseUrl + "activation/?token=" + token
+	activationLink = baseUrl + "user/activation/" + token
 	subject = "Communal-Cloud Activation"
 	message = "Please activate your email to login by clicking the link below.\n\n" + activationLink
 	emailFrom = "noreply@communalcloud.net"
@@ -94,7 +96,7 @@ def GenerateAndSaveActivationToken(userId):
 		newRecord.save()
 		return token
 
-def SendForgotPasswordEmail(user, baseUrl):
+def SendForgotPasswordEmail(user):
 	newPassword = GenerateAndSaveNewPassword(user)
 	subject = "Communal-Cloud Password Change"
 	message = "Your user credentials are below.\n\n" \

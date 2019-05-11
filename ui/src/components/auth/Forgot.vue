@@ -49,7 +49,7 @@
       methods: {
           async forgot() {
               try {
-                  const {data} = await axios.post('http://api.communal-cloud.com/user/forgot_password', {
+                  const {data} = await axios.post(process.env.VUE_APP_BASE_URL+'user/forgot_password/', {
                       email: this.email
                   })
 
