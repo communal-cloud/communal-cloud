@@ -7,9 +7,19 @@
                         <div class="kt-login__signin">
                             <div class="kt-login__head">
                                 <h3 class="kt-login__title">Activation</h3>
+                                <div class="form-group form-group-last">
+                                    <div class="alert alert-secondary" role="alert">
+                                        <div class="alert-text">
+                                            Click below button to activate your account
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="kt-login__form">
-                                <p><strong>Token: </strong>{{ $route.params.token }}</p>
+                                <div class="kt-login__actions">
+                                    <button class="btn btn-brand btn-pill btn-elevate" v-on:click="activation()">Activate</button>
+                                </div>
+                                <hr />
                                 <div class="kt-login__extra">
                                     <router-link to="/user/login" id="kt_login_forgot">Already have an account ?</router-link>
                                 </div>
@@ -42,16 +52,27 @@
       methods: {
           async activation() {
               try {
-                  const {data} = await axios.post(process.env.VUE_APP_BASE_URL+'user/activation?token='+this.$route.params.token+'/')
+                  const {data} = await axios.post(process.env.VUE_APP_BASE_URL+'user/activation/?token='+this.$route.params.token)
 
-                  console.log(data)
+                  if(data.status === "OK"){
+                      this.$swal("Successfully activated! Please login with your account credentials.")
+
+                      this.$router.push('/user/login')
+                  }
+
+                  else{
+                      console.log(data)
+
+                      this.$swal(data.status)
+                  }
+
               } catch (e) {
-                  this.$swal(e.message)
+                  this.$swal("Token not found!")
               }
           }
       },
       mounted() {
-        this.activation()
+
       }
   }
 </script>

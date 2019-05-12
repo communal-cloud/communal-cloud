@@ -7,13 +7,24 @@
                         <div class="kt-login__signin">
                             <div class="kt-login__head">
                                 <h3 class="kt-login__title">Reset Password</h3>
+                                <div class="form-group form-group-last">
+                                    <div class="alert alert-secondary" role="alert">
+                                        <div class="alert-text">
+                                            Enter your e-mail address to reset your password
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="kt-login__form">
-                                <b-input-group
-                                        prepend="E-mail Address"
-                                        class="mt-3">
-                                    <b-form-input v-model="email" />
-                                </b-input-group>
+                                <b-form-group
+                                        label="E-mail Address"
+                                        class="text-left">
+                                    <b-form-input
+                                            placeholder="Please enter your e-mail address"
+                                            type="email"
+                                            v-model="email"
+                                            class="form-control" />
+                                </b-form-group>
                                 <div class="kt-login__extra">
                                     <router-link to="/user/login" id="kt_login_forgot">Already have an account ?</router-link>
                                 </div>
@@ -53,7 +64,17 @@
                       email: this.email
                   })
 
-                  console.log(data)
+                  if(data.status === "OK"){
+                      this.$swal("A new password has been sent tou your e-mail address! Please login with your new password.")
+
+                      this.$router.push('/user/login')
+                  }
+
+                  else{
+                      console.log(data)
+
+                      this.$swal(data.status)
+                  }
               } catch (e) {
                   this.$swal(e.message)
               }
