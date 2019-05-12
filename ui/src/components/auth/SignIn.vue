@@ -35,7 +35,7 @@
                                             class="form-control" />
                                 </b-form-group>
                                 <div class="kt-login__extra">
-                                    <router-link to="/user/forgot" id="kt_login_forgot">Forget Password ?</router-link>
+                                    <router-link to="/user/forgot" id="kt_login_forgot">Forgot Password?</router-link>
                                 </div>
                                 <div class="kt-login__actions">
                                     <button id="kt_login_signin_submit" class="btn btn-brand btn-pill btn-elevate" v-on:click="signIn()">Sign In</button>
@@ -46,7 +46,7 @@
                 </div>
                 <div class="kt-login__account">
                     <span class="kt-login__account-msg">
-                        Don't have an account yet ?
+                        Don't have an account yet?
                     </span>&nbsp;&nbsp;
                     <router-link to="/user/register" id="kt_login_signup" class="kt-login__account-link">Sign Up!</router-link>
                 </div>
