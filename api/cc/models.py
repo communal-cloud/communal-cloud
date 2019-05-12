@@ -94,11 +94,6 @@ class DataField(BaseModel):
 	Enumerations = models.ManyToManyField(DataEnumeration, blank=True)
 	Saved = models.BooleanField(default=False)
 	
-	@property
-	def Class(self):
-		from cc.Services.ClassImplementations import FieldClass
-		return FieldClass().Get(self.Type)
-	
 	def __str__(self):
 		typeName = ClassEnum(int(self.Type)).name.replace('_', ' ')
 		return u'{0} DataField {1} ({2})'.format(typeName, self.Name, self.id)
