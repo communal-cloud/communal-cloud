@@ -1,5 +1,6 @@
 import logging
 
+from django.http import JsonResponse
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -14,3 +15,7 @@ class ExecutionController(APIView):
 	__executionService = ExecutionService.Instance()
 	authentication_classes = (TokenAuthentication,)
 	permission_classes = (IsAuthenticated,)
+	
+	def post(self, request, format=None):
+		self.__executionService.Save(request.data, request.user)
+		return JsonResponse({'status': 'OK'}, status=200)
