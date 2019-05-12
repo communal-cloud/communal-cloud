@@ -35,11 +35,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 	objects = UserManager()
 
+
 class ActivationToken(models.Model):
 	token = models.CharField(max_length = 50, unique = True, null=False)
 	userId = models.IntegerField(unique = True, null=False)
 
 	objects = models.Manager()
+
 
 class BaseModel(models.Model):
 	CreatedOn = models.DateTimeField(editable=False)
@@ -55,6 +57,7 @@ class BaseModel(models.Model):
 		return super(BaseModel, self).save(*args, **kwargs)
 
 	objects = models.Manager()
+
 
 class Role(BaseModel):
 	Name = models.CharField(max_length=50)
@@ -94,6 +97,11 @@ class DataField(BaseModel):
 	Enumerations = models.ManyToManyField(DataEnumeration, blank=True)
 	Saved = models.BooleanField(default=False)
 	
+	@property
+	def Class(self):
+		from cc.Services.ClassImplementations import FieldClass
+		return FieldClass().Get(self.Type)
+	
 	def __str__(self):
 		typeName = ClassEnum(int(self.Type)).name.replace('_', ' ')
 		return u'{0} DataField {1} ({2})'.format(typeName, self.Name, self.id)
@@ -101,11 +109,6 @@ class DataField(BaseModel):
 	def __unicode__(self):
 		typeName = ClassEnum(int(self.Type)).name.replace('_', ' ')
 		return u'{0} DataField {1} ({2})'.format(typeName, self.Name, self.id)
-
-
-
-
-
 
 
 class Community(BaseModel):
@@ -179,14 +182,14 @@ class DataType(BaseModel):
 		return u'DataType {0} ({1})'.format(self.Name, self.id)
 
 
-# class Member(BaseModel):
-# 	Community = models.ForeignKey(Community, on_delete=models.DO_NOTHING)
-# 	User = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-# 	Roles = models.ManyToManyField(Role, blank=True)
-# 	Banned = models.BooleanField(default=False)
-#
-# 	def __str__(self):
-# 		return u'{0} is member of {1}'.format(self.User.first_name, self.Community.Name)
-#
-# 	def __unicode__(self):
-# 		return u'{0} is member of {1}'.format(self.User.first_name, self.Community.Name)
+class Member(BaseModel):
+	Community = models.ForeignKey(Community, on_delete=models.DO_NOTHING)
+	User = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+	Roles = models.ManyToManyField(Role, blank=True)
+	Banned = models.BooleanField(default=False)
+
+	def __str__(self):
+		return u'{0} is member of {1}'.format(self.User.first_name, self.Community.Name)
+
+	def __unicode__(self):
+		return u'{0} is member of {1}'.format(self.User.first_name, self.Community.Name)
