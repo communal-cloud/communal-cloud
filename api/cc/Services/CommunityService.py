@@ -52,13 +52,11 @@ class CommunityService(object):
 			for c in community.get("Categories", u""):
 				obj, created = self.__categoryService.GetOrCreate(c)
 				model.Categories.add(obj)
-		
 		if "Roles" in community:
 			for r in community.get("Roles", u""):
 				obj, created = self.__roleService.GetOrCreate(r)
 				model.Roles.add(obj)
 		self.__createDefaultMemberDataType(model.pk)
-		
 		return model
 	
 	def Update(self, community, id):
