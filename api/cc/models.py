@@ -35,11 +35,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 	objects = UserManager()
 
+
 class ActivationToken(models.Model):
 	token = models.CharField(max_length = 50, unique = True, null=False)
 	userId = models.IntegerField(unique = True, null=False)
 
 	objects = models.Manager()
+
 
 class BaseModel(models.Model):
 	CreatedOn = models.DateTimeField(editable=False)
@@ -55,6 +57,7 @@ class BaseModel(models.Model):
 		return super(BaseModel, self).save(*args, **kwargs)
 
 	objects = models.Manager()
+
 
 class Role(BaseModel):
 	Name = models.CharField(max_length=50)
@@ -94,6 +97,11 @@ class DataField(BaseModel):
 	Enumerations = models.ManyToManyField(DataEnumeration, blank=True)
 	Saved = models.BooleanField(default=False)
 	
+	@property
+	def Class(self):
+		from cc.Services.ClassImplementations import FieldClass
+		return FieldClass().Get(self.Type)
+	
 	def __str__(self):
 		typeName = ClassEnum(int(self.Type)).name.replace('_', ' ')
 		return u'{0} DataField {1} ({2})'.format(typeName, self.Name, self.id)
@@ -101,51 +109,6 @@ class DataField(BaseModel):
 	def __unicode__(self):
 		typeName = ClassEnum(int(self.Type)).name.replace('_', ' ')
 		return u'{0} DataField {1} ({2})'.format(typeName, self.Name, self.id)
-
-
-
-
-class Workflow(BaseModel):
-	Name = models.CharField(max_length=50)
-	Description = models.CharField(max_length=5000)
-	
-	def __str__(self):
-		return u'Workflow {0} ({1})'.format(self.Name, self.id)
-	
-	def __unicode__(self):
-		return u'Workflow {0} ({1})'.format(self.Name, self.id)
-
-
-class Task(BaseModel):
-	Name = models.CharField(max_length=50)
-	Description = models.CharField(max_length=5000)
-	Available = models.BooleanField(default=False)
-	AvailableTill = models.DateField(blank=True, null=True)
-	AvailableTimes = models.IntegerField(default=0)
-	Workflow = models.ForeignKey(Workflow, blank=True, on_delete=models.DO_NOTHING)
-	AssignedUsers = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
-	AssignedRoles = models.ManyToManyField(Role, blank=True)
-	Predecessors = models.ManyToManyField("self", blank=True, symmetrical=False)
-	InputFields = models.ManyToManyField(DataField, related_name="InputFields", blank=True)
-	OutputFields = models.ManyToManyField(DataField, related_name="OutputFields", blank=True)
-	
-	def __str__(self):
-		return u'Task {0} ({1})'.format(self.Name, self.id)
-	
-	def __unicode__(self):
-		return u'Task {0} ({1})'.format(self.Name, self.id)
-
-
-class ExecutionData(BaseModel):
-	Field = models.ForeignKey(DataField, blank=True, on_delete=models.DO_NOTHING)
-	DataGroup = models.ForeignKey("self", blank=True, null=True, on_delete=models.DO_NOTHING)
-	Value = JSONField(default="{}")
-
-
-class Execution(BaseModel):
-	Task = models.ForeignKey(Task, blank=True, on_delete=models.DO_NOTHING)
-	Data = models.ManyToManyField(ExecutionData, blank=True)
-	ExecutedBy = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.DO_NOTHING)
 
 
 class Community(BaseModel):
@@ -163,6 +126,50 @@ class Community(BaseModel):
 		return u'Community {0} ({1})'.format(self.Name, self.id)
 
 
+class Workflow(BaseModel):
+	Name = models.CharField(max_length=50)
+	Description = models.CharField(max_length=5000)
+	Community_id = models.ForeignKey(Community, blank=True, default=1, on_delete=models.DO_NOTHING)
+
+	def __str__(self):
+		return u'Workflow {0} ({1})'.format(self.Name, self.id)
+
+	def __unicode__(self):
+		return u'Workflow {0} ({1})'.format(self.Name, self.id)
+
+
+class Task(BaseModel):
+	Name = models.CharField(max_length=50)
+	Description = models.CharField(max_length=5000)
+	Available = models.BooleanField(default=False)
+	AvailableTill = models.DateField(blank=True, null=True)
+	AvailableTimes = models.IntegerField(default=0)
+	Workflow = models.ForeignKey(Workflow, blank=True, on_delete=models.DO_NOTHING)
+	AssignedUsers = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
+	AssignedRoles = models.ManyToManyField(Role, blank=True)
+	Predecessors = models.ManyToManyField("self", blank=True, symmetrical=False)
+	InputFields = models.ManyToManyField(DataField, related_name="InputFields", blank=True)
+	OutputFields = models.ManyToManyField(DataField, related_name="OutputFields", blank=True)
+
+	def __str__(self):
+		return u'Task {0} ({1})'.format(self.Name, self.id)
+
+	def __unicode__(self):
+		return u'Task {0} ({1})'.format(self.Name, self.id)
+
+
+class ExecutionData(BaseModel):
+	Field = models.ForeignKey(DataField, blank=True, on_delete=models.DO_NOTHING)
+	DataGroup = models.ForeignKey("self", blank=True, null=True, on_delete=models.DO_NOTHING)
+	Value = JSONField(default="{}")
+
+
+class Execution(BaseModel):
+	Task = models.ForeignKey(Task, blank=True, on_delete=models.DO_NOTHING)
+	Data = models.ManyToManyField(ExecutionData, blank=True)
+	ExecutedBy = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.DO_NOTHING)
+
+
 class DataType(BaseModel):
 	Name = models.CharField(max_length=50)
 	Fields = models.ManyToManyField(DataField, blank=True)
@@ -175,14 +182,14 @@ class DataType(BaseModel):
 		return u'DataType {0} ({1})'.format(self.Name, self.id)
 
 
-# class Member(BaseModel):
-# 	Community = models.ForeignKey(Community, on_delete=models.DO_NOTHING)
-# 	User = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-# 	Roles = models.ManyToManyField(Role, blank=True)
-# 	Banned = models.BooleanField(default=False)
-#
-# 	def __str__(self):
-# 		return u'{0} is member of {1}'.format(self.User.first_name, self.Community.Name)
-#
-# 	def __unicode__(self):
-# 		return u'{0} is member of {1}'.format(self.User.first_name, self.Community.Name)
+class Member(BaseModel):
+	Community = models.ForeignKey(Community, on_delete=models.DO_NOTHING)
+	User = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+	Roles = models.ManyToManyField(Role, blank=True)
+	Banned = models.BooleanField(default=False)
+
+	def __str__(self):
+		return u'{0} is member of {1}'.format(self.User.first_name, self.Community.Name)
+
+	def __unicode__(self):
+		return u'DataType {0} ({1})'.format(self.Name, self.id)

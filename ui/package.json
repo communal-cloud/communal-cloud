@@ -11,6 +11,7 @@
     "axios": "^0.18.0",
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.15",
+    "jquery": "^3.4.1",
     "js-cookie": "^2.2.0",
     "sweetalert": "^2.1.2",
     "vue": "^2.6.10",

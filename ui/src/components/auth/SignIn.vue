@@ -7,21 +7,35 @@
                         <div class="kt-login__signin">
                             <div class="kt-login__head">
                                 <h3 class="kt-login__title">Sign In</h3>
+                                <div class="form-group form-group-last">
+                                    <div class="alert alert-secondary" role="alert">
+                                        <div class="alert-text">
+                                            Enter your details to log into your account
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="kt-login__form">
-                                <b-input-group
-                                        prepend="E-mail Address"
-                                        class="mt-3">
-                                    <b-form-input v-model="username" />
-                                </b-input-group>
-
-                                <b-input-group
-                                        prepend="Password"
-                                        class="mt-3">
-                                    <b-form-input type="password" v-model="password" />
-                                </b-input-group>
+                                <b-form-group
+                                        label="E-mail Address"
+                                        class="text-left">
+                                    <b-form-input
+                                            placeholder="Please enter your e-mail address"
+                                            type="email"
+                                            v-model="username"
+                                            class="form-control" />
+                                </b-form-group>
+                                <b-form-group
+                                        label="Password"
+                                        class="text-left">
+                                    <b-form-input
+                                            placeholder="Please enter your password"
+                                            type="password"
+                                            v-model="password"
+                                            class="form-control" />
+                                </b-form-group>
                                 <div class="kt-login__extra">
-                                    <router-link to="/user/forgot" id="kt_login_forgot">Forget Password ?</router-link>
+                                    <router-link to="/user/forgot" id="kt_login_forgot">Forgot Password?</router-link>
                                 </div>
                                 <div class="kt-login__actions">
                                     <button id="kt_login_signin_submit" class="btn btn-brand btn-pill btn-elevate" v-on:click="signIn()">Sign In</button>
@@ -32,7 +46,7 @@
                 </div>
                 <div class="kt-login__account">
                     <span class="kt-login__account-msg">
-                        Don't have an account yet ?
+                        Don't have an account yet?
                     </span>&nbsp;&nbsp;
                     <router-link to="/user/register" id="kt_login_signup" class="kt-login__account-link">Sign Up!</router-link>
                 </div>
@@ -56,7 +70,7 @@
       methods: {
           async signIn() {
               try {
-                  const {data} = await axios.post(process.env.VUE_APP_BASE_URL+'user/login', {
+                  const {data} = await axios.post(process.env.VUE_APP_BASE_URL+'user/login/', {
                       username: this.username,
                       password: this.password
                   })

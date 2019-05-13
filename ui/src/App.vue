@@ -69,7 +69,7 @@
 
                 <!--begin: User bar -->
                 <div class="kt-header__topbar-item kt-header__topbar-item--user" v-if="store.getters.check">
-                  <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px">
+                  <div class="kt-header__topbar-wrapper">
                     <span class="kt-header__topbar-welcome">Hi,</span>
                     <span class="kt-header__topbar-username">{{ store.getters.user.name }}</span>
                     <a class="kt-header__topbar-username" v-on:click="logout"><i class="fa fa-sign-out-alt"></i></a>
@@ -177,6 +177,8 @@ pre{
     methods: {
       logout(){
         store.dispatch('logout')
+
+        this.$swal("Successfully logged out!")
 
         this.$router.push('/user/login')
       }

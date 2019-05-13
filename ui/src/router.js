@@ -51,6 +51,21 @@ const routes = [
     component: Activation
   },
   {
+    path: '/user/register',
+    name: 'register',
+    component: SignUp
+  },
+  {
+    path: '/user/forgot',
+    name: 'forgot',
+    component: Forgot
+  },
+  {
+    path: '/user/activation/:token',
+    name: 'activation',
+    component: Activation
+  },
+  {
     path: '/communities',
     name: 'community',
     component: Communities,

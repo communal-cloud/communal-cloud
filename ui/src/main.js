@@ -5,8 +5,11 @@ import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import VueSwal from 'vue-swal'
 
-//import 'bootstrap/dist/css/bootstrap.css'
-//import 'bootstrap-vue/dist/bootstrap-vue.css'
+window._ = require("lodash")
+window.$ = window.jQuery = require("jquery")
+window.$.Popper = window.Popper = require("popper.js").default
+require("bootstrap")
+require("js-cookie")
 
 Vue.config.productionTip = false
 

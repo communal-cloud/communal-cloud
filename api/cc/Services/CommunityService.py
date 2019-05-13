@@ -1,5 +1,6 @@
 import logging
 
+from cc.Serializers.DataTypeSerializer import DataTypeSerializer
 from cc.Services.CategoryService import CategoryService
 from cc.Services.DataService import DataService
 from cc.Services.RoleService import RoleService
@@ -51,11 +52,12 @@ class CommunityService(object):
 			for c in community.get("Categories", u""):
 				obj, created = self.__categoryService.GetOrCreate(c)
 				model.Categories.add(obj)
-		
 		if "Roles" in community:
 			for r in community.get("Roles", u""):
 				obj, created = self.__roleService.GetOrCreate(r)
 				model.Roles.add(obj)
+		self.__createDefaultMemberDataType(model.pk)
+		return model
 	
 	def Update(self, community, id):
 		model = Community.objects.get(pk=id)
@@ -77,22 +79,26 @@ class CommunityService(object):
 			for r in community.get("Roles", u""):
 				obj, created = self.__roleService.GetOrCreate(r)
 				model.Roles.add(obj)
-		self.__createDefaultMemberDataType()
-	
+		return model
+		
 	def Activate(self, community):
 		raise NotImplementedError
 	
-	def __createDefaultMemberDataType(self):
+	def __createDefaultMemberDataType(self, id):
 		data = {
 			"Name": "Member",
 			"Fields": [
 				{
 					"Name": "User",
-					"Class": ClassEnum.User
+					"Class": 7
 				}
 			]
 		}
-		dataType = self.__dataService.Create(data)
+		
+		dataType = self.__dataService.createDataType(data, id)
+		for field in data.get("Fields",u""):
+			self.__dataService.createDataField(field, dataType)
+			
 		return dataType
 
 	def __createDefaultJoinTask(self):

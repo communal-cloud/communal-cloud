@@ -15,5 +15,6 @@ class WorkflowController(APIView):
 	#authentication_classes = (TokenAuthentication,)
 	#permission_classes = (IsAuthenticated,)
 
-	def post(self,request):
-		return Response(self.__workflowService.Create(request))
+	def post(self,request, *args, **kwargs):
+		id = kwargs.get('id', '')
+		return Response(self.__workflowService.Create(request, id))
