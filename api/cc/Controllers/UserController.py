@@ -33,7 +33,7 @@ class UserAPIViewController(APIView):
 	
 	def put(self, request, format=None):
 		requestDataParsed = json.loads(request.body)
-		user = self.__userService.UpdateUser(request.user, requestDataParsed.data)
+		user = self.__userService.UpdateUser(request.user, requestDataParsed)
 		userSerialized = UserSerializer(user)
 		return Response(userSerialized.data)
 	
@@ -54,8 +54,7 @@ class UserViewSetController(ViewSet):
 	def forgot_password(self, request, pk=None):
 		requestDataParsed = json.loads(request.body)
 		email = requestDataParsed['email']
-		baseUrl = request.build_absolute_uri()
-		return self.__userService.ForgotPassword(email, baseUrl)
+		return self.__userService.ForgotPassword(email)
 
 	@action(detail=True, methods=['get'], permission_classes=[IsAuthenticated], authentication_classes=[TokenAuthentication])
 	def logout(self, request, pk=None):

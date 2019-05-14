@@ -23,15 +23,14 @@ class ClassEnum(Enum):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-	username = models.CharField(max_length = 100, unique = True)
 	email = models.EmailField(unique = True)
-	name = models.CharField(max_length = 100, null=False)
+	name = models.CharField(max_length = 100)
 	is_superuser = models.BooleanField(null = True)
 	is_active = models.BooleanField(null = True)
 	is_staff = models.BooleanField(null = True)
 	
 	USERNAME_FIELD = 'email'
-	REQUIRED_FIELDS = [ 'username', 'name' ]
+	REQUIRED_FIELDS = [ 'name' ]
 
 	objects = UserManager()
 
