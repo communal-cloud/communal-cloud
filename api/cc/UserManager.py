@@ -4,9 +4,8 @@ class UserManager(BaseUserManager):
     
     use_in_migrations = True
 
-    def create_user(self, username, email, name, password):
+    def create_user(self, email, name, password):
         user = self.model(
-            username = username,
             email = self.normalize_email(email),
             name = name,
         )
@@ -17,9 +16,8 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_staffuser(self, username, email, name, password):
+    def create_staffuser(self, email, name, password):
         user = self.create_user(
-            username = username,
             email = email,
             name = name,
             password = password,
@@ -30,9 +28,8 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, email, name, password):
+    def create_superuser(self, email, name, password):
         user = self.create_user(
-            username = username,
             email = email,
             name = name,
             password = password,

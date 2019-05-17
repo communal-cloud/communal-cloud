@@ -113,14 +113,27 @@ def SendForgotPasswordEmail(user):
 	newPassword = GenerateAndSaveNewPassword(user)
 	subject = "Communal-Cloud Password Change"
 	message = "Your user credentials are below.\n\n" \
-	+ "Username: " + user.username + "\n" \
+	+ "Email: " + user.email + "\n" \
 	+ "Password: " + newPassword
 	emailFrom = "noreply@communalcloud.net"
 	emailTo = (user.email,)
 	send_mail(subject, message, emailFrom, emailTo)
 
 def GenerateAndSaveNewPassword(user):
-	newPassword = random_string_generator(size = 10)
+	passwordLength = 10
+	mustIncludeList = ["-*'#$%_&()[]{}=+/!^", "abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"]
+	totalCharList = ''.join(mustIncludeList) + "0123456789"
+
+	newPassword = random_string_generator(size = passwordLength, chars = totalCharList)
+	newPasswordToList = list(newPassword)
+	passwordIndexList = list(range(0, passwordLength))
+	mustIncludeIndexList = random.sample(passwordIndexList, len(mustIncludeList))
+	for mustIncludeCharlist in mustIncludeList:
+		indexToChange = int(mustIncludeIndexList[0])
+		newPasswordToList[indexToChange] = random.choice(mustIncludeCharlist)
+		mustIncludeIndexList.pop(0)
+	newPassword = ''.join(newPasswordToList)
+	
 	user.set_password(newPassword)
 	user.save()
 	return newPassword
