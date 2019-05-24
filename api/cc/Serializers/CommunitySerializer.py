@@ -1,8 +1,8 @@
-from rest_framework import serializers
-
+from rest_framework.serializers import ModelSerializer
 from cc import models
 
 
-class CommunitySerializer(serializers.Serializer):
+class CommunitySerializer(ModelSerializer):
     class Meta:
         model = models.Community
+        fields = '__all__'
