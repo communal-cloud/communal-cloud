@@ -4,5 +4,5 @@ from cc import models
 
 class DataFieldSerializer(ModelSerializer):
     class Meta:
-        model = models.DataField
-        fields = ("id", "Name", "Type", "Enumerations", "Save")
+        model = models.Execution
+        fields = ("id", "Task", "Data", "ExecutedBy")
