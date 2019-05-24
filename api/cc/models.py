@@ -20,32 +20,20 @@ class ClassEnum(Enum):
 	GeoLocation = 5
 	Relation = 6
 	User = 7
+	Image = 8
 
 
-class User(AbstractBaseUser, PermissionsMixin):
-	email = models.EmailField(unique = True)
-	name = models.CharField(max_length = 100)
-	is_superuser = models.BooleanField(null = True)
-	is_active = models.BooleanField(null = True)
-	is_staff = models.BooleanField(null = True)
-	
-	USERNAME_FIELD = 'email'
-	REQUIRED_FIELDS = [ 'name' ]
-
-	objects = UserManager()
-
-
-class ActivationToken(models.Model):
-	token = models.CharField(max_length = 50, unique = True, null=False)
-	userId = models.IntegerField(unique = True, null=False)
-
-	objects = models.Manager()
+class BaseManager(models.Manager):
+	def get_queryset(self):
+		return super().get_queryset().filter(Deleted=False)
 
 
 class BaseModel(models.Model):
 	CreatedOn = models.DateTimeField(editable=False)
 	ModifiedOn = models.DateTimeField(editable=False)
 	Deleted = models.BooleanField(default=False)
+	
+	objects = BaseManager()
 	
 	def save(self, *args, **kwargs):
 		if not self.id:
@@ -55,6 +43,24 @@ class BaseModel(models.Model):
 		self.ModifiedOn = timezone.now()
 		return super(BaseModel, self).save(*args, **kwargs)
 
+
+class User(AbstractBaseUser, PermissionsMixin):
+	email = models.EmailField(unique=True)
+	name = models.CharField(max_length=100)
+	is_superuser = models.BooleanField(null=True)
+	is_active = models.BooleanField(null=True)
+	is_staff = models.BooleanField(null=True)
+	
+	USERNAME_FIELD = 'email'
+	REQUIRED_FIELDS = ['name']
+	
+	objects = UserManager()
+
+
+class ActivationToken(models.Model):
+	token = models.CharField(max_length=50, unique=True, null=False)
+	userId = models.IntegerField(unique=True, null=False)
+	
 	objects = models.Manager()
 
 
@@ -129,10 +135,10 @@ class Workflow(BaseModel):
 	Name = models.CharField(max_length=50)
 	Description = models.CharField(max_length=5000)
 	Community_id = models.ForeignKey(Community, blank=True, default=1, on_delete=models.DO_NOTHING)
-
+	
 	def __str__(self):
 		return u'Workflow {0} ({1})'.format(self.Name, self.id)
-
+	
 	def __unicode__(self):
 		return u'Workflow {0} ({1})'.format(self.Name, self.id)
 
@@ -149,10 +155,10 @@ class Task(BaseModel):
 	Predecessors = models.ManyToManyField("self", blank=True, symmetrical=False)
 	InputFields = models.ManyToManyField(DataField, related_name="InputFields", blank=True)
 	OutputFields = models.ManyToManyField(DataField, related_name="OutputFields", blank=True)
-
+	
 	def __str__(self):
 		return u'Task {0} ({1})'.format(self.Name, self.id)
-
+	
 	def __unicode__(self):
 		return u'Task {0} ({1})'.format(self.Name, self.id)
 
@@ -172,11 +178,11 @@ class Execution(BaseModel):
 class DataType(BaseModel):
 	Name = models.CharField(max_length=50)
 	Fields = models.ManyToManyField(DataField, blank=True)
-	Community_id = models.ForeignKey(Community, blank=True, default=1, on_delete=models.DO_NOTHING)
-
+	Community = models.ForeignKey(Community, blank=True, default=1, on_delete=models.DO_NOTHING)
+	
 	def __str__(self):
 		return u'DataType {0} ({1})'.format(self.Name, self.id)
-
+	
 	def __unicode__(self):
 		return u'DataType {0} ({1})'.format(self.Name, self.id)
 
@@ -186,9 +192,9 @@ class Member(BaseModel):
 	User = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
 	Roles = models.ManyToManyField(Role, blank=True)
 	Banned = models.BooleanField(default=False)
-
+	
 	def __str__(self):
 		return u'{0} is member of {1}'.format(self.User.first_name, self.Community.Name)
-
+	
 	def __unicode__(self):
 		return u'{0} is member of {1}'.format(self.User.first_name, self.Community.Name)
