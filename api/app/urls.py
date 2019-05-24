@@ -27,7 +27,7 @@ from cc.Controllers.ServiceController import ServiceController
 from cc.Controllers.TaskController import TaskController
 from cc.Controllers.UserController import UserAPIViewController, UserViewSetController
 from cc.Controllers.WorkflowController import WorkflowController
-from cc.views import TasksController
+from cc.views import TasksController, RolesController
 
 router = routers.DefaultRouter()
 router.register(r'', UserViewSetController, basename='user')
@@ -41,11 +41,11 @@ urlpatterns = [
 	url(r'^category/$', CategoryController.as_view()),
 	url(r'^community/$', CommunityController.as_view()),
 	url(r'^community/(?P<id>.+)/$', CommunityController.as_view()),
+	url(r'^community/(?P<id>.+)/roles/$', RolesController.as_view()),
 	url(r'^data/(?P<id>.+)/$', FieldClassController.as_view()),
 	url(r'^execution/$', ExecutionController.as_view()),
 	url(r'^role/(?P<id>.+)/$', RoleController.as_view()),
 	url(r'^task/(?P<id>.+)/$', TaskController.as_view()),
 	url(r'^workflow/(?P<id>.+)/tasks/$', TasksController.as_view()),
 	url(r'^workflow/(?P<id>.+)/$', WorkflowController.as_view()),
-
 ]
