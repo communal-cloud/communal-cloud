@@ -27,6 +27,7 @@ from cc.Controllers.ServiceController import ServiceController
 from cc.Controllers.TaskController import TaskController
 from cc.Controllers.UserController import UserAPIViewController, UserViewSetController
 from cc.Controllers.WorkflowController import WorkflowController
+from cc.views import TasksController
 
 router = routers.DefaultRouter()
 router.register(r'', UserViewSetController, basename='user')
@@ -44,5 +45,7 @@ urlpatterns = [
 	url(r'^execution/$', ExecutionController.as_view()),
 	url(r'^role/(?P<id>.+)/$', RoleController.as_view()),
 	url(r'^task/(?P<id>.+)/$', TaskController.as_view()),
+	url(r'^workflow/(?P<id>.+)/tasks/$', TasksController.as_view()),
 	url(r'^workflow/(?P<id>.+)/$', WorkflowController.as_view()),
+
 ]
