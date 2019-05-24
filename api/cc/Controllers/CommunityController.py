@@ -26,5 +26,4 @@ class CommunityController(APIView):
 	def put(self, request, *args, **kwargs):
 		id = kwargs.get('id', '')
 		community = self.__communityService.Update(request.data, id)
-		result = CommunitySerializer(community)
-		return Response(result)
+		return Response(CommunitySerializer(community).data)

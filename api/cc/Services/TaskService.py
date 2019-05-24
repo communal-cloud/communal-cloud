@@ -60,22 +60,27 @@ class TaskService(object):
 		model.AvailableTill = request.data.get("AvailableTill", u"")
 		model.AvailableTimes = request.data.get("AvailableTimes", u"")
 		model.save()
+		model.AssignedUsers.clear()
 		if "AssignedUsers" in request.data:
 			for user_id in request.data.get("AssignedUsers", []):
 				user = User.objects.get(pk=user_id)
 				model.AssignedUsers.add(user)
+		model.AssignedRoles.clear()
 		if "AssignedRoles" in request.data:
 			for role_id in request.data.get("AssignedRoles", []):
 				role = Role.objects.get(pk=role_id)
 				model.AssignedRoles.add(role)
+		model.Predecessors.clear()
 		if "Predecessors" in request.data:
 			for task_id in request.data.get("Predecessors", []):
 				prod = Task.objects.get(pk=task_id)
 				model.Predecessors.add(prod)
+		model.InputFields.clear()
 		if "InputFields" in request.data:
 			for input_datafield_id in request.data.get("InputFields", []):
 				input_field = DataField.objects.get(pk=input_datafield_id)
 				model.InputFields.add(input_field)
+		model.OutputFields.clear()
 		if "OutputFields" in request.data:
 			for output_datafield_id in request.data.get("OutputFields", []):
 				output_field = DataField.objects.get(pk=output_datafield_id)
