@@ -21,3 +21,16 @@ class WorkflowService(object):
         community=Community.objects.get(pk=id)
         data=Workflow.objects.create(Name=request.data.get("Name",u""), Description=request.data.get("Description",u""), Community_id=community)
         return data
+
+    def Update(self, request, id):
+        workflow = Workflow.objects.get(pk=id)
+        if "Name" in request:
+            workflow.Name = request.get("Name", u"")
+        if "Description" in request:
+            workflow.Description = request.get("Description", u"")
+        workflow.save()
+        return workflow
+
+    def Detail(self, id):
+        workflow = Workflow.objects.get(pk=id)
+        return workflow
