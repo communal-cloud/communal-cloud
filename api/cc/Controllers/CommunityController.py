@@ -32,8 +32,9 @@ class CommunityController(APIView):
 		id = kwargs.get('id', '')
 		community = self.__communityService.Update(request.data, id)
 		result = CommunitySerializer(community)
-		return Response(result)
+		return Response(CommunitySerializer(community).data)
 	
 	def delete(self, request, *args, **kwargs):
 		community_id = kwargs.get('id', '')
 		return self.__communityService.Delete(community_id)
+		

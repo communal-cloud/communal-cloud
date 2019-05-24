@@ -7,7 +7,7 @@ from cc.Services.CategoryService import CategoryService
 from cc.Services.DataService import DataService
 from cc.Services.RoleService import RoleService
 from cc.Services.TaskService import TaskService
-from cc.models import Community, ClassEnum
+from cc.models import Community, ClassEnum, Category
 
 
 class CommunityService(object):
@@ -73,6 +73,7 @@ class CommunityService(object):
 		if "Purpose" in community:
 			model.Purpose = community.get("Purpose", u"")
 		model.save()
+		model.Categories.clear()
 		if "Categories" in community:
 			for c in community.get("Categories", u""):
 				obj, created = self.__categoryService.GetOrCreate(c)
