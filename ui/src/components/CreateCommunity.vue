@@ -176,21 +176,16 @@
 </template>
 
 <script>
-import {mapState, mapMutations} from 'vuex';
+
 import axios from 'axios/index';
 
 
   export default {
-    computed: {
-   ...mapState([
-     'community_roles',
-     'community_data',
-     'dataTypeName'
-   ])
-    },
+  
     
     data() {
       return {
+        communityStep:{},
         step1:false,
         step2:true,
         step3:true,
@@ -201,11 +196,12 @@ import axios from 'axios/index';
         community_category : '',
         community_description:'',
         community_role:'',
-        
+        dataTypeName:"",
         community_categories:[],
         dataTypes:[],
         dataType:{},
-        
+        community_roles:['owner','member'],
+        community_data:[],
         email:'',
         field_options: ['Required', 'Human Input', 'Saved'],
         community_emails:[]
@@ -218,17 +214,19 @@ import axios from 'axios/index';
          if(step == 'step1'){
              this.step1=true;
              this.step2=false;
-             console.log(this.community_categories)
+            
 
               try {
                         const { data } = await axios.post(process.env.VUE_APP_BASE_URL+'community/', {
                                 Name: this.community_name,
-                                Description: this.community_purpose,
+                                Purpose: this.community_purpose,
                                 Categories: this.community_categories
                         })
 
                         if(data)
-                            this.$swal("Community created")
+                        console.log(data)
+                        this.communityStep=data
+                            this.$swal("Step 1 completed")
                     } catch (e) {
                         this.$swal("Error when adding community")
                     }
@@ -236,9 +234,76 @@ import axios from 'axios/index';
          }else if(step=='step2'){
              this.step2=true;
              this.step3=false;
+
+            try {
+                        const { data } = await axios.put(process.env.VUE_APP_BASE_URL+'community/'+this.communityStep.id+'/', {
+                                Roles: this.community_roles,
+                                Description: this.community_description
+                             
+                        })
+
+                        if(data)
+                        console.log(data)
+                            this.$swal("Step 2 completed")
+                    } catch (e) {
+                        this.$swal("Error when updating community")
+                    }
+
+
+
          }else if(step=='step3'){
              this.step3=true;
              this.step4=false;
+
+              this.community_data.map(function(item) {
+                  if(item.type=="Number")
+                  {
+                    item.type=1
+                  }
+                  else if(item.type=="Text")
+                  {
+                    item.type=2
+                  }
+                  else if(item.type=="Image")
+                  {
+                    item.type=8
+                  }
+                  else if(item.type=="Date")
+                  {
+                    item.type=4
+                  }
+                  else if(item.type=="GeoLocation")
+                  {
+                    item.type=5
+                  }
+                  else if(item.type=="Boolean")
+                  {
+                    item.type=3
+                  }
+ 
+
+
+
+
+                  return { Name: item.name, Class : item.type };
+              })
+
+              console.log(this.community_data)
+              try {
+                        const { data } = await axios.put(process.env.VUE_APP_BASE_URL+'data/'+this.communityStep.id+'/', {
+                                Name: this.dataTypeName,
+                                Fields: this.community_data
+                             
+                        })
+
+                        if(data)
+                        console.log(data)
+                            this.$swal("Step 2 completed")
+                    } catch (e) {
+                        this.$swal("Error when updating community")
+                    }
+
+
          }
      },
      AddCategory(){
@@ -260,7 +325,7 @@ import axios from 'axios/index';
 
      },
      CreateDataType(){
-       this.dataTypes.push( {'name' : this.dataTypeName , ...this.dataType} ) 
+       this.dataTypes.push( {'Name' : this.dataTypeName , ...this.dataType} ) 
        console.log(this.dataTypes)
      },
      AddEmail(){

@@ -1,6 +1,6 @@
 <template>
 
-<div class="card" style="width: 22rem;">
+<div class="card" style="width: 32rem;">
   <div class="card-body">
     <h5 class="card-title">{{community.Name}}</h5>
      <h6 class="card-subtitle mb-2 text-muted">{{community.Purpose}}</h6>
