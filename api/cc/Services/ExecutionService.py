@@ -6,6 +6,9 @@ from cc.models import Execution, Task, ExecutionData, DataField
 from cc.Services.MemberService import MemberService
 from cc.models import Execution, Task, ExecutionData, DataField, DataType, TaskType, Community
 
+from cc.Services.MemberService import MemberService
+from cc.models import Execution, Task, ExecutionData, DataField, DataType, TaskType, Community
+
 
 class ExecutionService(object):
 	__instance = None

@@ -4,6 +4,8 @@ import Router from 'vue-router'
 
 import Home from './views/Home.vue'
 import Communities from './views/Communities.vue'
+import Workflows from './views/Workflows.vue'
+import Tasks from './views/Tasks.vue'
 
 import CreateCommunity from './components/CreateCommunity.vue'
 import CreateWorkflow from './components/CreateWorkflow.vue'
@@ -30,55 +32,6 @@ const routes = [
     path: '/user/login',
     name: 'login',
     component: SignIn
-  },  {
-    path: '/user/register',
-    name: 'register',
-    component: SignUp
-  },
-  {
-    path: '/user/register',
-    name: 'register',
-    component: SignUp
-  },
-  {
-    path: '/user/forgot',
-    name: 'forgot',
-    component: Forgot
-  },
-  {
-    path: '/user/activation/:token',
-    name: 'activation',
-    component: Activation
-  },
-  {
-    path: '/user/register',
-    name: 'register',
-    component: SignUp
-  },
-  {
-    path: '/user/forgot',
-    name: 'forgot',
-    component: Forgot
-  },
-  {
-    path: '/user/activation/:token',
-    name: 'activation',
-    component: Activation
-  },
-  {
-    path: '/user/register',
-    name: 'register',
-    component: SignUp
-  },
-  {
-    path: '/user/forgot',
-    name: 'forgot',
-    component: Forgot
-  },
-  {
-    path: '/user/activation/:token',
-    name: 'activation',
-    component: Activation
   },
   {
     path: '/user/register',
@@ -104,7 +57,7 @@ const routes = [
     }
   },
   {
-    path: '/create',
+    path: '/community/create',
     name: 'createCommunity',
     component: CreateCommunity,
     meta: {
@@ -112,7 +65,31 @@ const routes = [
     }
   },
   {
-    path: '/createTask',
+    path: '/community/:community_id/workflows',
+    name: 'workflows',
+    component: Workflows,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/community/:community_id/workflow/create',
+    name: 'createWorkflow',
+    component: CreateWorkflow,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/workflow/:workflow_id/tasks',
+    name: 'tasks',
+    component: Tasks,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/workflow/:workflow_id/task/create',
     name: 'createTask',
     component: CreateTask,
     meta: {
@@ -123,14 +100,6 @@ const routes = [
     path: '/doTask',
     name: 'doTask',
     component: DoTask,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: '/createWorkflow',
-    name: 'createWorkflow',
-    component: CreateWorkflow,
     meta: {
       requiresAuth: true
     }

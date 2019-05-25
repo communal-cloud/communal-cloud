@@ -143,7 +143,7 @@ class Workflow(BaseModel):
 	
 	def __str__(self):
 		return u'Workflow {0} ({1})'.format(self.Name, self.id)
-
+	
 	def __unicode__(self):
 		return u'Workflow {0} ({1})'.format(self.Name, self.id)
 
@@ -164,7 +164,7 @@ class Task(BaseModel):
 	
 	def __str__(self):
 		return u'Task {0} ({1})'.format(self.Name, self.id)
-
+	
 	def __unicode__(self):
 		return u'Task {0} ({1})'.format(self.Name, self.id)
 
@@ -184,6 +184,8 @@ class Execution(BaseModel):
 class DataType(BaseModel):
 	Name = models.CharField(max_length=50)
 	Fields = models.ManyToManyField(DataField, blank=True)
+	Community = models.ForeignKey(Community, blank=True, default=1, on_delete=models.DO_NOTHING)
+	
 	def __str__(self):
 		return u'DataType {0} ({1})'.format(self.Name, self.id)
 	
@@ -191,10 +193,12 @@ class DataType(BaseModel):
 		return u'DataType {0} ({1})'.format(self.Name, self.id)
 
 
+class Member(BaseModel):
 	Community = models.ForeignKey(Community, on_delete=models.DO_NOTHING)
 	User = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+	Roles = models.ManyToManyField(Role, blank=True)
 	Banned = models.BooleanField(default=False)
-
+	
 	def __str__(self):
 		return u'{0} is member of {1}'.format(self.User.name, self.Community.Name)
 	

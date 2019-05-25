@@ -3,6 +3,8 @@ import logging
 from django.http import JsonResponse
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
+from rest_framework.viewsets import ViewSet
+from rest_framework.decorators import action
 from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -35,4 +37,12 @@ class CommunityController(APIView):
 	def delete(self, request, *args, **kwargs):
 		community_id = kwargs.get('id', '')
 		return self.__communityService.Delete(community_id)
-		
+
+class CommunityViewSetController(ViewSet):
+	__logger = logging.getLogger('UserController')
+	__communityService = CommunityService.Instance()
+
+	@action(detail=True, methods=['get'])
+	def search(self, request, pk=None):
+		community = self.__communityService.Search(request.data)
+		return Response(CommunitySerializer(community, many=True).data)
