@@ -18,8 +18,7 @@ class WorkflowService(object):
         WorkflowService.__instance = self
 
     def Create(self, request, id):
-        community=Community.objects.get(pk=id)
-        data=Workflow.objects.create(Name=request.data.get("Name",u""), Description=request.data.get("Description",u""), Community_id=community)
+        data=Workflow.objects.create(Name=request.get("Name",u""), Description=request.get("Description",u""), Community_id=id)
         return data
 
     def Update(self, request, id):

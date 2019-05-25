@@ -47,6 +47,10 @@ class BaseModel(models.Model):
 			del self.CreatedOn
 		self.ModifiedOn = timezone.now()
 		return super(BaseModel, self).save(*args, **kwargs)
+	
+	def delete(self, *args, **kwargs):
+		self.Deleted=True
+		self.save()
 
 
 class User(AbstractBaseUser, PermissionsMixin):
