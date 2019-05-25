@@ -37,6 +37,11 @@ class DataService(object):
 		return model
 	
 	def createDataField(self, request, datatype):
+		if "Parameters" in request:
+			parameters = request["Parameters"]
+		else:
+			parameters = "{}"
+
 		if "Enumerations" in request:
 			for e in request.get("Enumerations", u""):
 				for key, value in e.items():
@@ -47,6 +52,7 @@ class DataService(object):
 		else:
 			datafield = DataField.objects.create(
 				Name=request.get("Name", u""),
-				Type=request.get("Class", ClassEnum.NotSpecified.value)
+				Type=request.get("Class", ClassEnum.NotSpecified.value),
+				Parameters = parameters
 			)
 			datatype.Fields.add(datafield)
