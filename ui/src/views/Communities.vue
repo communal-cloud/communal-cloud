@@ -6,14 +6,6 @@
                   Available Communities
               </h3>
           </div>
-          <div class="kt-portlet__head-toolbar">
-              <a href="#" class="btn btn-label-brand btn-bold btn-sm dropdown-toggle">
-                  Search
-              </a>
-              <a href="#" class="btn btn-label-brand btn-bold btn-sm dropdown-toggle">
-                  Browse
-              </a>
-          </div>
       </div>
       <div class="kt-portlet__body kt-portlet__body--fluid">
           
