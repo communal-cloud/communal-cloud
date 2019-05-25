@@ -30,9 +30,6 @@ class RoleService(object):
 		role_list = Role.objects.filter(community=community)
 		return role_list
 	
-	# def Create(self, name, communityId):
-	# 	return Role.objects.create(Name=name)
-	
 	def Update(self, role, id):
 		model = Role.objects.get(pk=id)
 		if "Name" in role:

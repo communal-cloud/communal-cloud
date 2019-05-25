@@ -116,5 +116,5 @@ class CommunityService(object):
 		model.delete()
 		return JsonResponse(status=200)
 	
-	def GetList(self, user_id):
+	def GetList(self):
 		return Community.objects.all()
