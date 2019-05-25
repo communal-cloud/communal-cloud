@@ -92,7 +92,7 @@
             return {
                 community_users: {},
                 community_roles: {},
-                community_data_types: {},
+                community_data: {},
                 task_name: '',
                 task_description: '',
                 task_available: false,

@@ -10,7 +10,7 @@
 
 
 <b-input-group :prepend="data.name" class="mt-3">
-    <b-form-input :name="data.name" :type="data.type.toLowerCase()"></b-form-input>
+    <b-form-input :name="" type="text"></b-form-input>
 </b-input-group>
                
     
@@ -31,15 +31,15 @@
 </template>
 
 <script>
-import {mapState, mapMutations} from 'vuex';
+
+
+import axios from 'axios'
+import store from '../store'
 
   export default {
-    computed: {
-   ...mapState([
-     'community_data',
-   
-   ])
-    },
+  props:{
+    task:{}
+  },
  
   methods:{
   validateForm(){
