@@ -14,27 +14,25 @@
 
     export default {
         props: {
-            id: 0
+            id: 0,
+            task:{}
         },
         data() {
             return {
-                task: {
-                    Name: '',
-                    Description: ''
-                },
+                
             }
         },
         mounted() {
-            this.getTask();
+            //this.getTask();
         },
-        methods: {
+       /* methods: {
             async getTask() {
                 try {
-                    /*const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'task/' + this.id + '/', {
+                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'task/' + this.id + '/', {
                         headers: {
                             Authorization: 'token ' + store.getters.token
                         }
-                    })*/
+                    })
 
                     const data = {
                         Name:"Join Us Here",
@@ -57,6 +55,6 @@
                     this.$swal(e.message)
                 }
             }
-        },
+        },*/
     }
 </script>

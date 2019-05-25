@@ -15,7 +15,7 @@
         <div class="kt-portlet__body kt-portlet__body--fluid">
             <b-row>
                  <b-col cols="4" v-for="task in tasks" :key="task.id">
-                     <task :id="task.id"></task>
+                     <task :task="task"></task>
                  </b-col>
             </b-row>
         </div>
@@ -37,19 +37,19 @@ export default {
     },
     data() {
         return {
-            workflow: [],
+           
             tasks: []
         }
     },
     methods:{
         async getTasks(){
             try {
-                /*const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'workflow/' + this.workflow.id + '/tasks/', {
+               const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'workflow/' + this.$route.params.workflow_id + '/tasks/', {
                     headers: {
                         Authorization: 'token ' + store.getters.token
                     }
-                })*/
-
+                })
+ /*
                 const data = [{
                     Name:"Join Us Here",
                     Description:"To join us please fill the form and submit",
@@ -62,7 +62,7 @@ export default {
                     InputFields: [],
                     OutputFields: [15, 16 , 20]
                 }]
-
+*/
                 console.log(data)
 
                 this.tasks=data
