@@ -7,7 +7,8 @@ from cc.Services.CategoryService import CategoryService
 from cc.Services.DataService import DataService
 from cc.Services.RoleService import RoleService
 from cc.Services.TaskService import TaskService
-from cc.models import Community, ClassEnum, Category
+from cc.Services.WorkflowService import WorkflowService
+from cc.models import Community, ClassEnum, Category, TaskType
 
 
 class CommunityService(object):
@@ -17,6 +18,7 @@ class CommunityService(object):
 	__dataService = DataService.Instance()
 	__roleService = RoleService.Instance()
 	__taskService = TaskService.Instance()
+	__workflowService=WorkflowService.Instance()
 	
 	@staticmethod
 	def Instance():
@@ -59,7 +61,9 @@ class CommunityService(object):
 			for r in community.get("Roles", u""):
 				obj, created = self.__roleService.GetOrCreate(r)
 				model.Roles.add(obj)
-		# self.__createDefaultMemberDataType(model.pk)
+		user_datatype=self.__createDefaultMemberDataType(model.pk)
+		self.__createDefaultRoles(model.pk)
+		self.__createDefaultJoinTask(model.pk, user_datatype)
 		return model
 	
 	def Update(self, community, id):
@@ -94,7 +98,7 @@ class CommunityService(object):
 			"Fields": [
 				{
 					"Name": "User",
-					"Class": 7
+					"Class": ClassEnum.User.value
 				}
 			]
 		}
@@ -105,11 +109,26 @@ class CommunityService(object):
 			
 		return dataType
 
-	def __createDefaultJoinTask(self):
-		data ={
-		
+	def __createDefaultJoinWorkflow(self, pk):
+		data={
+			"Name":"Join",
+			"Description":"This is the task that every member of the system will have to follow in order to join the Community"
 		}
-		self.__taskService.Create(data)
+		workflow=self.__workflowService.Create(data, pk)
+		return workflow
+	
+	def __createDefaultJoinTask(self, pk, user):
+		workflow_id=self.__createDefaultJoinWorkflow(pk).pk
+		TaskData ={
+			"Name":"Join",
+			"Description":"This is the task that every member of the system will have to follow in order to join the Community",
+			"Available":True,
+			"AvailableTill":None,
+			"AvailableTimes":10000,
+			"InputField":user.pk,
+			"Type":TaskType.Join.value
+		}
+		self.__taskService.Create(TaskData, workflow_id)
 		
 	def Delete(self, id):
 		model = Community.objects.get(pk=id)
@@ -136,5 +155,7 @@ class CommunityService(object):
 			communityList = Community.objects.filter(Categories__in = categoryIdList)
 			communityList.query.group_by = ["id"]
 			return communityList
-		
 	
+	def __createDefaultRoles(self, pk):
+		self.__roleService.Create("Member", pk)
+		self.__roleService.Create("Admin", pk)

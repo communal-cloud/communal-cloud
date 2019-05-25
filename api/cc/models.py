@@ -47,6 +47,10 @@ class BaseModel(models.Model):
 			del self.CreatedOn
 		self.ModifiedOn = timezone.now()
 		return super(BaseModel, self).save(*args, **kwargs)
+	
+	def delete(self, *args, **kwargs):
+		self.Deleted=True
+		self.save()
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -105,6 +109,7 @@ class DataField(BaseModel):
 	Name = models.CharField(max_length=50)
 	Type = models.IntegerField(choices=[(choice.value, choice.name.replace("_", " ")) for choice in ClassEnum])
 	Enumerations = models.ManyToManyField(DataEnumeration, blank=True)
+	Parameters = JSONField(default="{}")
 	Saved = models.BooleanField(default=False)
 	
 	@property
