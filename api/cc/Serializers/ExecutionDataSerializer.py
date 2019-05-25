@@ -3,8 +3,7 @@ from cc import models
 from cc.Serializers.DataEnumerationSerializer import DataEnumerationSerializer
 
 
-class DataFieldSerializer(ModelSerializer):
-	Enumerations = DataEnumerationSerializer(required=False, many=True)
+class ExecutionSerializer(ModelSerializer):
 	
 	
 	class Meta:
