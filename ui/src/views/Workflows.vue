@@ -44,20 +44,21 @@ export default {
     methods:{
         async getWorkflows(){
             try {
-                /*const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'community/' + this.$route.params.community_id + '/workflows/', {
+                const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'community/' + this.$route.params.community_id + '/workflows/', {
                     headers: {
                         Authorization: 'token ' + store.getters.token
                     }
-                })*/
+                })
 
-                const data = [{
+               /* const data = [{
                     Name: "Bird Watch",
                     Description:"Watch bird for the community",
                 }]
-
+                */
                 console.log(data)
-
+                if(data){
                 this.workflows=data
+                }
 
             } catch (e) {
                 this.$swal(e.message)

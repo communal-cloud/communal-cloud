@@ -41,7 +41,7 @@
         methods:{
             async createWorkflow(){
                     try {
-                        const { data } = await axios.put(process.env.VUE_APP_BASE_URL+'workflow/'+this.$route.params.community_id+'/', {
+                        const { data } = await axios.post(process.env.VUE_APP_BASE_URL+'workflow/'+this.$route.params.community_id+'/', {
                             Name: this.workflow_name,
                             Description: this.workflow_description
                         })
