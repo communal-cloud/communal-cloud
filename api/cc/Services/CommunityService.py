@@ -121,4 +121,20 @@ class CommunityService(object):
 		
 	def GetActiveList(self):
 		return Community.objects.filter(Deleted=0)
+
+	def Search(self, searchRequest):
+		if "Name" in searchRequest:
+			searchContext = searchRequest.get("Name", u"")
+			return Community.objects.filter(Name__icontains=searchContext)
+		elif "Purpose" in searchRequest:
+			searchContext = searchRequest.get("Purpose", u"")
+			return Community.objects.filter(Purpose__icontains=searchContext)
+		elif "Category" in searchRequest:
+			searchContext = searchRequest.get("Category", u"")
+			category = Category.objects.filter(Name__icontains=searchContext).values_list('id', flat=True)
+			categoryIdList = list(category)
+			communityList = Community.objects.filter(Categories__in = categoryIdList)
+			communityList.query.group_by = ["id"]
+			return communityList
+		
 	
