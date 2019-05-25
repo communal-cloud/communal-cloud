@@ -10,7 +10,7 @@
 
 
 <b-input-group :prepend="data.name" class="mt-3">
-    <b-form-input :name="" type="text"></b-form-input>
+    <b-form-input name="CCC" type="text"></b-form-input>
 </b-input-group>
                
     
