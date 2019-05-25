@@ -293,14 +293,28 @@ import axios from 'axios/index';
                         const { data } = await axios.post(process.env.VUE_APP_BASE_URL+'data/'+this.communityStep.id+'/', {
                                 Name: this.dataTypeName,
                                 Fields: this.community_data
+
                              
                         })
 
                         if(data)
                         console.log(data)
-                            this.$swal("Step 2 completed")
+                                          try {
+                                          const { data } = await axios.put(process.env.VUE_APP_BASE_URL+'community/'+this.communityStep.id+'/', {
+                                                  IsCompleted: true,
+                                                  
+                                              
+                                          })
+
+                                          if(data)
+                                          console.log(data)
+                                              this.$swal("Community Created")
+                                              } catch (e) {
+                                                  this.$swal("Error when updating community")
+                                              }
+
                     } catch (e) {
-                        this.$swal("Error when updating community")
+                        this.$swal("Error when creating data type")
                     }
 
 
