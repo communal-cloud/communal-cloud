@@ -1,4 +1,7 @@
 import logging
+
+from django.http import JsonResponse
+
 from cc.models import Role, Community
 
 
@@ -18,13 +21,14 @@ class RoleService(object):
 		RoleService.__instance = self
 	
 	def Get(self, id):
-		raise NotImplementedError
+		model = Role.objects.get(pk=id)
+		return model
 	
-	def List(self, communityId):
-		raise NotImplementedError
-	
-	# def Create(self, name, communityId):
-	# 	return Role.objects.create(Name=name)
+	# Get roles by communityId
+	def GetList(self, communityId):
+		community = Community.objects.get(pk=communityId)
+		role_list = Role.objects.filter(community=community)
+		return role_list
 	
 	def Update(self, role, id):
 		model = Role.objects.get(pk=id)
@@ -40,3 +44,8 @@ class RoleService(object):
 	def GetOrCreate(self, role):
 		model = Role.objects.get_or_create(Name=role)
 		return model
+	
+	def Delete(self, id):
+		role = Role.objects.get(pk=id)
+		role.delete()
+		return JsonResponse(status=200)

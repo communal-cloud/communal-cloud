@@ -44,7 +44,6 @@ class DataService(object):
 					datatype.Fields.add(datafield)
 					newenum = DataEnumeration.objects.create(Name=value, Value=key)
 					datafield.Enumerations.add(newenum)
-		
 		else:
 			datafield = DataField.objects.create(
 				Name=request.get("Name", u""),
