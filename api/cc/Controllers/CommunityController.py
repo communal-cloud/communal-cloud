@@ -18,6 +18,11 @@ class CommunityController(APIView):
 	#  authentication_classes = (TokenAuthentication,)
 	# permission_classes = (IsAuthenticated,)
 	
+	def get(self, request, *args, **kwargs):
+		id = kwargs.get('id', '')
+		model = self.__communityService.Get(id)
+		return Response(CommunitySerializer(model).data)
+	
 	def post(self, request, format=None):
 		self.__communityService.Create(request.data)
 		# result = CommunitySerializer(community)
@@ -27,4 +32,9 @@ class CommunityController(APIView):
 		id = kwargs.get('id', '')
 		community = self.__communityService.Update(request.data, id)
 		result = CommunitySerializer(community)
-		return JsonResponse({'status': 'OK'}, status=200)
+		return Response(CommunitySerializer(community).data)
+	
+	def delete(self, request, *args, **kwargs):
+		community_id = kwargs.get('id', '')
+		return self.__communityService.Delete(community_id)
+		

@@ -1,5 +1,4 @@
 import logging
-
 from cc.models import Execution, Task, ExecutionData, DataField
 
 
@@ -24,13 +23,20 @@ class ExecutionService(object):
 		model.ExecutedBy = user
 		model.save()
 		fields = execution.get("Data", [])
-		group = None  # TODO: If fields contains "Identifier" filed take the value
+		indentifier = fields.filter(lambda f: f.Field.Name == "Identifier")
+		if not indentifier:
+			identifierField = self.GetIdentifierField(model.Task.id)
+			identifier = ExecutionData.save(DataField=identifierField, Value=ExecutionData.objects.latest.id + 1)
+		group = identifier
 		for field in fields:
-			self.SaveDataField(field, group)
+			self.SaveExecutionData(field, group)
 	
-	def SaveDataField(self, field, group=None):
+	def SaveExecutionData(self, field, group=None):
 		model = ExecutionData()
-		model.DataDataGroup = group
-		model.DataField = DataField.objects.get(pk=field.get("DataField", ""))
-		model.DataValue = field.get("Data", None)  # TODO: If does not work put the data in a dictionary
+		model.DataGroup = group
+		model.Field = DataField.objects.get(pk=field.get("DataField", ""))
+		model.Value = field.get("Data", None)  # TODO: If does not work put the data in a dictionary
 		model.save()
+	
+	def GetIdentifierField(self, id):
+		return

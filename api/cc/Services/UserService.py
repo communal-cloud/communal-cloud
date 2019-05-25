@@ -25,23 +25,21 @@ class UserService(object):
 		UserService.__instance = self
 	
 	def Register(self, userData):
-		userData["groups"] = []
-		userData["user_permissions"] = []
 		registerSerializer = RegisterSerializer(data = userData)
-		registerSerializer.is_valid()
-		user = registerSerializer.create(registerSerializer.data)
-		user.set_password(user.password)
-		user.save()
+		registerSerializer.is_valid(raise_exception=True)
+		user = CreateNewUser(registerSerializer.data)
 		SendActivationEmail(user)
 		return user
 	
 	def UpdateUser(self, user, updateData):
-		if ('username' in updateData):
-			user.username = updateData['username']
+		if ('email' in updateData):
+			user.email = updateData['email']
 		if ('name' in updateData): 
 			user.name = updateData['name']
 		if ('password' in updateData):
-			user.set_password(updateData['password'])
+			user.password = updateData['password']
+		user.clean_fields()
+		user.set_password(user.password)
 		user.save()
 		return user
 	
@@ -57,7 +55,7 @@ class UserService(object):
 		activationTokenRegistry.delete()
 		return JsonResponse({'status':'OK' }, status=200)
 
-	def ForgotPassword(self, email, baseUrl):
+	def ForgotPassword(self, email):
 		try:
 			user = User.objects.get(email = email)
 		except:
@@ -69,6 +67,21 @@ class UserService(object):
 		token = Token(key = userData.auth_token.key)
 		token.delete()
 		return JsonResponse({'status':'OK' }, status=200)
+
+
+def CreateNewUser(userData):
+	user = User(
+		name = userData['name'],
+		email = userData['email'],
+		password = userData['password'],
+		is_superuser = False,
+		is_staff = False,
+		is_active = False
+	)
+	user.set_password(user.password)
+	user.save()
+
+	return user
 
 def SendActivationEmail(user):
 	baseUrl = settings.BASE_URL
@@ -100,14 +113,27 @@ def SendForgotPasswordEmail(user):
 	newPassword = GenerateAndSaveNewPassword(user)
 	subject = "Communal-Cloud Password Change"
 	message = "Your user credentials are below.\n\n" \
-	+ "Username: " + user.username + "\n" \
+	+ "Email: " + user.email + "\n" \
 	+ "Password: " + newPassword
 	emailFrom = "noreply@communalcloud.net"
 	emailTo = (user.email,)
 	send_mail(subject, message, emailFrom, emailTo)
 
 def GenerateAndSaveNewPassword(user):
-	newPassword = random_string_generator(size = 10)
+	passwordLength = 10
+	mustIncludeList = ["-*'#$%_&()[]{}=+/!^", "abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"]
+	totalCharList = ''.join(mustIncludeList) + "0123456789"
+
+	newPassword = random_string_generator(size = passwordLength, chars = totalCharList)
+	newPasswordToList = list(newPassword)
+	passwordIndexList = list(range(0, passwordLength))
+	mustIncludeIndexList = random.sample(passwordIndexList, len(mustIncludeList))
+	for mustIncludeCharlist in mustIncludeList:
+		indexToChange = int(mustIncludeIndexList[0])
+		newPasswordToList[indexToChange] = random.choice(mustIncludeCharlist)
+		mustIncludeIndexList.pop(0)
+	newPassword = ''.join(newPasswordToList)
+	
 	user.set_password(newPassword)
 	user.save()
 	return newPassword
