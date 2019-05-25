@@ -28,8 +28,9 @@ class DataService(object):
 	def createDataType(self, request, id):
 		model = DataType()
 		model.Name = request.get("Name", u"")
-		model.Community = Community.objects.get(pk=id)
+		model.Community_id = id
 		model.save()
+		
 		self.createDataField({
 			"Name": "Identifier",
 			"Class": ClassEnum.String.value

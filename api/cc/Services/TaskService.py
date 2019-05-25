@@ -2,7 +2,7 @@ import logging
 
 from django.http import JsonResponse
 
-from cc.models import Task, Community, Workflow, User, Role, DataField, TaskType
+from cc.models import Task, Workflow, User, Role, DataField, TaskType
 
 
 class TaskService(object):

@@ -1,10 +1,5 @@
 import logging
-from cc.models import ClassEnum
 from cc.models import DataType
-from cc.models import DataField
-from cc.models import DataEnumeration
-from cc.models import Community
-import json
 
 
 class DataTypeService(object):
