@@ -16,6 +16,7 @@ import SignIn from './components/auth/SignIn.vue'
 import SignUp from './components/auth/SignUp.vue'
 import Activation from './components/auth/Activation.vue'
 import Forgot from './components/auth/Forgot.vue'
+import CommunityDetails from './views/CommunityDetails'
 
 Vue.use(Router)
 
@@ -55,7 +56,14 @@ const routes = [
     meta: {
       requiresAuth: true
     }
-  },
+  },{
+        path: '/community/:id',
+        name: 'communityDetails',
+        component: CommunityDetails,
+        meta: {
+            requiresAuth: true
+        }
+    },
   {
     path: '/community/create',
     name: 'createCommunity',
