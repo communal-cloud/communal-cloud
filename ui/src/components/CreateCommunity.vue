@@ -218,6 +218,7 @@ import axios from 'axios/index';
          if(step == 'step1'){
              this.step1=true;
              this.step2=false;
+             console.log(this.community_categories)
 
               try {
                         const { data } = await axios.post(process.env.VUE_APP_BASE_URL+'community/', {

@@ -20,11 +20,7 @@ class ClassEnum(Enum):
 	GeoLocation = 5
 	Relation = 6
 	User = 7
-<<<<<<< HEAD
-	Asd = 8
-=======
 	Image = 8
->>>>>>> 44b614acf78df31d5747e6a2e5e38d30002a307a
 
 
 class BaseManager(models.Manager):
