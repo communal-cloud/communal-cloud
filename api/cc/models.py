@@ -109,6 +109,7 @@ class DataField(BaseModel):
 	Name = models.CharField(max_length=50)
 	Type = models.IntegerField(choices=[(choice.value, choice.name.replace("_", " ")) for choice in ClassEnum])
 	Enumerations = models.ManyToManyField(DataEnumeration, blank=True)
+	Parameters = JSONField(default="{}")
 	Saved = models.BooleanField(default=False)
 	
 	@property
