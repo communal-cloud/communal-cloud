@@ -1,8 +1,5 @@
 import logging
 
-from django.http import JsonResponse
-
-from cc.Serializers.DataTypeSerializer import DataTypeSerializer
 from cc.Services.CategoryService import CategoryService
 from cc.Services.DataService import DataService
 from cc.Services.RoleService import RoleService
@@ -104,7 +101,7 @@ class CommunityService(object):
 		}
 		
 		dataType = self.__dataService.createDataType(data, id)
-		for field in data.get("Fields",u""):
+		for field in data.get("Fields", []):
 			self.__dataService.createDataField(field, dataType)
 			
 		return dataType
@@ -133,7 +130,6 @@ class CommunityService(object):
 	def Delete(self, id):
 		model = Community.objects.get(pk=id)
 		model.delete()
-		return JsonResponse(status=200)
 	
 	def GetList(self):
 		return Community.objects.all()

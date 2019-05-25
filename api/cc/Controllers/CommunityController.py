@@ -36,7 +36,8 @@ class CommunityController(APIView):
 	
 	def delete(self, request, *args, **kwargs):
 		community_id = kwargs.get('id', '')
-		return self.__communityService.Delete(community_id)
+		self.__communityService.Delete(community_id)
+		return JsonResponse({'status': 'OK'}, status=200)
 
 class CommunityViewSetController(ViewSet):
 	__logger = logging.getLogger('UserController')
