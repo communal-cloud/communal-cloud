@@ -159,6 +159,3 @@ class CommunityService(object):
 	def __createDefaultRoles(self, pk):
 		self.__roleService.Create("Member", pk)
 		self.__roleService.Create("Admin", pk)
-
-		
-	
