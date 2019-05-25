@@ -8,6 +8,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 import json
 
+from cc.Serializers.DataTypeSerializer import DataTypeSerializer
 from cc.Services.DataService import DataService
 
 
@@ -26,6 +27,8 @@ class FieldClassController(APIView):
 		datatype=self.__dataService.createDataType(request.data, id)
 		for field in request.data.get("Fields",u""):
 			self.__dataService.createDataField(field,datatype)
-		return JsonResponse({'status': 'OK'}, status=200)
+		response = Response(DataTypeSerializer(datatype).data)
+		
+		return response
 
 
