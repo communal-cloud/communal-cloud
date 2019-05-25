@@ -24,9 +24,9 @@ class CommunityController(APIView):
 		return Response(CommunitySerializer(model).data)
 	
 	def post(self, request, format=None):
-		self.__communityService.Create(request.data)
+		model = self.__communityService.Create(request.data)
 		# result = CommunitySerializer(community)
-		return JsonResponse({'status': 'OK'}, status=200)
+		return Response(CommunitySerializer(model).data)
 	
 	def put(self, request, *args, **kwargs):
 		id = kwargs.get('id', '')
