@@ -1,7 +1,4 @@
 import logging
-
-from pycodestyle import ambiguous_identifier
-
 from cc.models import Execution, Task, ExecutionData, DataField
 
 

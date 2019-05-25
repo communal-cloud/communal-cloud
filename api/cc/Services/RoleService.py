@@ -27,8 +27,8 @@ class RoleService(object):
 	# Get roles by communityId
 	def GetList(self, communityId):
 		community = Community.objects.get(pk=communityId)
-		# role_list = Role.objects.filter(Community=community)
-		return community.Roles
+		role_list = Role.objects.filter(community=community)
+		return role_list
 	
 	# def Create(self, name, communityId):
 	# 	return Role.objects.create(Name=name)

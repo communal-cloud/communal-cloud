@@ -31,8 +31,7 @@ class RolesController(APIView):
     __logger = logging.getLogger('RolesController')
     __role_service = RoleService.Instance()
     
-    @api_view()
-    def get(self, request, *args, **kwargs):
+    def get(self, *args, **kwargs):
         community_id = kwargs.get('id', '')
         roles = self.__role_service.GetList(community_id)
         return Response(RoleSerializer(roles, many=True).data)
