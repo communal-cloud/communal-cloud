@@ -40,9 +40,19 @@ class RolesController(APIView):
     
 
 class AllCommunitiesController(APIView):
-    __logger = logging.getLogger('CommunitiesController')
+    __logger = logging.getLogger('AllCommunitiesController')
     __community_service = CommunityService.Instance()
     
     def get(self, *args, **kwargs):
         communities = self.__community_service.GetList()
         return Response(CommunitySerializer(communities, many=True).data)
+    
+
+class AllActiveCommunitiesController(APIView):
+    __logger = logging.getLogger('AllActiveCommunitiesController')
+    __community_service = CommunityService.Instance()
+    
+    def get(self, *args, **kwargs):
+        active_communities = self.__community_service.GetActiveList()
+        return Response(CommunitySerializer(active_communities, many=True).data)
+    

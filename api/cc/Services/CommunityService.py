@@ -118,3 +118,7 @@ class CommunityService(object):
 	
 	def GetList(self):
 		return Community.objects.all()
+		
+	def GetActiveList(self):
+		return Community.objects.filter(Deleted=0)
+	
