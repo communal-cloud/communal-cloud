@@ -108,8 +108,8 @@ class CommunityService(object):
 
 	def __createDefaultJoinWorkflow(self, pk):
 		data={
-			"Name":"Join",
-			"Description":"This is the task that every member of the system will have to follow in order to join the Community"
+			"Name":"Membership Workflow",
+			"Description":"This contains the tasks for member operations"
 		}
 		workflow=self.__workflowService.Create(data, pk)
 		return workflow
