@@ -57,7 +57,7 @@ const routes = [
     }
   },
   {
-    path: '/community/create',
+    path: '/create',
     name: 'createCommunity',
     component: CreateCommunity,
     meta: {

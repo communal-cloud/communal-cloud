@@ -255,7 +255,7 @@ import axios from 'axios/index';
              this.step3=true;
              this.step4=false;
 
-              this.community_data.map(function(item) {
+              this.community_data=this.community_data.map(function(item) {
                   if(item.type=="Number")
                   {
                     item.type=1
@@ -290,7 +290,7 @@ import axios from 'axios/index';
 
               console.log(this.community_data)
               try {
-                        const { data } = await axios.put(process.env.VUE_APP_BASE_URL+'data/'+this.communityStep.id+'/', {
+                        const { data } = await axios.post(process.env.VUE_APP_BASE_URL+'data/'+this.communityStep.id+'/', {
                                 Name: this.dataTypeName,
                                 Fields: this.community_data
                              
