@@ -32,7 +32,7 @@ class DataService(object):
 		model.save()
 		self.createDataField({
 			"Name": "Identifier",
-			"Type": ClassEnum.String
+			"Class": ClassEnum.String.value
 		}, model)
 		return model
 	
@@ -47,6 +47,6 @@ class DataService(object):
 		else:
 			datafield = DataField.objects.create(
 				Name=request.get("Name", u""),
-				Type=request.get("Class", ClassEnum.NotSpecified)
+				Type=request.get("Class", ClassEnum.NotSpecified.value)
 			)
 			datatype.Fields.add(datafield)

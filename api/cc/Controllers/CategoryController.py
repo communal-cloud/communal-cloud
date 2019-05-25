@@ -19,3 +19,4 @@ class CategoryController(APIView):
 		self.__categoryService.Create(request.data)
 		result = None
 		return Response(result)
+	
