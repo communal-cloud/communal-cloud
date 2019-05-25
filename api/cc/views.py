@@ -8,9 +8,11 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from cc.Serializers.TaskSerializer import TaskSerializer
 from cc.Serializers.RoleSerializer import RoleSerializer
+from cc.Serializers.CommunitySerializer import CommunitySerializer
 
 from cc.Services.TaskService import TaskService
 from cc.Services.RoleService import RoleService
+from cc.Services.CommunityService import CommunityService
 
 from cc.models import Task
 from cc.models import Role
@@ -31,8 +33,26 @@ class RolesController(APIView):
     __logger = logging.getLogger('RolesController')
     __role_service = RoleService.Instance()
     
-    @api_view()
-    def get(self, request, *args, **kwargs):
+    def get(self, *args, **kwargs):
         community_id = kwargs.get('id', '')
         roles = self.__role_service.GetList(community_id)
         return Response(RoleSerializer(roles, many=True).data)
+    
+
+class AllCommunitiesController(APIView):
+    __logger = logging.getLogger('AllCommunitiesController')
+    __community_service = CommunityService.Instance()
+    
+    def get(self, *args, **kwargs):
+        communities = self.__community_service.GetList()
+        return Response(CommunitySerializer(communities, many=True).data)
+    
+
+class AllActiveCommunitiesController(APIView):
+    __logger = logging.getLogger('AllActiveCommunitiesController')
+    __community_service = CommunityService.Instance()
+    
+    def get(self, *args, **kwargs):
+        active_communities = self.__community_service.GetActiveList()
+        return Response(CommunitySerializer(active_communities, many=True).data)
+    

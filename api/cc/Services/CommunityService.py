@@ -59,7 +59,7 @@ class CommunityService(object):
 			for r in community.get("Roles", u""):
 				obj, created = self.__roleService.GetOrCreate(r)
 				model.Roles.add(obj)
-		self.__createDefaultMemberDataType(model.pk)
+		# self.__createDefaultMemberDataType(model.pk)
 		return model
 	
 	def Update(self, community, id):
@@ -116,5 +116,9 @@ class CommunityService(object):
 		model.delete()
 		return JsonResponse(status=200)
 	
-	def GetList(self, user_id):
+	def GetList(self):
 		return Community.objects.all()
+		
+	def GetActiveList(self):
+		return Community.objects.filter(Deleted=0)
+	

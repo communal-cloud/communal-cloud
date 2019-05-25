@@ -194,7 +194,7 @@ class Member(BaseModel):
 	Banned = models.BooleanField(default=False)
 	
 	def __str__(self):
-		return u'{0} is member of {1}'.format(self.User.first_name, self.Community.Name)
+		return u'{0} is member of {1}'.format(self.User.name, self.Community.Name)
 	
 	def __unicode__(self):
-		return u'{0} is member of {1}'.format(self.User.first_name, self.Community.Name)
+		return u'{0} is member of {1}'.format(self.User.name, self.Community.Name)
