@@ -81,6 +81,7 @@
                         const { data } = await axios.post(process.env.VUE_APP_BASE_URL+'user/', {
                                 name: this.name,
                                 email: this.email,
+                                username: this.email,
                                 password: this.password
                         })
 

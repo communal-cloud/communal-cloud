@@ -3,10 +3,14 @@ from cc.models import Execution, Task, ExecutionData, DataField
 
 from cc.models import Execution, Task, ExecutionData, DataField
 
+from cc.Services.MemberService import MemberService
+from cc.models import Execution, Task, ExecutionData, DataField, DataType, TaskType, Community
+
 
 class ExecutionService(object):
 	__instance = None
 	__logger = logging.getLogger('ExecutionService')
+	__memberService = MemberService.Instance()
 	
 	@staticmethod
 	def Instance():
@@ -22,13 +26,23 @@ class ExecutionService(object):
 	def Save(self, execution, user):
 		model = Execution()
 		model.Task = Task.objects.get(pk=execution.get("Task", ""))
+		if Task.Type == TaskType.Join:
+			community = model.Task.Workflow.Community
+			self.__memberService.Join(community, user)
 		model.ExecutedBy = user
 		model.save()
 		fields = execution.get("Data", [])
-		indentifier = fields.filter(lambda f: f.Field.Name == "Identifier")
+		dataFields = DataField.objects.filter(pk__in=[i.get("Field") for i in fields])
+		
+		indentifier = dataFields.filter(Name="Identifier").first()
 		if not indentifier:
 			identifierField = self.GetIdentifierField(model.Task.id)
-			identifier = ExecutionData.save(DataField=identifierField, Value=ExecutionData.objects.latest.id + 1)
+			lastExecution = ExecutionData.objects.last()
+			newIdx = 1
+			if lastExecution:
+				newIdx = lastExecution.id + 1
+			
+			identifier = ExecutionData.objects.create(Field=identifierField, Value=newIdx)
 		group = identifier
 		for field in fields:
 			self.SaveExecutionData(field, group)
@@ -36,9 +50,13 @@ class ExecutionService(object):
 	def SaveExecutionData(self, field, group=None):
 		model = ExecutionData()
 		model.DataGroup = group
-		model.Field = DataField.objects.get(pk=field.get("DataField", ""))
-		model.Value = field.get("Data", None)  # TODO: If does not work put the data in a dictionary
+		model.Field = DataField.objects.get(pk=field.get("Field", None))
+		model.Value = field.get("Value", None)  # TODO: If does not work put the data in a dictionary
 		model.save()
 	
 	def GetIdentifierField(self, id):
-		return
+		task = Task.objects.get(pk=id)
+		dataField = task.OutputFields.first()
+		dataType = dataField.datatype_set.first()
+		identifier = dataType.Fields.filter(Name="Identifier").first()
+		return identifier

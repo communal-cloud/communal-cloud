@@ -22,11 +22,15 @@ class ClassEnum(Enum):
 	User = 7
 	Image = 8
 
+class TaskType(Enum):
+	NotSpecified = 0
+	Execution = 1
+	Join = 2
+	Leave = 3
 
 class BaseManager(models.Manager):
 	def get_queryset(self):
 		return super().get_queryset().filter(Deleted=False)
-
 
 
 class BaseModel(models.Model):
@@ -135,7 +139,7 @@ class Community(BaseModel):
 class Workflow(BaseModel):
 	Name = models.CharField(max_length=50)
 	Description = models.CharField(max_length=5000)
-	Community_id = models.ForeignKey(Community, blank=True, default=1, on_delete=models.DO_NOTHING)
+	Community= models.ForeignKey(Community, blank=True, default=1, on_delete=models.DO_NOTHING)
 	
 	def __str__(self):
 		return u'Workflow {0} ({1})'.format(self.Name, self.id)
@@ -156,7 +160,8 @@ class Task(BaseModel):
 	Predecessors = models.ManyToManyField("self", blank=True, symmetrical=False)
 	InputFields = models.ManyToManyField(DataField, related_name="InputFields", blank=True)
 	OutputFields = models.ManyToManyField(DataField, related_name="OutputFields", blank=True)
-
+	Type = models.IntegerField(choices=[(choice.value, choice.name.replace("_", " ")) for choice in TaskType])
+	
 	def __str__(self):
 		return u'Task {0} ({1})'.format(self.Name, self.id)
 
@@ -179,15 +184,19 @@ class Execution(BaseModel):
 class DataType(BaseModel):
 	Name = models.CharField(max_length=50)
 	Fields = models.ManyToManyField(DataField, blank=True)
+	def __str__(self):
+		return u'DataType {0} ({1})'.format(self.Name, self.id)
+	
+	def __unicode__(self):
+		return u'DataType {0} ({1})'.format(self.Name, self.id)
 
 
-class Member(BaseModel):
 	Community = models.ForeignKey(Community, on_delete=models.DO_NOTHING)
 	User = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
 	Banned = models.BooleanField(default=False)
 
 	def __str__(self):
-		return u'{0} is member of {1}'.format(self.User.first_name, self.Community.Name)
-
+		return u'{0} is member of {1}'.format(self.User.name, self.Community.Name)
+	
 	def __unicode__(self):
-		return u'DataType {0} ({1})'.format(self.Name, self.id)
+		return u'{0} is member of {1}'.format(self.User.name, self.Community.Name)

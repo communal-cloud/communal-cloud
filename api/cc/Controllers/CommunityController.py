@@ -24,14 +24,12 @@ class CommunityController(APIView):
 		return Response(CommunitySerializer(model).data)
 	
 	def post(self, request, format=None):
-		self.__communityService.Create(request.data)
-		# result = CommunitySerializer(community)
-		return JsonResponse({'status': 'OK'}, status=200)
+		model = self.__communityService.Create(request.data)
+		return Response(CommunitySerializer(model).data)
 	
 	def put(self, request, *args, **kwargs):
 		id = kwargs.get('id', '')
 		community = self.__communityService.Update(request.data, id)
-		result = CommunitySerializer(community)
 		return Response(CommunitySerializer(community).data)
 	
 	def delete(self, request, *args, **kwargs):

@@ -113,7 +113,6 @@
   <b-list-group >
   <b-list-group-item  href="#" v-for="(data,index) in community_data" :key="index" v-on:click="RemoveInput(data)"> <b-form-input v-model="community_data[index].name" placeholder="Name of the field"></b-form-input>{{data.type}}</b-list-group-item>
   </b-list-group> 
-  <>
    <b-list-group>
   <b-list-group-item href="#" v-on:click="AddInput('Text')">Text</b-list-group-item>
   <b-list-group-item href="#" v-on:click="AddInput('Number')" >Number</b-list-group-item>
@@ -218,6 +217,7 @@ import axios from 'axios/index';
          if(step == 'step1'){
              this.step1=true;
              this.step2=false;
+             console.log(this.community_categories)
 
               try {
                         const { data } = await axios.post(process.env.VUE_APP_BASE_URL+'community/', {
