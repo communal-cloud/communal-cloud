@@ -35,30 +35,19 @@
               <!-- begin: Header Menu -->
               <button class="kt-header-menu-wrapper-close" id="kt_header_menu_mobile_close_btn"><i class="la la-close"></i></button>
               <div class="kt-header-menu-wrapper kt-grid__item kt-grid__item--fluid" id="kt_header_menu_wrapper">
-                <div id="kt_header_menu" class="kt-header-menu kt-header-menu-mobile">
-                  <ul class="kt-menu__nav ">
+                <div id="kt_header_menu" style="width: 100%;" class="kt-header-menu kt-header-menu-mobile">
+                  <ul class="kt-menu__nav " >
                     <li class="kt-menu__item" v-if="store.getters.check">
                       <router-link  class="kt-menu__link" to="/communities"><span class="kt-menu__link-text">All Communities</span></router-link>
                     </li>
                     <li class="kt-menu__item" v-if="store.getters.check">
                       <router-link  class="kt-menu__link" to="/create"><span class="kt-menu__link-text">Create Community</span></router-link>
                     </li>
-                    <li class="kt-menu__item" v-if="store.getters.check">
-                      <router-link  class="kt-menu__link" to="/createTask"><span class="kt-menu__link-text">Create Task</span></router-link>
-                    </li>
-                    <li class="kt-menu__item" v-if="store.getters.check">
-                      <router-link  class="kt-menu__link" to="/createWorkflow"><span class="kt-menu__link-text">Create Workflow</span></router-link>
-                    </li>
-                    <li class="kt-menu__item" v-if="store.getters.check">
-                      <router-link  class="kt-menu__link" to="/doTask"><span class="kt-menu__link-text">Do Task</span></router-link>
-                    </li>
-                    <li class="kt-menu__item" v-if="!store.getters.check">
-                      <router-link  class="kt-menu__link" to="/user/login"><span class="kt-menu__link-text">Login</span></router-link>
-                    </li>
-                    <li class="kt-menu__item" v-if="!store.getters.check">
-                      <router-link  class="kt-menu__link" to="/user/register"><span class="kt-menu__link-text">Register</span></router-link>
-                    </li>
                   </ul>
+                  <b-nav-form v-if="store.getters.check">
+                    <b-form-input size="sm" class="mr-sm-2" placeholder="Search Community"></b-form-input>
+                    <b-button size="sm" class="my-2 my-sm-0 searchButton" type="submit">Search</b-button>
+                  </b-nav-form>
                 </div>
               </div>
 
@@ -130,7 +119,7 @@
   
 }
 .form-inline {
-      margin-left: 30%;
+      margin-left: 50%;
 }
 .community {
   height: 200px;
@@ -155,6 +144,10 @@
 }
 .next{
   float: right;
+}
+
+.searchButton{
+  background-color: white;
 }
 
 .list-group{
