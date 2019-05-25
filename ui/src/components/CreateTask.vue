@@ -43,7 +43,7 @@
         <b-form-select v-model="task_users" :options="community_users" multiple></b-form-select>
 
         <ul id="task_users">
-            <li v-for="user in task_users" :key="id">
+            <li v-for="user in task_users" :key="user.id">
                 <b-button v-on:click="RemoveTaskUser(user)">{{ user.name }}</b-button>
             </li>
         </ul>
@@ -90,9 +90,9 @@
     export default {
         data() {
             return {
-                community_users: Community.methods.getCommunity().users,
-                community_roles: Community.methods.getCommunity().roles,
-                community_data_types: Community.methods.getCommunity().dataTypes,
+                community_users: {},
+                community_roles: {},
+                community_data_types: {},
                 task_name: '',
                 task_description: '',
                 task_available: false,
@@ -101,7 +101,8 @@
                 task_users: [],
                 task_roles: [],
                 task_data: '',
-                task_datas: []
+                task_datas: [],
+                checked:false
             }
         },
         methods: {
