@@ -20,6 +20,7 @@ class ClassEnum(Enum):
 	GeoLocation = 5
 	Relation = 6
 	User = 7
+	Asd = 8
 
 
 class User(AbstractBaseUser, PermissionsMixin):

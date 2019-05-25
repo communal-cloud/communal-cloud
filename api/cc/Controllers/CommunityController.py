@@ -27,4 +27,4 @@ class CommunityController(APIView):
 		id = kwargs.get('id', '')
 		community = self.__communityService.Update(request.data, id)
 		result = CommunitySerializer(community)
-		return Response(result)
+		return JsonResponse({'status': 'OK'}, status=200)
