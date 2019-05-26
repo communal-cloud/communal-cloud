@@ -83,29 +83,6 @@
               </div>
             </div>
           </div>
-          <!-- begin:: Footer -->
-          <div class="kt-footer  kt-footer--extended  kt-grid__item" id="kt_footer" style="background-image: url('assets/media/bg/bg-2.jpg');">
-            <div class="kt-footer__bottom">
-              <div class="kt-container">
-                <div class="kt-footer__wrapper">
-                  <div class="kt-footer__logo">
-                    <router-link class="kt-header__brand-logo" to="/">
-                      <img alt="Logo" src="/assets/media/logos/logo-white.png" width="140" class="kt-header__brand-logo-sticky">
-                    </router-link>
-                    <div class="kt-footer__copyright">
-                      2019&nbsp;&copy;&nbsp;
-                      Communal Cloud
-                    </div>
-                  </div>
-                  <div class="kt-footer__menu">
-                    <a href="http://git.communal-cloud.com" target="_blank">Git</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- end:: Footer -->
         </div>
       </div>
     </div>
@@ -119,7 +96,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  
+
 }
 .form-inline {
       margin-left: 35%;
