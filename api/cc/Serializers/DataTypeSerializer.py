@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 from cc import models
-from cc.Serializers.ExecutionDataSerializer import DataFieldSerializer
+from cc.Serializers.DataFieldSerializer import DataFieldSerializer
 
 
 class DataTypeSerializer(ModelSerializer):
