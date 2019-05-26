@@ -11,6 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from cc.Serializers.CommunitySerializer import CommunitySerializer
 from cc.Services.CommunityService import CommunityService
+from cc.Services.MemberService import MemberService
 
 
 class CommunityController(APIView):
@@ -43,8 +44,18 @@ class CommunityController(APIView):
 class CommunityViewSetController(ViewSet):
 	__logger = logging.getLogger('CommunityViewSetController')
 	__communityService = CommunityService.Instance()
+	__memberService = MemberService.Instance()
+
+	authentication_classes = (TokenAuthentication,)
+	permission_classes = (IsAuthenticated,)
 
 	@action(detail=True, methods=['get'])
 	def search(self, request, pk=None):
 		community = self.__communityService.Search(request.data)
 		return Response(CommunitySerializer(community, many=True).data)
+	
+	@action(detail=True, methods=['get'])
+	def notjoined(self, request, pk=None):
+		user = request.user
+		communities = self.__memberService.getNotJoinedCommunities(user)
+		return Response(CommunitySerializer(communities, many=True).data)
