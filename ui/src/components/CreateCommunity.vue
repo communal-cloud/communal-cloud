@@ -112,8 +112,7 @@
     </b-row>
   <b-list-group >
   <b-list-group-item  href="#" v-for="(data,index) in community_data" :key="index" v-on:click="RemoveInput(data)"> <b-form-input v-model="community_data[index].name" placeholder="Name of the field"></b-form-input>{{data.type}}</b-list-group-item>
-  </b-list-group> 
-  <>
+  </b-list-group>
    <b-list-group>
   <b-list-group-item href="#" v-on:click="AddInput('Text')">Text</b-list-group-item>
   <b-list-group-item href="#" v-on:click="AddInput('Number')" >Number</b-list-group-item>
@@ -125,8 +124,8 @@
   <b-list-group-item href="#" v-on:click="AddInput('RSVP')" >RSVP</b-list-group-item>
   <b-list-group-item href="#" v-on:click="AddInput('QA')" >Question & Answer</b-list-group-item>
 </b-list-group>
-<b-button   variant="success">+ Add More Data Type</b-button>
-<br></br>
+<b-button   variant="success m-3">+ Add More Data Type</b-button>
+<br>
      <b-button class="next" v-on:click="changeStep('step3')" variant="outline-primary">Next</b-button>
 
 </div>
@@ -365,7 +364,11 @@ import axios from 'axios/index';
 
 */
 </script>
-
+<style>
+    body {
+        background-repeat: repeat !important;
+    }
+</style>
 
 
 
