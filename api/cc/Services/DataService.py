@@ -24,7 +24,7 @@ class DataService(object):
 		DataService.__instance = self
 	
 	def getEnum(self):
-		return {i.name: i.value for i in ClassEnum}
+		return [i.name for i in ClassEnum]
 	
 	def createDataType(self, request, id):
 		model = DataType()
