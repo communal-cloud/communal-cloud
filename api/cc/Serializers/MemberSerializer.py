@@ -13,7 +13,8 @@ class MemberSerializer(ModelSerializer):
 	
 	class Meta:
 		model = models.Member
-		fields = ("Deleted", "Banned", "User", "Roles", "IsCreator")
-		
+		fields = ("Banned", "User", "Roles", "IsCreator")
+	
+	
 	def get_IsCreator(self, model):
 		return model.IsCreator

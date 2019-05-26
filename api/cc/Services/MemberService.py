@@ -1,8 +1,9 @@
 import logging
+
 from django.db.models import Q
+
 from cc.Services.RoleService import RoleService
 from cc.models import Member, Community
-from cc.models import Execution, Task, ExecutionData, DataField, DataType, TaskType
 
 
 class MemberService(object):
@@ -22,7 +23,7 @@ class MemberService(object):
 		MemberService.__instance = self
 	
 	def get(self):
-		pass
+		raise NotImplementedError
 	
 	def getMyCommunities(self, user):
 		community = Community.objects.filter(Roles__member__User=user)
@@ -31,6 +32,15 @@ class MemberService(object):
 	def getNotJoinedCommunities(self, user):
 		community = Community.objects.filter(~Q(Roles__member__User=user))
 		return community
+	
+	def CreateAdminMember(self, community, user):
+		model = Member()
+		model.User = user
+		model.Community = community
+		model.save()
+		roleModel = self.__roleService.GetAdminRole(community.id)
+		model.Roles.add(roleModel)
+		return model
 	
 	def Join(self, community, user):
 		model = Member()

@@ -21,7 +21,7 @@ class ExecutionService(object):
 		ExecutionService.__instance = self
 	
 	def Get(self, user, id):
-		query='''SELECT d.*
+		query = '''SELECT d.*
 				FROM cc_execution e
 				  LEFT JOIN cc_execution_Data ed ON e.basemodel_ptr_id = ed.execution_id
 				  LEFT JOIN cc_executiondata d ON d.basemodel_ptr_id = ed.executiondata_id
@@ -31,7 +31,7 @@ class ExecutionService(object):
                      LEFT JOIN cc_task_InputFields f ON t.basemodel_ptr_id = f.task_id
                    WHERE t.basemodel_ptr_id =%s)
 '''
-		inputs=ExecutionData.objects.raw(query,[id])
+		inputs = ExecutionData.objects.raw(query, [id])
 		return inputs
 	
 	def Save(self, execution, user):

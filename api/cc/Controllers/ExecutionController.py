@@ -18,11 +18,10 @@ class ExecutionController(APIView):
 	permission_classes = (IsAuthenticated,)
 	
 	def get(self, request, *args, **kwargs):
-		id=kwargs.get("id","")
+		id = kwargs.get("id", "")
 		response = self.__executionService.Get(request.user, id)
 		return Response(ExecutionDataSerializer(response, many=True).data)
-		
-		
+	
 	def post(self, request, format=None):
 		self.__executionService.Save(request.data, request.user)
 		return JsonResponse({'status': 'OK'}, status=200)
