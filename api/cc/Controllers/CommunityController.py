@@ -39,6 +39,7 @@ class CommunityController(APIView):
 		self.__communityService.Delete(community_id)
 		return JsonResponse({'status': 'OK'}, status=200)
 
+
 class CommunityViewSetController(ViewSet):
 	__logger = logging.getLogger('UserController')
 	__communityService = CommunityService.Instance()

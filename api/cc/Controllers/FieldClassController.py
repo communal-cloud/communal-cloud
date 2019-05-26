@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from django.http import JsonResponse
 import json
 
 from cc.Serializers.DataTypeSerializer import DataTypeSerializer
@@ -31,4 +32,11 @@ class FieldClassController(APIView):
 		
 		return response
 
-
+	def put (self, request, *args, **kwargs):
+		dataTypeId = kwargs.get('id', '')
+		datatype = self.__dataService.updateDataType(dataTypeId, request.data)
+		currentDataFieldList = datatype.Fields.all()
+		dataFieldListToUpdate = request.data.get("Fields",u"")
+		self.__dataService.updateDataFields(datatype, currentDataFieldList, dataFieldListToUpdate)
+		return Response(DataTypeSerializer(datatype).data)
+		
