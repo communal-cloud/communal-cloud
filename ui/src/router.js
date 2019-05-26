@@ -67,17 +67,17 @@ const routes = [
         }
     },
     {
-        path: '/community/:community_id',
-        name: 'communityDetails',
-        component: CommunityDetails,
+        path: '/community/create',
+        name: 'createCommunity',
+        component: CreateCommunity,
         meta: {
             requiresAuth: true
         }
     },
     {
-        path: '/community/create',
-        name: 'createCommunity',
-        component: CreateCommunity,
+        path: '/community/:community_id',
+        name: 'communityDetails',
+        component: CommunityDetails,
         meta: {
             requiresAuth: true
         }
