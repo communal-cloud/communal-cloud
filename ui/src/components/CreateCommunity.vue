@@ -365,7 +365,11 @@ import axios from 'axios/index';
 
 */
 </script>
-
+<style>
+    body {
+        background-repeat: repeat !important;
+    }
+</style>
 
 
 
