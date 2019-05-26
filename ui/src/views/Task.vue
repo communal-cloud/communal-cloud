@@ -1,5 +1,6 @@
 <template>
     <div class="card border border-success m-4" style="width: 22rem;">
+         <b-button class="mt-3" block >Edit</b-button>
         <div class="card-body">
             <h5 class="card-title">{{task.Name}}</h5>
             <p class="card-text">{{task.Description}}</p>
@@ -13,6 +14,7 @@
   <b-modal :id="modalID" hide-footer>
     <template slot="modal-title">
        <code>{{task.Name}}</code> 
+       
     </template>
     <div class="d-block text-center">
       <execute-task :task="task" :execute="execution"></execute-task>
