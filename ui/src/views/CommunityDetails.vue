@@ -13,19 +13,39 @@
             parturient montes, nascetur ridiculus mus. Donec consequat orci consectetur porta commodo. Duis faucibus
             purus vel consequat laoreet.</p>
 
+        <div>
+            <div>
+                <b-button-group>
+                    <b-button>
+                        <a>Workflows</a>
+                    </b-button>
+                    <b-button>
+                        <a :href="this.createWorkflowPath">Create Workflow</a>
+                    </b-button>
+                </b-button-group>
+            </div>
+        </div>
 
     </div>
 </template>
 
 <script>
     export default {
-        name: "CommunityDetails"
+        data() {
+            return {
+                community_id: 1
+            }
+        },
+        computed: {
+            createWorkflowPath: function () {
+                return "/community/" + this.community_id + "/workflow/create"
+            }
+        }
     }
+
 </script>
 
 <style scoped>
 
-    .main {
-    }
 
 </style>

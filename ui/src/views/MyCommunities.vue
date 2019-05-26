@@ -11,7 +11,7 @@
 
             <b-row>
                 <b-col cols="4" v-for="community in communities" :key="community.id">
-                    <community :id="community.id">
+                    <community :id="community.id" :isMyCommunity=true>
                     </community>
                 </b-col>
             </b-row>
@@ -40,7 +40,7 @@
         methods: {
             async getCommunities() {
                 try {
-                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'community/all/', {
+                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'member/1/communities/', {
                         headers: {
                             Authorization: 'token ' + store.getters.token
                         }

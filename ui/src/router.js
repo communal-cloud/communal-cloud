@@ -17,7 +17,7 @@ import SignUp from './components/auth/SignUp.vue'
 import Activation from './components/auth/Activation.vue'
 import Forgot from './components/auth/Forgot.vue'
 import CommunityDetails from './views/CommunityDetails'
-//import MyCommunities from './views/MyCommunities'
+import MyCommunities from './views/MyCommunities'
 
 Vue.use(Router)
 
@@ -81,14 +81,14 @@ const routes = [
             requiresAuth: true
         }
     },
-   /* {
+    {
         path: '/mycommunities',
         name: 'mycommunities',
         component: MyCommunities,
         meta: {
             requiresAuth: true
         }
-    },*/
+    },
     {
         path: '/community/:community_id/workflow/create',
         name: 'createWorkflow',
