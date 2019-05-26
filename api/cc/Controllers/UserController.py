@@ -7,11 +7,14 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 
+from cc.Serializers.TaskSerializer import TaskSerializer
+from cc.Services.RoleService import RoleService
+from cc.Services.TaskService import TaskService
 from cc.Services.UserService import UserService
 from cc.Serializers.UserSerializer import UserSerializer
 from cc.Serializers.RegisterSerializer import RegisterSerializer
 from cc.CustomPermissions import IsPostOrIsAuthenticated
-from cc.models import User, ActivationToken
+from cc.models import User, ActivationToken, Role
 import json
 
 class UserAPIViewController(APIView):
@@ -59,3 +62,17 @@ class UserViewSetController(ViewSet):
 	@action(detail=True, methods=['get'], permission_classes=[IsAuthenticated], authentication_classes=[TokenAuthentication])
 	def logout(self, request, pk=None):
 		return self.__userService.Logout(request.user)
+	
+class UserTaskController(APIView):
+	__logger = logging.getLogger('UserController')
+	__userService = UserService.Instance()
+	__taskService= TaskService.Instance()
+	__roleService = RoleService.Instance()
+	authentication_classes = (TokenAuthentication,)
+	permission_classes = (IsPostOrIsAuthenticated,)
+	
+	def get(self, request, id):
+		tasks = self.__taskService.GetUserCommunityTaskList(request.user, id)
+		return Response(TaskSerializer(tasks,many=True).data)
+		
+		
