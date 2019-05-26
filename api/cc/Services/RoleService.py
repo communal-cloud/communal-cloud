@@ -51,8 +51,9 @@ class RoleService(object):
 		
 	def Create(self, name, community_id, type=RoleType.NotSpecified.value):
 		model = Community.objects.get(pk=community_id)
-		obj, created = self.GetOrCreate(name, type)
-		model.Roles.add(obj)
+		roleModel = Role(Name = name, Type = type)
+		roleModel.save()
+		model.Roles.add(roleModel)
 	
 	def GetOrCreate(self, role, type=RoleType.Member.value):
 		model = Role.objects.get_or_create(Name=role, Type=type)
