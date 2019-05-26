@@ -48,14 +48,17 @@
             </li>
         </ul>
 
-        <b-form-select v-model="task_roles" :options="community_roles" multiple></b-form-select>
+        <b-form-select v-model="task_roles" :options="community_roles" multiple>
+            <template slot="option">
+                <option value="ASasd">asd</option>
+            </template>
+        </b-form-select>
 
         <ul id="task_roles">
             <li v-for="role in task_roles" :key="role.id">
                 <b-button v-on:click="RemoveTaskRole(role.id)">{{ role.Name }}</b-button>
             </li>
         </ul>
-
 
         <div class="row">
             <div class="col">
@@ -94,9 +97,6 @@
             community: function(){
                  return Community.methods.getCommunity(this.$route.params.community_id)
             },
-            community_members: function() {
-                return Community.methods.getCommunityMembers(this.$route.params.community_id)
-            },
             workflow: function(){
                 return Workflow.methods.getWorkflow(this.$route.params.workflow_id)
             }
@@ -104,6 +104,7 @@
         data() {
             return {
                 community_data: {},
+                community_members: [],
                 community_roles: [],
                 community_data_types: {},
                 task_name: '',
@@ -137,8 +138,16 @@
             createTask() {
 
             },
+            async getMembers(){
+                    await Community.methods.getCommunityMembers(this.$route.params.community_id).then((members) => {
+                        this.community_members = members.map(function(member){ return {value: member.id, text: member.Name}})
+                   })
+                   console.log(this.community_members)
+            },
             async getRoles(){
-                   this.community_roles = await Community.methods.getCommunityRoles(this.$route.params.community_id)
+                    await Community.methods.getCommunityRoles(this.$route.params.community_id).then((roles) => {
+                        this.community_roles = roles.map(function(role){ return {value: role.id, text: role.Name}})
+                   })
                    console.log(this.community_roles)
             },
         },
