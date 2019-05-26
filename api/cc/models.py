@@ -144,7 +144,7 @@ class Community(BaseModel):
 class Workflow(BaseModel):
 	Name = models.CharField(max_length=50)
 	Description = models.CharField(max_length=5000)
-	Community= models.ForeignKey(Community, blank=True, default=1, on_delete=models.DO_NOTHING)
+	Community = models.ForeignKey(Community, blank=True, default=1, on_delete=models.DO_NOTHING)
 	
 	def __str__(self):
 		return u'Workflow {0} ({1})'.format(self.Name, self.id)
