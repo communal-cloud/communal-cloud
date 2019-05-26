@@ -64,7 +64,6 @@
                     })
 
                     return this.community = data
-
                 } catch (e) {
                     this.$swal(e.message)
                 }
@@ -81,7 +80,6 @@
                     })
 
                     return data
-
                 } catch (e) {
                     this.$swal(e.message)
                 }
@@ -98,8 +96,22 @@
                     })
 
                     return data
-                    console.log(data)
+                } catch (e) {
+                    this.$swal(e.message)
+                }
+            },
+            async getCommunityDataTypes(id = null) {
+                try {
+                    if(id === null)
+                        id = this.id
 
+                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'community/' + id + '/datatype/', {
+                        headers: {
+                            Authorization: 'token ' + store.getters.token
+                        }
+                    })
+
+                    return data
                 } catch (e) {
                     this.$swal(e.message)
                 }

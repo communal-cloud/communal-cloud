@@ -41,10 +41,10 @@
                       <router-link  class="kt-menu__link" to="/communities"><span class="kt-menu__link-text">All Communities</span></router-link>
                     </li>
                     <li class="kt-menu__item" v-if="store.getters.check">
-                      <router-link  class="kt-menu__link" to="/mycommunities"><span class="kt-menu__link-text">My Communities</span></router-link>
+                      <router-link  class="kt-menu__link" to="/communities/my"><span class="kt-menu__link-text">My Communities</span></router-link>
                     </li>
                     <li class="kt-menu__item" v-if="store.getters.check">
-                      <router-link  class="kt-menu__link" to="/create"><span class="kt-menu__link-text">Create Community</span></router-link>
+                      <router-link  class="kt-menu__link" to="/community/create"><span class="kt-menu__link-text">Create Community</span></router-link>
                     </li>
                   </ul>
                   <b-nav-form v-if="store.getters.check">
