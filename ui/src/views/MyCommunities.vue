@@ -40,7 +40,7 @@
         methods: {
             async getCommunities() {
                 try {
-                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'member/1/communities/', {
+                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'member/'+store.getters.user.id+'/communities/', {
                         headers: {
                             Authorization: 'token ' + store.getters.token
                         }
