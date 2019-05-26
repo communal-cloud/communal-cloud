@@ -161,5 +161,5 @@ class CommunityService(object):
 		self.__roleService.Create("Admin", pk, RoleType.Admin.value)
 
 	def getMembersOfCommunity(self, communityId):
-		members = Member.objects.filter(Roles__community_id = communityId).all()
+		members = Member.objects.filter(Roles__community__id = communityId).all()
 		return members
