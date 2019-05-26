@@ -1,11 +1,6 @@
 <template>
-<<<<<<< HEAD
     <b-row class="row justify-content-center">
         <b-col class="col-xs-12 col-sm-8 col-md-6">
-=======
-    <div class="row justify-content-center">
-        <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4">
->>>>>>> parent of 1b3711fd... Merge remote-tracking branch 'origin/master'
             <div class="card">
                 <div class="card-body">
                     <h3 class="card-title">Create Task</h3>
@@ -27,11 +22,6 @@
                         <b-form-input v-model="task_description" type="text"/>
                     </b-input-group>
 
-<<<<<<< HEAD
-                    <b-form-checkbox v-model="task_available" name="check-button" switch>
-                        Available <b>({{ (checked) ? 'Yes' : 'No' }})</b>
-                    </b-form-checkbox>
-=======
                     <b-row class="mt-4 mb-4">
                         <b-col class="text-left">
                             <b-form-checkbox v-model="task_available" name="check-button" switch>
@@ -39,7 +29,6 @@
                             </b-form-checkbox>
                         </b-col>
                     </b-row>
->>>>>>> parent of 1b3711fd... Merge remote-tracking branch 'origin/master'
 
                     <b-input-group
                             prepend="Available Till"
@@ -47,19 +36,11 @@
                             id="task_available_till"
                             label="Enter task's last available date"
                             label-for="task_available_till">
-<<<<<<< HEAD
                         <b-form-input v-model="task_available_till" type="datetime"/>
                     </b-input-group>
 
                     <b-input-group
                             prepend="Availability Limit"
-=======
-                        <b-form-input v-model="task_available_till" type="datetime-local"/>
-                    </b-input-group>
-
-                    <b-input-group
-                            prepend="Available Times"
->>>>>>> parent of 1b3711fd... Merge remote-tracking branch 'origin/master'
                             class="mt-3"
                             id="task_available_times"
                             label="Enter task's availability limit"
@@ -67,7 +48,6 @@
                         <b-form-input v-model="task_available_times" type="number"/>
                     </b-input-group>
 
-<<<<<<< HEAD
                     <hr/>
 
                     <b-row class="mt-2 mb-2">
@@ -83,57 +63,6 @@
                             </div>
                         </b-col>
                     </b-row>
-=======
-                    <b-form-select v-model="task_users" :options="community_members" multiple></b-form-select>
-
-                    <ul id="task_users">
-                        <li v-for="user in task_users" :key="user.id">
-                            <b-button v-on:click="RemoveTaskUser(user)">{{ user.name }}</b-button>
-                        </li>
-                    </ul>
-
-                    <b-form-select v-model="task_roles" :options="community_roles" multiple>
-                        <template slot="option">
-                            <option value="ASasd">asd</option>
-                        </template>
-                    </b-form-select>
-
-                    <ul id="task_roles">
-                        <li v-for="role in task_roles" :key="role.id">
-                            <b-button v-on:click="RemoveTaskRole(role.id)">{{ role.Name }}</b-button>
-                        </li>
-                    </ul>
-
-                    <div class="row">
-                        <div class="col">
-                            <b-form-select v-model="task_datas" multiple>
-                                <option v-for="field in community_data_types" :key="field" :value="field.name">{{ dataTypeName }} - {{ field.name }} ({{ field.type }})
-                                </option>
-                            </b-form-select>
-                        </div>
-                        <div class="col">
-                            <ul id="task_datas">
-                                <li v-for="data in task_datas" :key="data">
-                                    <b-button>{{ data }}</b-button>
-                                    <b-form-group label="Field Options">
-                                        <b-form-checkbox-group
-                                                v-model="selected"
-                                                :options="field_options"
-                                                name="flavour-2a"
-                                                stacked
-                                        ></b-form-checkbox-group>
-                                    </b-form-group>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <b-button v-on:click="createTask()" variant="outline-primary">Create</b-button>
-                </div>
-            </div>
-        </div>
-    </div>
->>>>>>> parent of 1b3711fd... Merge remote-tracking branch 'origin/master'
 
                     <hr/>
 
@@ -226,11 +155,8 @@
                 task_roles: [],
                 task_data: '',
                 task_datas: [],
-<<<<<<< HEAD
                 task_predecessors: [],
                 workflow_tasks: []
-=======
->>>>>>> parent of 1b3711fd... Merge remote-tracking branch 'origin/master'
             }
         },
         methods: {
@@ -240,7 +166,6 @@
             createTask() {
 
             },
-<<<<<<< HEAD
             async getDataTypes() {
                 await Community.methods.getCommunityDataTypes(this.$route.params.community_id).then((data_types) => {
                     let temp = []
@@ -282,13 +207,6 @@
                         return {value: role.id, text: role.Name}
                     })
                 })
-=======
-            async getMembers(){
-                    await Community.methods.getCommunityMembers(this.$route.params.community_id).then((members) => {
-                        this.community_members = members.map(function(member){ return {value: member.User.id, text: member.User.name}})
-                   })
-                   console.log(this.community_members)
->>>>>>> parent of 1b3711fd... Merge remote-tracking branch 'origin/master'
             },
             async getTasks() {
                 await Tasks.methods.getTasks(this.$route.params.workflow_id).then((tasks) => {
@@ -298,7 +216,6 @@
                 })
             },
         },
-<<<<<<< HEAD
         mounted() {
             this.getDataTypes()
 
@@ -307,12 +224,6 @@
             this.getRoles()
 
             this.getTasks()
-=======
-        mounted(){
-            this.getMembers()
-
-            this.getRoles()
->>>>>>> parent of 1b3711fd... Merge remote-tracking branch 'origin/master'
         }
     }
 </script>
