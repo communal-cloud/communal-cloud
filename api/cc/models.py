@@ -1,3 +1,4 @@
+import datetime
 from enum import Enum
 
 from django.conf import settings
@@ -22,11 +23,13 @@ class ClassEnum(Enum):
 	User = 7
 	Image = 8
 
+
 class TaskType(Enum):
 	NotSpecified = 0
 	Execution = 1
 	Join = 2
 	Leave = 3
+
 
 class BaseManager(models.Manager):
 	def get_queryset(self):
@@ -49,7 +52,7 @@ class BaseModel(models.Model):
 		return super(BaseModel, self).save(*args, **kwargs)
 	
 	def delete(self, *args, **kwargs):
-		self.Deleted=True
+		self.Deleted = True
 		self.save()
 
 
@@ -139,6 +142,13 @@ class Community(BaseModel):
 	
 	def __unicode__(self):
 		return u'Community {0} ({1})'.format(self.Name, self.id)
+	
+	@property
+	def isMember(self, user):
+		membership = Member.objects.filter(Community=self, User=user)
+		if membership:
+			return True
+		return False
 
 
 class Workflow(BaseModel):
@@ -166,6 +176,22 @@ class Task(BaseModel):
 	InputFields = models.ManyToManyField(DataField, related_name="InputFields", blank=True)
 	OutputFields = models.ManyToManyField(DataField, related_name="OutputFields", blank=True)
 	Type = models.IntegerField(choices=[(choice.value, choice.name.replace("_", " ")) for choice in TaskType])
+	
+	@property
+	def ExecutedCount(self):
+		return Execution.objects.filter(Task=self).count()
+	
+	@property
+	def IsAvailable(self):
+		if not self.Available:
+			return False
+		if self.AvailableTill:  # TODO Check this statement checks wheather datatime is empty of exist
+			if datetime.datetime.now().date() > self.AvailableTill:
+				return False
+		if not self.AvailableTimes:
+			if self.ExecutedCount >= self.AvailableTimes:
+				return False
+		return True
 	
 	def __str__(self):
 		return u'Task {0} ({1})'.format(self.Name, self.id)

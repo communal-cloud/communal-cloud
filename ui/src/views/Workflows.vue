@@ -55,11 +55,9 @@ export default {
                     Description:"Watch bird for the community",
                 }]
                 */
-                console.log(data)
-                if(data){
-                this.workflows=data
-                }
 
+                if(data)
+                    this.workflows=data
             } catch (e) {
                 this.$swal(e.message)
             }
