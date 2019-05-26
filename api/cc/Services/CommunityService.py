@@ -5,7 +5,7 @@ from cc.Services.DataService import DataService
 from cc.Services.RoleService import RoleService
 from cc.Services.TaskService import TaskService
 from cc.Services.WorkflowService import WorkflowService
-from cc.models import Community, ClassEnum, Category, TaskType, RoleType
+from cc.models import Community, ClassEnum, Category, TaskType, RoleType, Member
 
 
 class CommunityService(object):
@@ -155,3 +155,7 @@ class CommunityService(object):
 	def __createDefaultRoles(self, pk):
 		self.__roleService.Create("Member", pk)
 		self.__roleService.Create("Admin", RoleType.Admin.value, pk)
+
+	def getMembersOfCommunity(self, communityId):
+		members = Member.objects.filter(Roles__community__id = communityId).all()
+		return members

@@ -2,7 +2,7 @@ import logging
 
 from django.http import JsonResponse
 
-from cc.models import Role, Community, RoleType
+from cc.models import Role, Community, RoleType, Member
 
 
 class RoleService(object):
@@ -28,6 +28,11 @@ class RoleService(object):
 	def GetList(self, communityId):
 		community = Community.objects.get(pk=communityId)
 		role_list = Role.objects.filter(community=community)
+		return role_list
+	
+	def GetListByMemberId(self, memberId):
+		member = Member.objects.get(pk=memberId)
+		role_list = Role.objects.filter(member=member)
 		return role_list
 	
 	def Update(self, role, id):

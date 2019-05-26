@@ -94,6 +94,7 @@
                     })
 
                     return data
+                    console.log(data)
 
                 } catch (e) {
                     this.$swal(e.message)

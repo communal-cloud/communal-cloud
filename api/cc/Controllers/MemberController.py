@@ -11,7 +11,8 @@ from rest_framework.permissions import IsAuthenticated
 from cc.Serializers.CommunitySerializer import CommunitySerializer
 from cc.Services.MemberService import MemberService
 from cc.Services.UserService import UserService
-from cc.Serializers.MemberSerializer import MemberSerializer
+from cc.Services.RoleService import RoleService
+from cc.Serializers.RoleSerializer import RoleSerializer
 
 
 class MemberController(APIView):
@@ -27,7 +28,7 @@ class MemberController(APIView):
 	
 
 class CommunityMemberController(APIView):
-	__logger = logging.getLogger('MemberViewSetController')
+	__logger = logging.getLogger('CommunityMemberController')
 	__memberService = MemberService.Instance()
 	__userService = UserService.Instance()
 	
@@ -41,3 +42,15 @@ class CommunityMemberController(APIView):
 			return Response(CommunitySerializer(member_comm, many=True).data)
 		else:
 			return NotFound
+
+
+class RoleMemberController(APIView):
+	__logger = logging.getLogger('RoleMemberController')
+	__memberService = MemberService.Instance()
+	__roleService = RoleService.Instance()
+	
+	def get(self, *args, **kwargs):
+		member_id = kwargs.get('id', '')
+		roles = self.__roleService.GetListByMemberId(member_id)
+		return Response(RoleSerializer(roles, many=True).data)
+	
