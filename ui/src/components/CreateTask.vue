@@ -105,17 +105,11 @@
         },
         data() {
             return {
-<<<<<<< HEAD
                 community_members: [],
-=======
                 community_users: {},
-<<<<<<< HEAD
                 community_roles: {},
                 community_data: {},
-=======
->>>>>>> 0ab1f0e2d26889f62a509e737f26839d76401b08
                 community_data_types: {},
->>>>>>> 5b297cf68ee0ba71ce51cfdebfdc834e703bbbb0
                 task_name: '',
                 task_description: '',
                 task_available: false,

@@ -90,7 +90,7 @@
     </b-input-group-append>
   </b-input-group>
 
-<ul id="categories">
+<ul>
       <li v-for="role in community_roles" :key="role">
         <b-button class="btn btn-primary" v-on:click="RemoveRole(role)">{{ role }}</b-button>
       </li>
