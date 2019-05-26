@@ -22,13 +22,9 @@
                         <b-form-input v-model="task_description" type="text"/>
                     </b-input-group>
 
-                    <b-row class="mt-4 mb-4">
-                        <b-col class="text-left">
-                            <b-form-checkbox v-model="task_available" name="check-button" switch>
-                                Available <b>({{ (task_available) ? 'Yes' : 'No' }})</b>
-                            </b-form-checkbox>
-                        </b-col>
-                    </b-row>
+                    <b-form-checkbox v-model="task_available" name="check-button" switch>
+                        Available <b>({{ (checked) ? 'Yes' : 'No' }})</b>
+                    </b-form-checkbox>
 
                     <b-input-group
                             prepend="Available Till"
@@ -36,7 +32,7 @@
                             id="task_available_till"
                             label="Enter task's last available date"
                             label-for="task_available_till">
-                        <b-form-input v-model="task_available_till" type="datetime-local"/>
+                        <b-form-input v-model="task_available_till" type="datetime"/>
                     </b-input-group>
 
                     <b-input-group
@@ -48,40 +44,45 @@
                         <b-form-input v-model="task_available_times" type="number"/>
                     </b-input-group>
 
-                    <hr />
+                    <hr/>
 
                     <b-row class="mt-2 mb-2">
                         <b-col class="text-left">
                             <label><strong>Restrict to Members</strong></label>
                             <b-form-select v-model="task_members" :options="community_members" multiple></b-form-select>
                             <div id="task_users">
-                                <b-badge class="mt-1 mr-1" size="sm" variant="dark" v-for="member in task_members" :key="member">
-                                    {{ community_members.find((community_member) => {return community_member.value === member}).text }}
+                                <b-badge class="mt-1 mr-1" size="sm" variant="dark" v-for="member in task_members"
+                                         :key="member">
+                                    {{ community_members.find((community_member) => {return community_member.value ===
+                                    member}).text }}
                                 </b-badge>
                             </div>
                         </b-col>
                     </b-row>
 
-                    <hr />
+                    <hr/>
 
                     <b-row class="mt-2 mb-2">
                         <b-col class="text-left">
                             <label><strong>Restrict to Roles</strong></label>
                             <b-form-select v-model="task_roles" :options="community_roles" multiple></b-form-select>
                             <div id="task_roles">
-                                <b-badge class="mt-1 mr-1" size="sm" variant="dark" v-for="role in task_roles" :key="role">
-                                    {{ community_roles.find((community_role) => {return community_role.value === role}).text }}
+                                <b-badge class="mt-1 mr-1" size="sm" variant="dark" v-for="role in task_roles"
+                                         :key="role">
+                                    {{ community_roles.find((community_role) => {return community_role.value ===
+                                    role}).text }}
                                 </b-badge>
                             </div>
                         </b-col>
                     </b-row>
 
-                    <hr />
+                    <hr/>
 
                     <b-row class="mt-2 mb-2">
                         <b-col class="text-left">
                             <label><strong>Predecessor Tasks</strong></label>
-                            <b-form-select v-model="task_predecessors" :options="workflow_tasks" multiple></b-form-select>
+                            <b-form-select v-model="task_predecessors" :options="workflow_tasks"
+                                           multiple></b-form-select>
                             <div id="task_predecessors">
                                 <b-badge class="mt-1 mr-1" size="sm" variant="dark" v-for="task in task_predecessors" :key="task">
                                     {{ workflow_tasks.find((workflow_task) => {return workflow_task.value === task}).text }}
@@ -90,7 +91,7 @@
                         </b-col>
                     </b-row>
 
-                    <hr />
+                    <hr/>
 
                     <b-row class="mt-2 mb-2">
                         <b-col class="text-left">
@@ -127,10 +128,10 @@
 
     export default {
         computed: {
-            community: function(){
-                 return Community.methods.getCommunity(this.$route.params.community_id)
+            community: function () {
+                return Community.methods.getCommunity(this.$route.params.community_id)
             },
-            workflow: function(){
+            workflow: function () {
                 return Workflow.methods.getWorkflow(this.$route.params.workflow_id)
             }
         },
@@ -143,7 +144,7 @@
                 community_field_options: [],
                 task_name: '',
                 task_description: '',
-                task_available: true,
+                task_available: false,
                 task_available_till: null,
                 task_available_times: null,
                 task_members: [],
@@ -161,14 +162,14 @@
             createTask() {
 
             },
-            async getDataTypes(){
+            async getDataTypes() {
                 await Community.methods.getCommunityDataTypes(this.$route.params.community_id).then((data_types) => {
                     let temp = []
                     let temp2 = []
 
-                    data_types.forEach(function(data_type){
-                        if(data_type.Fields.length){
-                            data_type.Fields.forEach(function(field){
+                    data_types.forEach(function (data_type) {
+                        if (data_type.Fields.length) {
+                            data_type.Fields.forEach(function (field) {
                                 temp.push({
                                     value: field.id,
                                     text: data_type.Name + ' - ' + field.Name
@@ -187,25 +188,31 @@
                     this.community_field_options = temp2
 
                     console.log(this.community_data_types)
-               })
+                })
             },
-            async getMembers(){
-                    await Community.methods.getCommunityMembers(this.$route.params.community_id).then((members) => {
-                        this.community_members = members.map(function(member){ return {value: member.User.id, text: member.User.name}})
-                   })
+            async getMembers() {
+                await Community.methods.getCommunityMembers(this.$route.params.community_id).then((members) => {
+                    this.community_members = members.map(function (member) {
+                        return {value: member.id, text: member.Name}
+                    })
+                })
             },
-            async getRoles(){
-                    await Community.methods.getCommunityRoles(this.$route.params.community_id).then((roles) => {
-                        this.community_roles = roles.map(function(role){ return {value: role.id, text: role.Name}})
-                   })
+            async getRoles() {
+                await Community.methods.getCommunityRoles(this.$route.params.community_id).then((roles) => {
+                    this.community_roles = roles.map(function (role) {
+                        return {value: role.id, text: role.Name}
+                    })
+                })
             },
-            async getTasks(){
-                    await Tasks.methods.getTasks(this.$route.params.workflow_id).then((tasks) => {
-                        this.workflow_tasks = tasks.map(function(task){ return {value: task.id, text: task.Name}})
-                   })
+            async getTasks() {
+                await Tasks.methods.getTasks(this.$route.params.workflow_id).then((tasks) => {
+                    this.workflow_tasks = tasks.map(function (task) {
+                        return {value: task.id, text: task.Name}
+                    })
+                })
             },
         },
-        mounted(){
+        mounted() {
             this.getDataTypes()
 
             this.getMembers()

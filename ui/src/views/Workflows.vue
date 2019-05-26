@@ -42,12 +42,9 @@ export default {
         }
     },
     methods:{
-        async getWorkflows(id = null){
+        async getWorkflows(){
             try {
-                if(id === null)
-                    id = this.$route.params.community_id
-
-                const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'community/' + id + '/workflow/', {
+                const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'community/' + this.$route.params.community_id + '/workflow/', {
                     headers: {
                         Authorization: 'token ' + store.getters.token
                     }
@@ -60,7 +57,7 @@ export default {
                 */
 
                 if(data)
-                    return this.workflows=data
+                    this.workflows=data
             } catch (e) {
                 this.$swal(e.message)
             }

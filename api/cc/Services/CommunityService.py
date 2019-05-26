@@ -5,8 +5,8 @@ from cc.Services.DataService import DataService
 from cc.Services.RoleService import RoleService
 from cc.Services.TaskService import TaskService
 from cc.Services.WorkflowService import WorkflowService
-from cc.Services.MemberService import MemberService
 from cc.models import Community, ClassEnum, Category, TaskType, RoleType, Member
+from cc.Services.MemberService import MemberService
 
 
 class CommunityService(object):
@@ -16,7 +16,7 @@ class CommunityService(object):
 	__dataService = DataService.Instance()
 	__roleService = RoleService.Instance()
 	__taskService = TaskService.Instance()
-	__workflowService = WorkflowService.Instance()
+	__workflowService=WorkflowService.Instance()
 	__memberService = MemberService.Instance()
 	
 	@staticmethod

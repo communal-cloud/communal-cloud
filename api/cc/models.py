@@ -29,13 +29,13 @@ class TaskType(Enum):
 	Execution = 1
 	Join = 2
 	Leave = 3
-	
-	
+
+
 class RoleType(Enum):
 	NotSpecified = 0
 	Admin = 1
 	Member = 2
-	
+
 
 class BaseManager(models.Manager):
 	def get_queryset(self):
@@ -149,8 +149,6 @@ class Community(BaseModel):
 	
 	def __unicode__(self):
 		return u'Community {0} ({1})'.format(self.Name, self.id)
-	
-
 
 
 class Workflow(BaseModel):
@@ -186,7 +184,7 @@ class Task(BaseModel):
 	@property
 	def IsAvailable(self):
 		
-		if self.AvailableTill:  # TODO Check this statement checks wheather datatime is empty of exist
+		if self.AvailableTill:
 			if datetime.datetime.now().date() > self.AvailableTill:
 				return False
 		if not self.AvailableTimes:
