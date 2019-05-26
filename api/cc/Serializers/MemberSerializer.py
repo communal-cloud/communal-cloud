@@ -6,10 +6,11 @@ from cc import models
 
 
 class MemberSerializer(ModelSerializer):
-    User = UserSerializer(required=False)
-    Roles = RoleSerializer(required=False, many=True)
-    IsCreator = SerializerMethodField("IsCreator")
-
+	User = UserSerializer(required=False)
+	Roles = RoleSerializer(required=False, many=True)
+	IsCreator = SerializerMethodField("IsCreator")
+	
+	
 	class Meta:
 		model = models.Member
 		fields = ("Deleted", "Banned", "User", "Roles")

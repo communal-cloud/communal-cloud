@@ -1,7 +1,7 @@
 import logging
 
 from cc.Services.MemberService import MemberService
-from cc.models import Execution, Task, ExecutionData, DataField, DataType, TaskType, Community
+from cc.models import Execution, Task, ExecutionData, DataField, DataType, TaskType, Community, BaseModel
 
 
 class ExecutionService(object):
@@ -21,8 +21,18 @@ class ExecutionService(object):
 		ExecutionService.__instance = self
 	
 	def Get(self, user, id):
-		task=Task.objects.get(pk=id)
-		task.InputFields
+		query='''SELECT d.*
+				FROM cc_execution e
+				  LEFT JOIN cc_execution_Data ed ON e.basemodel_ptr_id = ed.execution_id
+				  LEFT JOIN cc_executiondata d ON d.basemodel_ptr_id = ed.executiondata_id
+				
+				WHERE Field_id IN (SELECT f.datafield_id
+                   FROM cc_task t
+                     LEFT JOIN cc_task_InputFields f ON t.basemodel_ptr_id = f.task_id
+                   WHERE t.basemodel_ptr_id =%s)
+'''
+		inputs=ExecutionData.objects.raw(query,[id])
+		return inputs
 	
 	def Save(self, execution, user):
 		model = Execution()
@@ -39,21 +49,24 @@ class ExecutionService(object):
 		if not indentifier:
 			identifierField = self.GetIdentifierField(model.Task.id)
 			lastExecution = ExecutionData.objects.last()
-			newIdx = 1
+			newIdx = BaseModel.objects.last().id
 			if lastExecution:
-				newIdx = lastExecution.id + 1
+				newIdx = lastExecution.id
 			
 			identifier = ExecutionData.objects.create(Field=identifierField, Value=newIdx)
+			model.Data.add(identifier)
 		group = identifier
 		for field in fields:
-			self.SaveExecutionData(field, group)
+			ed = self.SaveExecutionData(field, group)
+			model.Data.add(ed)
 	
 	def SaveExecutionData(self, field, group=None):
 		model = ExecutionData()
 		model.DataGroup = group
-		model.Field = DataField.objects.get(pk=field.get("Field", None))
+		model.Field_id = field.get("Field", None)
 		model.Value = field.get("Value", None)
 		model.save()
+		return model
 	
 	def GetIdentifierField(self, id):
 		task = Task.objects.get(pk=id)

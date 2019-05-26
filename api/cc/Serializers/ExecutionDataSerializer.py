@@ -7,5 +7,5 @@ class ExecutionDataSerializer(ModelSerializer):
 	
 	
 	class Meta:
-		model = models.DataField
-		fields = ("id", "Name", "Type", "Enumerations", "Parameters", "Saved")
+		model = models.ExecutionData
+		fields = ("id", "Field", "DataGroup", "Value")
