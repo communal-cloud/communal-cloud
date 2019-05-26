@@ -4,6 +4,13 @@ from cc import models
 
 
 class CommunitySerializer(ModelSerializer):
-    class Meta:
-        model = models.Community
-        fields = '__all__'
+	MemberCount = SerializerMethodField()
+	
+	
+	class Meta:
+		model = models.Community
+		fields = '__all__'
+	
+	
+	def get_MemberCount(self, model):
+		return model.member_set.count()
