@@ -2,7 +2,7 @@ import logging
 
 from django.http import JsonResponse
 
-from cc.models import Role, Community
+from cc.models import Role, Community, RoleType
 
 
 class RoleService(object):
@@ -36,13 +36,13 @@ class RoleService(object):
 			model.Name = role.get("Name", u"")
 		model.save()
 		
-	def Create(self, name, community_id):
+	def Create(self, name, community_id, type=RoleType.Member.value):
 		model = Community.objects.get(pk=community_id)
-		obj, created = self.GetOrCreate(name)
+		obj, created = self.GetOrCreate(name, type)
 		model.Roles.add(obj)
 	
-	def GetOrCreate(self, role):
-		model = Role.objects.get_or_create(Name=role)
+	def GetOrCreate(self, role, type=RoleType.Member.value):
+		model = Role.objects.get_or_create(Name=role, Type=type)
 		return model
 	
 	def Delete(self, id):
