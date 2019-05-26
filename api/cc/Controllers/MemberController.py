@@ -19,8 +19,8 @@ class MemberController(APIView):
 	__memberService = MemberService.Instance()
 	
 	
-	#  authentication_classes = (TokenAuthentication,)
-	# permission_classes = (IsAuthenticated,)
+	authentication_classes = (TokenAuthentication,)
+	permission_classes = (IsAuthenticated,)
 	
 	def get(self, *args, **kwargs):
 		pass
@@ -30,6 +30,9 @@ class CommunityMemberController(APIView):
 	__logger = logging.getLogger('MemberViewSetController')
 	__memberService = MemberService.Instance()
 	__userService = UserService.Instance()
+	
+	authentication_classes = (TokenAuthentication,)
+	permission_classes = (IsAuthenticated,)
 	
 	def get(self, request, *args, **kwargs):
 		user = request.user
