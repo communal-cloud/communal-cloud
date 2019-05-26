@@ -8,7 +8,12 @@ from cc import models
 class MemberSerializer(ModelSerializer):
 	User = UserSerializer(required=False)
 	Roles = RoleSerializer(required=False, many=True)
-
+	IsCreator = SerializerMethodField()
+	
+	
 	class Meta:
 		model = models.Member
-		fields = ("Deleted", "Banned", "User", "Roles")
+		fields = ("Deleted", "Banned", "User", "Roles", "IsCreator")
+		
+	def get_IsCreator(self, model):
+		return model.IsCreator

@@ -33,7 +33,7 @@ class MemberService(object):
 		return community
 	
 	def Join(self, community, user):
-		model= Member()
+		model = Member()
 		model.User = user
 		model.Community = community
 		model.save()
@@ -44,4 +44,3 @@ class MemberService(object):
 	def AddAdminRoleToMemberModel(self, community, member):
 		roleModel = self.__roleService.GetAdminRole(community.id)
 		member.Roles.add(roleModel)
-	

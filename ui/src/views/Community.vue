@@ -63,7 +63,7 @@
                         }
                     })
 
-                    return this.community = data
+                    this.community = data
 
                 } catch (e) {
                     this.$swal(e.message)

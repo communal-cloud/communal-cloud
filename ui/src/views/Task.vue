@@ -1,10 +1,10 @@
 <template>
-    <div class="card border border-success m-4" style="width: 22rem;">
+    <div class="card" style="width: 22rem;">
         <div class="card-body">
             <h5 class="card-title">{{task.Name}}</h5>
             <p class="card-text">{{task.Description}}</p>
             
-              <b-button id="show-btn" variant="success" @click="$bvModal.show(modalID)">Execute</b-button>
+              <b-button id="show-btn" @click="$bvModal.show(modalID)">Execute</b-button>
         </div>
     
 <div>
