@@ -12,4 +12,4 @@ class MemberSerializer(ModelSerializer):
 
 	class Meta:
 		model = models.Member
-		fields = ("Deleted", "Banned", "User", "Roles")
+		fields = ("Deleted", "Banned", "User", "Roles", "IsCreator")
