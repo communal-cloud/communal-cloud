@@ -90,13 +90,13 @@
     </b-input-group-append>
   </b-input-group>
 
-<ul id="categories">
+<ul>
       <li v-for="role in community_roles" :key="role">
         <b-button class="btn btn-primary" v-on:click="RemoveRole(role)">{{ role }}</b-button>
       </li>
     </ul>
 
-     <b-button class="next"  v-on:click="changeStep('step2')" variant="btn btn-primary">Next</b-button>
+     <b-button class="next"  v-on:click="changeStep('step2')" variant="success m-2">Next</b-button>
 
 </div>
 
@@ -112,8 +112,7 @@
     </b-row>
   <b-list-group >
   <b-list-group-item  href="#" v-for="(data,index) in community_data" :key="index" v-on:click="RemoveInput(data)"> <b-form-input v-model="community_data[index].name" placeholder="Name of the field"></b-form-input>{{data.type}}</b-list-group-item>
-  </b-list-group> 
-  <>
+  </b-list-group>
    <b-list-group>
   <b-list-group-item href="#" v-on:click="AddInput('Text')">Text</b-list-group-item>
   <b-list-group-item href="#" v-on:click="AddInput('Number')" >Number</b-list-group-item>
@@ -125,9 +124,9 @@
   <b-list-group-item href="#" v-on:click="AddInput('RSVP')" >RSVP</b-list-group-item>
   <b-list-group-item href="#" v-on:click="AddInput('QA')" >Question & Answer</b-list-group-item>
 </b-list-group>
-<b-button   variant="success">+ Add More Data Type</b-button>
-<br></br>
-     <b-button class="next" v-on:click="changeStep('step3')" variant="outline-primary">Next</b-button>
+<b-button   variant="success m-3">+ Add More Data Type</b-button>
+<br>
+     <b-button class="next" v-on:click="changeStep('step3')" variant="success m-2">Next</b-button>
 
 </div>
 
@@ -157,14 +156,14 @@
         <b-button v-on:click="AddEmail" variant="btn btn-primary">Invite</b-button>
       </b-input-group-append>
     </b-input-group>
-    <ul id="categories">
+    <ul>
       <li v-for="email in community_emails" :key="email">
         <b-button v-on:click="RemoveMail(email)">{{ email }}</b-button>
       </li>
     </ul>
     </b-row>
 
-     <b-button class="next"  variant="outline-primary">Finish</b-button>
+     <b-button class="next"  variant="success m-2">Finish</b-button>
     
     </div>
 
@@ -365,7 +364,11 @@ import axios from 'axios/index';
 
 */
 </script>
-
+<style>
+    body {
+        background-repeat: repeat !important;
+    }
+</style>
 
 
 

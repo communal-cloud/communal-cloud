@@ -3,16 +3,39 @@
         <div class="card-body">
             <h5 class="card-title">{{task.Name}}</h5>
             <p class="card-text">{{task.Description}}</p>
-            <a href="#" class="btn btn-primary">Execute</a>
+            
+              <b-button id="show-btn" @click="$bvModal.show(modalID)">Execute</b-button>
         </div>
+    
+<div>
+
+
+  <b-modal :id="modalID" hide-footer>
+    <template slot="modal-title">
+       <code>{{task.Name}}</code> 
+    </template>
+    <div class="d-block text-center">
+      <execute-task :task="task" :execute="execution"></execute-task>
+    </div>
+    <b-button class="mt-3" block @click="$bvModal.hide(modalID)">Close Me</b-button>
+  </b-modal>
+</div>
+    
+
+
     </div>
 </template>
 
 <script>
     import axios from 'axios'
     import store from '../store'
+    import ExecuteTask from '../components/ExecuteTask.vue'
+import { exec } from 'child_process';
 
     export default {
+        components: {
+            ExecuteTask
+        },
         props: {
             id: 0,
             task:{}
@@ -22,6 +45,45 @@
                 
             }
         },
+        computed:{
+            modalID: function(){
+                console.log(String(this.id))
+                return String(this.id)
+            },
+            execution: function(){
+                var execute={};
+                execute=this.task.OutputFields.map(function(item) {
+                  if(item.Type=="1")
+                  {
+                    item.Type="number"
+                  }
+                  else if(item.Type=="2")
+                  {
+                    item.Type='text'
+                  }
+                  else if(item.Type=="8")
+                  {
+                    item.Type='img'
+                  }
+                  else if(item.Type=="4")
+                  {
+                    item.Type='date'
+                  }
+                  else if(item.Type=="5")
+                  {
+                    item.Type='geolocation'
+                  }
+                  else if(item.Type=="3")
+                  {
+                    item.Type='boolean'
+                  }
+            
+                   return { Name: item.Name, Class : item.Type };
+              })
+               return execute
+        }
+        },
+
         mounted() {
             //this.getTask();
         },

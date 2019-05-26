@@ -14,7 +14,10 @@
                     {{community.Description}}
                 </b-card-text>
 
-                <b-button href="#" variant="info btn-sm">Join Community</b-button>
+                <b-button v-if="this.isMyCommunity" :href="this.getCommunityDetailsPath" variant="info btn-sm">Go To Community</b-button>
+                <template v-else>
+                    <b-button href="#" variant="info btn-sm">Join Community</b-button>
+                </template>
             </b-card>
         </div>
     </div>
@@ -27,7 +30,8 @@
 
     export default {
         props: {
-            id: 0
+            id: 0,
+            isMyCommunity: false
         },
 
         data() {
@@ -37,22 +41,64 @@
                     Purpose: '',
                     Description: ''
                 },
-
+            }
+        },
+        computed: {
+            getCommunityDetailsPath: function () {
+                return "/community/" + this.id
             }
         },
         mounted() {
             this.getCommunity();
         },
         methods: {
-            async getCommunity() {
+            async getCommunity(id = null) {
                 try {
-                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'community/' + this.id + '/', {
+                    if(id === null)
+                        id = this.id
+
+                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'community/' + id + '/', {
                         headers: {
                             Authorization: 'token ' + store.getters.token
                         }
                     })
-                    console.log(data);
+
                     this.community = data
+
+                } catch (e) {
+                    this.$swal(e.message)
+                }
+            },
+            async getCommunityMembers(id = null) {
+                try {
+                    if(id === null)
+                        id = this.id
+
+                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'community/' + id + '/members/', {
+                        headers: {
+                            Authorization: 'token ' + store.getters.token
+                        }
+                    })
+
+                    return data
+
+                } catch (e) {
+                    this.$swal(e.message)
+                }
+            },
+            async getCommunityRoles(id = null) {
+                try {
+                    if(id === null)
+                        id = this.id
+
+                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'community/' + id + '/roles/', {
+                        headers: {
+                            Authorization: 'token ' + store.getters.token
+                        }
+                    })
+
+                    return data
+                    console.log(data)
 
                 } catch (e) {
                     this.$swal(e.message)
