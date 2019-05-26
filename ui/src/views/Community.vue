@@ -44,9 +44,12 @@
             this.getCommunity();
         },
         methods: {
-            async getCommunity() {
+            async getCommunity(id = null) {
                 try {
-                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'community/' + this.id + '/', {
+                    if(id === null)
+                        id = this.id
+
+                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'community/' + id + '/', {
                         headers: {
                             Authorization: 'token ' + store.getters.token
                         }
