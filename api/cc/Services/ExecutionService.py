@@ -37,7 +37,7 @@ class ExecutionService(object):
 	def Save(self, execution, user):
 		model = Execution()
 		model.Task = Task.objects.get(pk=execution.get("Task", ""))
-		if Task.Type == TaskType.Join:
+		if model.Task.Type == TaskType.Join.value:
 			community = model.Task.Workflow.Community
 			self.__memberService.Join(community, user)
 		model.ExecutedBy = user
