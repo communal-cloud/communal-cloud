@@ -10,14 +10,14 @@ import Tasks from './views/Tasks.vue'
 import CreateCommunity from './components/CreateCommunity.vue'
 import CreateWorkflow from './components/CreateWorkflow.vue'
 import CreateTask from './components/CreateTask.vue'
-import DoTask from './components/DoTask.vue'
+import ExecuteTask from './components/ExecuteTask.vue'
 
 import SignIn from './components/auth/SignIn.vue'
 import SignUp from './components/auth/SignUp.vue'
 import Activation from './components/auth/Activation.vue'
 import Forgot from './components/auth/Forgot.vue'
 import CommunityDetails from './views/CommunityDetails'
-import MyCommunities from './views/MyCommunities'
+//import MyCommunities from './views/MyCommunities'
 
 Vue.use(Router)
 
@@ -81,14 +81,14 @@ const routes = [
             requiresAuth: true
         }
     },
-    {
+   /* {
         path: '/mycommunities',
         name: 'mycommunities',
         component: MyCommunities,
         meta: {
             requiresAuth: true
         }
-    },
+    },*/
     {
         path: '/community/:community_id/workflow/create',
         name: 'createWorkflow',
@@ -114,9 +114,9 @@ const routes = [
         }
     },
     {
-        path: '/doTask',
-        name: 'doTask',
-        component: DoTask,
+        path: '/execute',
+        name: 'Execute',
+        component: ExecuteTask,
         meta: {
             requiresAuth: true
         }
