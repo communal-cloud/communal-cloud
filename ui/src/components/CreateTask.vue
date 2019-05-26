@@ -51,8 +51,8 @@
         <b-form-select v-model="task_roles" :options="community_roles" multiple></b-form-select>
 
         <ul id="task_roles">
-            <li v-for="role in task_roles" :key="role">
-                <b-button v-on:click="RemoveTaskRole(role)">{{ role.Name }}</b-button>
+            <li v-for="role in task_roles" :key="role.id">
+                <b-button v-on:click="RemoveTaskRole(role.id)">{{ role.Name }}</b-button>
             </li>
         </ul>
 
@@ -96,27 +96,21 @@
             /*community_members: function(){
                  return Community.methods.getCommunityMembers(this.$route.params.community_id)
             },*/
-            community_roles: function(){
-                 return Community.methods.getCommunityRoles(this.$route.params.community_id)
-            },
+            
             workflow: function(){
                 return Workflow.methods.getWorkflow(this.$route.params.workflow_id)
             }
         },
         data() {
             return {
-<<<<<<< HEAD
+
                 community_members: [],
-=======
+
                 community_users: {},
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-                community_roles: {},
+                community_roles: [],
+             
                 community_data: {},
-=======
->>>>>>> 0ab1f0e2d26889f62a509e737f26839d76401b08
->>>>>>> 7be2606f1cc49b33312fa6eb873d7eed14d3289e
+
                 community_data_types: {},
                 task_name: '',
                 task_description: '',
@@ -149,10 +143,17 @@
             createTask() {
 
             },
+            async getRoles(){
+                   this.community_roles = await Community.methods.getCommunityRoles(this.$route.params.community_id)
+                   console.log(this.community_roles)
+            },
         },
         mounted(){
             //console.log(this.community_members)
             console.log(this.community_roles)
+            this.getRoles()
+            
+            
         }
     }
 </script>
