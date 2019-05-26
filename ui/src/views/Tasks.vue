@@ -42,30 +42,18 @@ export default {
         }
     },
     methods:{
-        async getTasks(){
+        async getTasks(id = null){
             try {
-               const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'workflow/' + this.$route.params.workflow_id + '/tasks/', {
+                if(id === null)
+                    id = this.$route.params.workflow_id
+
+               const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'workflow/' + id + '/tasks/', {
                     headers: {
                         Authorization: 'token ' + store.getters.token
                     }
                 })
- /*
-                const data = [{
-                    Name:"Join Us Here",
-                    Description:"To join us please fill the form and submit",
-                    Available: true,
-                    AvailableTill: null,
-                    AvailableTimes: 20000,
-                    AssignedUsers: [1],
-                    AssignedRoles: [],
-                    Predecessors: [],
-                    InputFields: [],
-                    OutputFields: [15, 16 , 20]
-                }]
-*/
-                console.log(data)
 
-                this.tasks=data
+                return this.tasks = data
 
             } catch (e) {
                 this.$swal(e.message)

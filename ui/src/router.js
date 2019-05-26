@@ -57,18 +57,27 @@ const routes = [
         meta: {
             requiresAuth: true
         }
-    }, {
-        path: '/community/:id',
-        name: 'communityDetails',
-        component: CommunityDetails,
+    },
+    {
+        path: '/communities/my',
+        name: 'mycommunities',
+        component: MyCommunities,
         meta: {
             requiresAuth: true
         }
     },
     {
-        path: '/create',
+        path: '/community/create',
         name: 'createCommunity',
         component: CreateCommunity,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/community/:community_id',
+        name: 'communityDetails',
+        component: CommunityDetails,
         meta: {
             requiresAuth: true
         }
@@ -77,14 +86,6 @@ const routes = [
         path: '/community/:community_id/workflows',
         name: 'workflows',
         component: Workflows,
-        meta: {
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/mycommunities',
-        name: 'mycommunities',
-        component: MyCommunities,
         meta: {
             requiresAuth: true
         }
