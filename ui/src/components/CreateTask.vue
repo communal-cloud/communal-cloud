@@ -152,9 +152,11 @@
             },
         },
         mounted(){
-            this.getMembers()
-
+            //console.log(this.community_members)
+            console.log(this.community_roles)
             this.getRoles()
+            
+            
         }
     }
 </script>

@@ -13,7 +13,7 @@
             parturient montes, nascetur ridiculus mus. Donec consequat orci consectetur porta commodo. Duis faucibus
             purus vel consequat laoreet.</p>
 
-
+        
 
         <div class="kt-portlet kt-portlet--height-fluid">
             <div class="kt-portlet__head">
@@ -23,7 +23,7 @@
                     </h3>
                 </div>
                 <div class="kt-portlet__head-toolbar">
-                    <router-link :to="'/community/'+this.community_id+'/workflow/create'" class="btn btn-label-brand btn-bold btn-sm">
+                    <router-link :to="'/community/'+$route.params.community_id+'/workflow/create'" class="btn btn-label-brand btn-bold btn-sm">
                         <i class="fa fa-plus-circle"></i> Create Workflow
                     </router-link>
                 </div>

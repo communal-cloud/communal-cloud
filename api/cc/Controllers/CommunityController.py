@@ -18,8 +18,8 @@ class CommunityController(APIView):
 	__logger = logging.getLogger('CommunityController')
 	__communityService = CommunityService.Instance()
 	
-	authentication_classes = (TokenAuthentication,)
-	permission_classes = (IsAuthenticated,)
+	#  authentication_classes = (TokenAuthentication,)
+	# permission_classes = (IsAuthenticated,)
 	
 	def get(self, request, *args, **kwargs):
 		id = kwargs.get('id', '')
@@ -27,8 +27,7 @@ class CommunityController(APIView):
 		return Response(CommunitySerializer(model).data)
 	
 	def post(self, request, format=None):
-		user = request.user
-		model = self.__communityService.Create(request.data, user)
+		model = self.__communityService.Create(request.data)
 		return Response(CommunitySerializer(model).data)
 	
 	def put(self, request, *args, **kwargs):
