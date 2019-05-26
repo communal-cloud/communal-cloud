@@ -1,9 +1,9 @@
 <template>
-    <div class="card" style="width: 22rem;">
+    <div class="card m-4 border border-primary" style="width: 22rem;">
         <div class="card-body">
             <h5 class="card-title">{{workflow.Name}}</h5>
             <p class="card-text">{{workflow.Description}}</p>
-            <router-link :to="'/community/'+workflow.Community+'/workflow/'+workflow.id+'/tasks/'" class="btn btn-primary">Execute</router-link>
+            <router-link :to="'/community/'+workflow.Community+'/workflow/'+workflow.id+'/tasks/'" class="btn btn-primary">Tasks</router-link>
         </div>
     </div>
 </template>
