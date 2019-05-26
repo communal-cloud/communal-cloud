@@ -41,7 +41,10 @@
                       <router-link  class="kt-menu__link" to="/communities"><span class="kt-menu__link-text">All Communities</span></router-link>
                     </li>
                     <li class="kt-menu__item" v-if="store.getters.check">
-                      <router-link  class="kt-menu__link" to="/create"><span class="kt-menu__link-text">Create Community</span></router-link>
+                      <router-link  class="kt-menu__link" to="/communities/my"><span class="kt-menu__link-text">My Communities</span></router-link>
+                    </li>
+                    <li class="kt-menu__item" v-if="store.getters.check">
+                      <router-link  class="kt-menu__link" to="/community/create"><span class="kt-menu__link-text">Create Community</span></router-link>
                     </li>
                   </ul>
                   <b-nav-form v-if="store.getters.check">
@@ -80,29 +83,6 @@
               </div>
             </div>
           </div>
-          <!-- begin:: Footer -->
-          <div class="kt-footer  kt-footer--extended  kt-grid__item" id="kt_footer" style="background-image: url('assets/media/bg/bg-2.jpg');">
-            <div class="kt-footer__bottom">
-              <div class="kt-container">
-                <div class="kt-footer__wrapper">
-                  <div class="kt-footer__logo">
-                    <router-link class="kt-header__brand-logo" to="/">
-                      <img alt="Logo" src="/assets/media/logos/logo-white.png" width="140" class="kt-header__brand-logo-sticky">
-                    </router-link>
-                    <div class="kt-footer__copyright">
-                      2019&nbsp;&copy;&nbsp;
-                      Communal Cloud
-                    </div>
-                  </div>
-                  <div class="kt-footer__menu">
-                    <a href="http://git.communal-cloud.com" target="_blank">Git</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- end:: Footer -->
         </div>
       </div>
     </div>
@@ -116,10 +96,10 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  
+
 }
 .form-inline {
-      margin-left: 50%;
+      margin-left: 35%;
 }
 .community {
   height: 200px;

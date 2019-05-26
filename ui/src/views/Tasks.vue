@@ -7,7 +7,7 @@
                 </h3>
             </div>
             <div class="kt-portlet__head-toolbar">
-                <router-link :to="'/workflow/'+$route.params.workflow_id+'/task/create'" class="btn btn-label-brand btn-bold btn-sm">
+                <router-link :to="'/community/'+$route.params.community_id+'/workflow/'+$route.params.workflow_id+'/task/create'" class="btn btn-label-brand btn-bold btn-sm">
                     <i class="fa fa-plus-circle"></i> Create Task
                 </router-link>
             </div>
@@ -15,7 +15,7 @@
         <div class="kt-portlet__body kt-portlet__body--fluid">
             <b-row>
                  <b-col cols="4" v-for="task in tasks" :key="task.id">
-                     <task :id="task.id"></task>
+                     <task :task="task" :id="task.id"></task>
                  </b-col>
             </b-row>
         </div>
@@ -37,35 +37,23 @@ export default {
     },
     data() {
         return {
-            workflow: [],
+           
             tasks: []
         }
     },
     methods:{
-        async getTasks(){
+        async getTasks(id = null){
             try {
-                /*const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'workflow/' + this.workflow.id + '/tasks/', {
+                if(id === null)
+                    id = this.$route.params.workflow_id
+
+               const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'workflow/' + id + '/tasks/', {
                     headers: {
                         Authorization: 'token ' + store.getters.token
                     }
-                })*/
+                })
 
-                const data = [{
-                    Name:"Join Us Here",
-                    Description:"To join us please fill the form and submit",
-                    Available: true,
-                    AvailableTill: null,
-                    AvailableTimes: 20000,
-                    AssignedUsers: [1],
-                    AssignedRoles: [],
-                    Predecessors: [],
-                    InputFields: [],
-                    OutputFields: [15, 16 , 20]
-                }]
-
-                console.log(data)
-
-                this.tasks=data
+                return this.tasks = data
 
             } catch (e) {
                 this.$swal(e.message)

@@ -67,6 +67,10 @@ class UserService(object):
 		token = Token(key = userData.auth_token.key)
 		token.delete()
 		return JsonResponse({'status':'OK' }, status=200)
+	
+	def GetUser(self, user_id):
+		user = User.objects.get(pk=user_id)
+		return user
 
 
 def CreateNewUser(userData):

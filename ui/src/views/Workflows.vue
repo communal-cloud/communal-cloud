@@ -15,7 +15,7 @@
         <div class="kt-portlet__body kt-portlet__body--fluid">
             <b-row>
                  <b-col cols="4" v-for="workflow in workflows" :key="workflow.id">
-                     <workflow :id="workflow.id"></workflow>
+                     <workflow :workflow="workflow"></workflow>
                  </b-col>
             </b-row>
         </div>
@@ -42,23 +42,25 @@ export default {
         }
     },
     methods:{
-        async getWorkflows(){
+        async getWorkflows(id = null){
             try {
-                /*const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'community/' + this.$route.params.community_id + '/workflows/', {
+                if(id === null)
+                    id = this.$route.params.community_id
+
+                const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'community/' + id + '/workflow/', {
                     headers: {
                         Authorization: 'token ' + store.getters.token
                     }
-                })*/
+                })
 
-                const data = [{
+               /* const data = [{
                     Name: "Bird Watch",
                     Description:"Watch bird for the community",
                 }]
+                */
 
-                console.log(data)
-
-                this.workflows=data
-
+                if(data)
+                    return this.workflows=data
             } catch (e) {
                 this.$swal(e.message)
             }

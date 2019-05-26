@@ -1,11 +1,15 @@
 import logging
 
-from cc.models import Execution, Task, ExecutionData, DataField, DataType, TaskType
+from django.db.models import Q
+
+from cc.Services.RoleService import RoleService
+from cc.models import Member, Community
 
 
 class MemberService(object):
 	__instance = None
 	__logger = logging.getLogger('MemberService')
+	__roleService = RoleService.Instance()
 	
 	@staticmethod
 	def Instance():
@@ -18,6 +22,35 @@ class MemberService(object):
 			raise Exception("MemberService is a singleton, use 'MemberService.Instance()'")
 		MemberService.__instance = self
 	
-	def Join(self, community, user):
-		model= Member()
+	def get(self):
+		raise NotImplementedError
 	
+	def getMyCommunities(self, user):
+		community = Community.objects.filter(Roles__member__User=user)
+		return community
+	
+	def getNotJoinedCommunities(self, user):
+		community = Community.objects.filter(~Q(Roles__member__User=user))
+		return community
+	
+	def CreateAdminMember(self, community, user):
+		model = Member()
+		model.User = user
+		model.Community = community
+		model.save()
+		roleModel = self.__roleService.GetAdminRole(community.id)
+		model.Roles.add(roleModel)
+		return model
+	
+	def Join(self, community, user):
+		model = Member()
+		model.User = user
+		model.Community = community
+		model.save()
+		roleModel = self.__roleService.GetMemberRole(community.id)
+		model.Roles.add(roleModel)
+		return model
+	
+	def AddAdminRoleToMemberModel(self, community, member):
+		roleModel = self.__roleService.GetAdminRole(community.id)
+		member.Roles.add(roleModel)

@@ -1,3 +1,4 @@
+import datetime
 from enum import Enum
 
 from django.conf import settings
@@ -22,11 +23,19 @@ class ClassEnum(Enum):
 	User = 7
 	Image = 8
 
+
 class TaskType(Enum):
 	NotSpecified = 0
 	Execution = 1
 	Join = 2
 	Leave = 3
+
+
+class RoleType(Enum):
+	NotSpecified = 0
+	Admin = 1
+	Member = 2
+
 
 class BaseManager(models.Manager):
 	def get_queryset(self):
@@ -47,6 +56,10 @@ class BaseModel(models.Model):
 			del self.CreatedOn
 		self.ModifiedOn = timezone.now()
 		return super(BaseModel, self).save(*args, **kwargs)
+	
+	def delete(self, *args, **kwargs):
+		self.Deleted = True
+		self.save()
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -72,6 +85,7 @@ class ActivationToken(models.Model):
 class Role(BaseModel):
 	Name = models.CharField(max_length=50)
 	SystemDefined = models.BooleanField(default=True)
+	Type = models.IntegerField(choices=[(choice.value, choice.name.replace("_", " ")) for choice in RoleType])
 	
 	def __str__(self):
 		return u'Role {0} ({1})'.format(self.Name, self.id)
@@ -105,6 +119,7 @@ class DataField(BaseModel):
 	Name = models.CharField(max_length=50)
 	Type = models.IntegerField(choices=[(choice.value, choice.name.replace("_", " ")) for choice in ClassEnum])
 	Enumerations = models.ManyToManyField(DataEnumeration, blank=True)
+	Parameters = JSONField(default="{}")
 	Saved = models.BooleanField(default=False)
 	
 	@property
@@ -139,7 +154,7 @@ class Community(BaseModel):
 class Workflow(BaseModel):
 	Name = models.CharField(max_length=50)
 	Description = models.CharField(max_length=5000)
-	Community= models.ForeignKey(Community, blank=True, default=1, on_delete=models.DO_NOTHING)
+	Community = models.ForeignKey(Community, blank=True, default=1, on_delete=models.DO_NOTHING)
 	
 	def __str__(self):
 		return u'Workflow {0} ({1})'.format(self.Name, self.id)
@@ -161,6 +176,31 @@ class Task(BaseModel):
 	InputFields = models.ManyToManyField(DataField, related_name="InputFields", blank=True)
 	OutputFields = models.ManyToManyField(DataField, related_name="OutputFields", blank=True)
 	Type = models.IntegerField(choices=[(choice.value, choice.name.replace("_", " ")) for choice in TaskType])
+	
+	@property
+	def ExecutedCount(self):
+		return Execution.objects.filter(Task=self).count()
+	
+	@property
+	def IsAvailable(self):
+		
+		if self.AvailableTill:
+			if datetime.datetime.now().date() > self.AvailableTill:
+				return False
+		if not self.AvailableTimes:
+			if self.ExecutedCount >= self.AvailableTimes:
+				return
+		if not self.ArePredecessorsSatisfied:
+			return False
+		return self.Available
+	
+	@property
+	def ArePredecessorsSatisfied(self):
+		predecessors = self.Predecessors
+		for pred in predecessors:
+			if not Execution.objects.filter(Task=pred):
+				return False
+		return True
 	
 	def __str__(self):
 		return u'Task {0} ({1})'.format(self.Name, self.id)
@@ -198,6 +238,13 @@ class Member(BaseModel):
 	User = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
 	Roles = models.ManyToManyField(Role, blank=True)
 	Banned = models.BooleanField(default=False)
+	
+	@property
+	def IsCreator(self):
+		membership = self.Roles.filter(Type=RoleType.Admin.value).count() > 0
+		if membership:
+			return True
+		return False
 	
 	def __str__(self):
 		return u'{0} is member of {1}'.format(self.User.name, self.Community.Name)

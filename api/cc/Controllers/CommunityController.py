@@ -11,14 +11,15 @@ from rest_framework.permissions import IsAuthenticated
 
 from cc.Serializers.CommunitySerializer import CommunitySerializer
 from cc.Services.CommunityService import CommunityService
+from cc.Services.MemberService import MemberService
 
 
 class CommunityController(APIView):
 	__logger = logging.getLogger('CommunityController')
 	__communityService = CommunityService.Instance()
 	
-	#  authentication_classes = (TokenAuthentication,)
-	# permission_classes = (IsAuthenticated,)
+	authentication_classes = (TokenAuthentication,)
+	permission_classes = (IsAuthenticated,)
 	
 	def get(self, request, *args, **kwargs):
 		id = kwargs.get('id', '')
@@ -26,7 +27,8 @@ class CommunityController(APIView):
 		return Response(CommunitySerializer(model).data)
 	
 	def post(self, request, format=None):
-		model = self.__communityService.Create(request.data)
+		user = request.user
+		model = self.__communityService.Create(request.data, user)
 		return Response(CommunitySerializer(model).data)
 	
 	def put(self, request, *args, **kwargs):
@@ -36,13 +38,25 @@ class CommunityController(APIView):
 	
 	def delete(self, request, *args, **kwargs):
 		community_id = kwargs.get('id', '')
-		return self.__communityService.Delete(community_id)
+		self.__communityService.Delete(community_id)
+		return JsonResponse({'status': 'OK'}, status=200)
+
 
 class CommunityViewSetController(ViewSet):
-	__logger = logging.getLogger('UserController')
+	__logger = logging.getLogger('CommunityViewSetController')
 	__communityService = CommunityService.Instance()
+	__memberService = MemberService.Instance()
+
+	authentication_classes = (TokenAuthentication,)
+	permission_classes = (IsAuthenticated,)
 
 	@action(detail=True, methods=['get'])
 	def search(self, request, pk=None):
 		community = self.__communityService.Search(request.data)
 		return Response(CommunitySerializer(community, many=True).data)
+	
+	@action(detail=True, methods=['get'])
+	def notjoined(self, request, pk=None):
+		user = request.user
+		communities = self.__memberService.getNotJoinedCommunities(user)
+		return Response(CommunitySerializer(communities, many=True).data)

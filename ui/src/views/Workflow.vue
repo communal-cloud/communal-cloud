@@ -1,9 +1,9 @@
 <template>
-    <div class="card" style="width: 22rem;">
+    <div class="card m-4 border border-primary" style="width: 22rem;">
         <div class="card-body">
             <h5 class="card-title">{{workflow.Name}}</h5>
             <p class="card-text">{{workflow.Description}}</p>
-            <router-link :to="'/workflow/'+$route.params.community_id+'/tasks/'" class="btn btn-primary">Execute</router-link>
+            <router-link :to="'/community/'+workflow.Community+'/workflow/'+workflow.id+'/tasks/'" class="btn btn-primary">Show Tasks</router-link>
         </div>
     </div>
 </template>
@@ -14,32 +14,29 @@
 
     export default {
         props: {
-            id: 0
+            workflow:{}
         },
         data() {
             return {
-                workflow: {
-                    Name: '',
-                    Description: ''
-                },
+                
             }
         },
-        mounted() {
-            this.getWorkflow();
-        },
         methods: {
-            async getWorkflow() {
+            async getWorkflow(id = null) {
                 try {
-                    /*const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'workflow/' + this.id + '/', {
+                    if(id === null)
+                        id = this.workflow.id
+
+                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'workflow/' + id + '/', {
                         headers: {
                             Authorization: 'token ' + store.getters.token
                         }
-                    })*/
+                    })
 
-                    const data = {
+                    /*const data = {
                         Name: "Bird Watch",
                         Description:"Watch bird for the community",
-                    }
+                    }*/
 
                     console.log(data);
 

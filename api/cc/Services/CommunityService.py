@@ -1,13 +1,12 @@
 import logging
 
-from django.http import JsonResponse
-
-from cc.Serializers.DataTypeSerializer import DataTypeSerializer
 from cc.Services.CategoryService import CategoryService
 from cc.Services.DataService import DataService
 from cc.Services.RoleService import RoleService
 from cc.Services.TaskService import TaskService
-from cc.models import Community, ClassEnum, Category
+from cc.Services.WorkflowService import WorkflowService
+from cc.models import Community, ClassEnum, Category, TaskType, RoleType, Member
+from cc.Services.MemberService import MemberService
 
 
 class CommunityService(object):
@@ -17,6 +16,8 @@ class CommunityService(object):
 	__dataService = DataService.Instance()
 	__roleService = RoleService.Instance()
 	__taskService = TaskService.Instance()
+	__workflowService = WorkflowService.Instance()
+	__memberService = MemberService.Instance()
 	
 	@staticmethod
 	def Instance():
@@ -39,7 +40,7 @@ class CommunityService(object):
 	def GetPopular(self, count):
 		raise NotImplementedError
 	
-	def Create(self, community):
+	def Create(self, community, user):
 		model = Community()
 		if "Name" in community:
 			model.Name = community.get("Name", u"")
@@ -59,7 +60,11 @@ class CommunityService(object):
 			for r in community.get("Roles", u""):
 				obj, created = self.__roleService.GetOrCreate(r)
 				model.Roles.add(obj)
-		# self.__createDefaultMemberDataType(model.pk)
+		userDataType = self.__createDefaultMemberDataType(model.pk)
+		self.__createDefaultRoles(model.pk)
+		self.__createDefaultJoinTask(model.pk, userDataType)
+		memberModel = self.__memberService.CreateAdminMember(model, user)
+		self.__memberService.AddAdminRoleToMemberModel(model, memberModel)
 		return model
 	
 	def Update(self, community, id):
@@ -84,44 +89,20 @@ class CommunityService(object):
 				obj, created = self.__roleService.GetOrCreate(r)
 				model.Roles.add(obj)
 		return model
-		
+	
 	def Activate(self, community):
 		raise NotImplementedError
 	
-	def __createDefaultMemberDataType(self, id):
-		data = {
-			"Name": "Member",
-			"Fields": [
-				{
-					"Name": "User",
-					"Class": 7
-				}
-			]
-		}
-		
-		dataType = self.__dataService.createDataType(data, id)
-		for field in data.get("Fields",u""):
-			self.__dataService.createDataField(field, dataType)
-			
-		return dataType
-
-	def __createDefaultJoinTask(self):
-		data ={
-		
-		}
-		self.__taskService.Create(data)
-		
 	def Delete(self, id):
 		model = Community.objects.get(pk=id)
 		model.delete()
-		return JsonResponse(status=200)
 	
 	def GetList(self):
 		return Community.objects.all()
-		
+	
 	def GetActiveList(self):
 		return Community.objects.filter(Deleted=0)
-
+	
 	def Search(self, searchRequest):
 		if "Name" in searchRequest:
 			searchContext = searchRequest.get("Name", u"")
@@ -133,8 +114,52 @@ class CommunityService(object):
 			searchContext = searchRequest.get("Category", u"")
 			category = Category.objects.filter(Name__icontains=searchContext).values_list('id', flat=True)
 			categoryIdList = list(category)
-			communityList = Community.objects.filter(Categories__in = categoryIdList)
+			communityList = Community.objects.filter(Categories__in=categoryIdList)
 			communityList.query.group_by = ["id"]
 			return communityList
-		
 	
+	def __createDefaultRoles(self, pk):
+		self.__roleService.Create("Member", pk, RoleType.Member.value)
+		self.__roleService.Create("Admin", pk, RoleType.Admin.value)
+	
+	def getMembersOfCommunity(self, communityId):
+		members = Member.objects.filter(Roles__community__id=communityId).all()
+		return members
+	
+	def __createDefaultMemberDataType(self, id):
+		data = {
+			"Name": "Member",
+			"Fields": [
+				{
+					"Name": "User",
+					"Class": ClassEnum.User.value
+				}
+			]
+		}
+		
+		dataType = self.__dataService.createDataType(data, id)
+		for field in data.get("Fields", []):
+			self.__dataService.createDataField(field, dataType)
+		
+		return dataType
+	
+	def __createDefaultJoinWorkflow(self, pk):
+		data = {
+			"Name": "Membership Workflow",
+			"Description": "This contains the tasks for member operations"
+		}
+		workflow = self.__workflowService.Create(data, pk)
+		return workflow
+	
+	def __createDefaultJoinTask(self, pk, user):
+		workflow_id = self.__createDefaultJoinWorkflow(pk).pk
+		TaskData = {
+			"Name": "Join",
+			"Description": "This is the task that every member of the system will have to follow in order to join the Community",
+			"Available": True,
+			"AvailableTill": None,
+			"AvailableTimes": 10000,
+			"InputField": user.pk,
+			"Type": TaskType.Join.value
+		}
+		self.__taskService.Create(TaskData, workflow_id)

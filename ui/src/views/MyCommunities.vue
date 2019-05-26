@@ -3,7 +3,7 @@
         <div class="kt-portlet__head">
             <div class="kt-portlet__head-label">
                 <h1 class="kt-portlet__head-title">
-                    Available Communities
+                    My Communities
                 </h1>
             </div>
         </div>
@@ -11,7 +11,7 @@
 
             <b-row>
                 <b-col cols="4" v-for="community in communities" :key="community.id">
-                    <community :id="community.id">
+                    <community :id="community.id" :isMyCommunity=true>
                     </community>
                 </b-col>
             </b-row>
@@ -22,8 +22,6 @@
 </template>
 
 <script>
-    // @ is an alias to /src
-
     import Community from './Community.vue'
     import axios from 'axios'
     import store from '../store'
@@ -42,7 +40,7 @@
         methods: {
             async getCommunities() {
                 try {
-                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'community/all/', {
+                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'member/'+store.getters.user.id+'/communities/', {
                         headers: {
                             Authorization: 'token ' + store.getters.token
                         }
@@ -61,3 +59,7 @@
         }
     }
 </script>
+
+<style scoped>
+
+</style>

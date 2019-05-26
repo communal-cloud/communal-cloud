@@ -1,8 +1,12 @@
 from rest_framework.serializers import ModelSerializer
 from cc import models
+from cc.Serializers.DataFieldSerializer import DataFieldSerializer
 
 
 class DataTypeSerializer(ModelSerializer):
-    class Meta:
-        model = models.DataType
-        fields = ("id", "Name", "Fields", "Community")
+	Fields = DataFieldSerializer(required=False, many=True)
+	
+	
+	class Meta:
+		model = models.DataType
+		fields = ("id", "Name", "Fields", "Community")

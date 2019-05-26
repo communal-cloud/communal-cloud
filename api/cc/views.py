@@ -9,6 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from cc.Serializers.TaskSerializer import TaskSerializer
 from cc.Serializers.RoleSerializer import RoleSerializer
 from cc.Serializers.CommunitySerializer import CommunitySerializer
+from cc.Serializers.MemberSerializer import MemberSerializer
 
 from cc.Services.TaskService import TaskService
 from cc.Services.RoleService import RoleService
@@ -55,4 +56,16 @@ class AllActiveCommunitiesController(APIView):
     def get(self, *args, **kwargs):
         active_communities = self.__community_service.GetActiveList()
         return Response(CommunitySerializer(active_communities, many=True).data)
+
+class MembersOfCommunityController(APIView):
+    __logger = logging.getLogger('AllActiveCommunitiesController')
+    __community_service = CommunityService.Instance()
+
+    #  authentication_classes = (TokenAuthentication,)
+	# permission_classes = (IsAuthenticated,)
+    
+    def get(self, *args, **kwargs):
+        communityId = kwargs.get('id', '')
+        members = self.__community_service.getMembersOfCommunity(communityId)
+        return Response(MemberSerializer(members, many=True).data)
     
