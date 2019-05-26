@@ -3,7 +3,7 @@
         <div class="card-body">
             <h5 class="card-title">{{workflow.Name}}</h5>
             <p class="card-text">{{workflow.Description}}</p>
-            <router-link :to="'/community/'+workflow.Community+'/workflow/'+workflow.id+'/tasks/'" class="btn btn-primary">Execute</router-link>
+            <router-link :to="'/community/'+workflow.Community+'/workflow/'+workflow.id+'/tasks/'" class="btn btn-primary">Show Tasks</router-link>
         </div>
     </div>
 </template>
