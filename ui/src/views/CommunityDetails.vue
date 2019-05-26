@@ -1,6 +1,6 @@
 <template>
     <div class="kt-portlet kt-portlet--height-fluid">
-        <h1 class="m-2">Community Name</h1>
+        <h1 class="m-2" v-if="community">{{ community.Name }}</h1>
         <h5>123 Members</h5>
         <h5>Category: Example Category</h5>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ex felis, convallis at tellus et,
@@ -23,12 +23,12 @@
                     </h3>
                 </div>
                 <div class="kt-portlet__head-toolbar">
-                    <router-link :to="'/community/'+this.community_id+'/workflow/create'" class="btn btn-label-brand btn-bold btn-sm">
+                    <router-link v-if="community" :to="'/community/'+community.id+'/workflow/create'" class="btn btn-label-brand btn-bold btn-sm">
                         <i class="fa fa-plus-circle"></i> Create Workflow
                     </router-link>
                 </div>
             </div>
-            <div class="kt-portlet__body kt-portlet__body--fluid">
+            <div class="kt-portlet__body kt-portlet__body--fluid" v-if="workflows">
                 <b-row>
                     <b-col cols="4" v-for="workflow in workflows" :key="workflow.id">
                         <workflow :workflow="workflow"></workflow>
@@ -41,51 +41,38 @@
 </template>
 
 <script>
+    import Community from './Community.vue'
     import Workflow from './Workflow.vue'
-    import axios from 'axios'
+    import Workflows from './Workflows.vue'
     import store from '../store'
 
     export default {
         store: store,
-        name: 'workflows',
+        name: 'communityDetails',
         components: {
             Workflow
         },
         data() {
             return {
-                community_id: 1,
-                community: [],
+                community: {
+                    Name: '',
+                    Purpose: '',
+                    Description: ''
+                },
                 workflows: []
             }
         },
-        computed: {
-            createWorkflowPath: function () {
-                return "/community/" + this.community_id + "/workflow/create"
-            }
-        },
         methods:{
+            async getCommunity(){
+                this.community = await Community.methods.getCommunity(this.$route.params.community_id)
+            },
             async getWorkflows(){
-                try {
-                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'community/' + this.community_id + '/workflow/', {
-                        headers: {
-                            Authorization: 'token ' + store.getters.token
-                        }
-                    })
-
-                    /* const data = [{
-                         Name: "Bird Watch",
-                         Description:"Watch bird for the community",
-                     }]
-                     */
-
-                    if(data)
-                        this.workflows=data
-                } catch (e) {
-                    this.$swal(e.message)
-                }
-            }
+                this.workflows = await Workflows.methods.getWorkflows(this.$route.params.community_id)
+            },
         },
         mounted(){
+            this.getCommunity()
+
             this.getWorkflows()
         }
     }

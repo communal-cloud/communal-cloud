@@ -63,7 +63,7 @@
                         }
                     })
 
-                    this.community = data
+                    return this.community = data
 
                 } catch (e) {
                     this.$swal(e.message)
@@ -80,7 +80,9 @@
                         }
                     })
 
-                    return data
+                    console.log(data)
+
+                    return data[0].User
 
                 } catch (e) {
                     this.$swal(e.message)
