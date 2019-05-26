@@ -80,9 +80,7 @@
                         }
                     })
 
-                    console.log(data)
-
-                    return data[0].User
+                    return data
 
                 } catch (e) {
                     this.$swal(e.message)

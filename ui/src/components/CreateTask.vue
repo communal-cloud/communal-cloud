@@ -150,7 +150,7 @@
             },
             async getMembers(){
                     await Community.methods.getCommunityMembers(this.$route.params.community_id).then((members) => {
-                        this.community_members = members.map(function(member){ return {value: member.id, text: member.Name}})
+                        this.community_members = members.map(function(member){ return {value: member.User.id, text: member.User.name}})
                    })
                    console.log(this.community_members)
             },
