@@ -20,6 +20,10 @@ class ExecutionService(object):
 			raise Exception("ExecutionService is a singleton, use 'ExecutionService.Instance()'")
 		ExecutionService.__instance = self
 	
+	def Get(self, user, id):
+		task=Task.objects.get(pk=id)
+		task.InputFields
+	
 	def Save(self, execution, user):
 		model = Execution()
 		model.Task = Task.objects.get(pk=execution.get("Task", ""))
@@ -48,7 +52,7 @@ class ExecutionService(object):
 		model = ExecutionData()
 		model.DataGroup = group
 		model.Field = DataField.objects.get(pk=field.get("Field", None))
-		model.Value = field.get("Value", None)  # TODO: If does not work put the data in a dictionary
+		model.Value = field.get("Value", None)
 		model.save()
 	
 	def GetIdentifierField(self, id):

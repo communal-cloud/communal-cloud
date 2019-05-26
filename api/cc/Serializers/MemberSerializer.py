@@ -6,9 +6,8 @@ from cc import models
 
 
 class MemberSerializer(ModelSerializer):
-    User = UserSerializer(required=False)
-    Roles = RoleSerializer(required=False, many=True)
-    IsCreator = SerializerMethodField("IsCreator")
+	User = UserSerializer(required=False)
+	Roles = RoleSerializer(required=False, many=True)
 
 	class Meta:
 		model = models.Member

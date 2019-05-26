@@ -185,13 +185,22 @@ class Task(BaseModel):
 	
 	@property
 	def IsAvailable(self):
-		if not self.Available:
-			return False
+		
 		if self.AvailableTill:  # TODO Check this statement checks wheather datatime is empty of exist
 			if datetime.datetime.now().date() > self.AvailableTill:
 				return False
 		if not self.AvailableTimes:
 			if self.ExecutedCount >= self.AvailableTimes:
+				return
+		if not self.ArePredecessorsSatisfied:
+			return False
+		return self.Available
+	
+	@property
+	def ArePredecessorsSatisfied(self):
+		predecessors=self.Predecessors
+		for pred in predecessors:
+			if not Execution.objects.filter(Task=pred):
 				return False
 		return True
 	
