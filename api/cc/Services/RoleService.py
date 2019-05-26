@@ -20,6 +20,14 @@ class RoleService(object):
 			raise Exception("RoleService is a singleton, use 'RoleService.Instance()'")
 		RoleService.__instance = self
 	
+	def GetMemberRole(self, communityId):
+		model = Role.objects.filter(community__id = communityId, Type = RoleType.Member.value).first()
+		return model
+	
+	def GetAdminRole(self, communityId):
+		model = Role.objects.filter(community__id = communityId, Type = RoleType.Admin.value).first()
+		return model
+	
 	def Get(self, id):
 		model = Role.objects.get(pk=id)
 		return model
@@ -41,7 +49,7 @@ class RoleService(object):
 			model.Name = role.get("Name", u"")
 		model.save()
 		
-	def Create(self, name, community_id, type=RoleType.Member.value):
+	def Create(self, name, community_id, type=RoleType.NotSpecified.value):
 		model = Community.objects.get(pk=community_id)
 		roleModel = Role(Name = name, Type = type)
 		roleModel.save()

@@ -6,6 +6,7 @@ from cc.Services.RoleService import RoleService
 from cc.Services.TaskService import TaskService
 from cc.Services.WorkflowService import WorkflowService
 from cc.models import Community, ClassEnum, Category, TaskType, RoleType, Member
+from cc.Services.MemberService import MemberService
 
 
 class CommunityService(object):
@@ -16,6 +17,7 @@ class CommunityService(object):
 	__roleService = RoleService.Instance()
 	__taskService = TaskService.Instance()
 	__workflowService=WorkflowService.Instance()
+	__memberService = MemberService.Instance()
 	
 	@staticmethod
 	def Instance():
@@ -38,7 +40,7 @@ class CommunityService(object):
 	def GetPopular(self, count):
 		raise NotImplementedError
 	
-	def Create(self, community):
+	def Create(self, community, user):
 		model = Community()
 		if "Name" in community:
 			model.Name = community.get("Name", u"")
@@ -61,6 +63,8 @@ class CommunityService(object):
 		user_datatype=self.__createDefaultMemberDataType(model.pk)
 		self.__createDefaultRoles(model.pk)
 		self.__createDefaultJoinTask(model.pk, user_datatype)
+		memberModel = self.__memberService.Join(model, user)
+		self.__memberService.AddAdminRoleToMemberModel(model, memberModel)
 		return model
 	
 	def Update(self, community, id):
@@ -153,8 +157,8 @@ class CommunityService(object):
 			return communityList
 	
 	def __createDefaultRoles(self, pk):
-		self.__roleService.Create("Member", pk)
-		self.__roleService.Create("Admin", RoleType.Admin.value, pk)
+		self.__roleService.Create("Member", pk, RoleType.Member.value)
+		self.__roleService.Create("Admin", pk, RoleType.Admin.value)
 
 	def getMembersOfCommunity(self, communityId):
 		members = Member.objects.filter(Roles__community__id = communityId).all()
