@@ -7,7 +7,7 @@
                 </h3>
             </div>
             <div class="kt-portlet__head-toolbar">
-                <router-link :to="'/workflow/'+$route.params.workflow_id+'/task/create'" class="btn btn-label-brand btn-bold btn-sm">
+                <router-link :to="'/community/'+$route.params.community_id+'/workflow/'+$route.params.workflow_id+'/task/create'" class="btn btn-label-brand btn-bold btn-sm">
                     <i class="fa fa-plus-circle"></i> Create Task
                 </router-link>
             </div>

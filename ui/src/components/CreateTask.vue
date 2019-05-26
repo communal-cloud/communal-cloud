@@ -48,7 +48,7 @@
             </li>
         </ul>
 
-        <b-form-select v-model="task_roles" :options="community_roles" multiple></b-form-select>
+        <b-form-select v-model="task_roles" :options="community.Roles" multiple></b-form-select>
 
         <ul id="task_roles">
             <li v-for="role in task_roles" :key="role">
@@ -59,7 +59,7 @@
         <div class="row">
             <div class="col">
                 <b-form-select v-model="task_datas" multiple>
-                    <option v-for="field in community_data" :key="field" :value="field.name">{{ dataTypeName }} - {{ field.name }} ({{ field.type }})
+                    <option v-for="field in community_data_types" :key="field" :value="field.name">{{ dataTypeName }} - {{ field.name }} ({{ field.type }})
                     </option>
                 </b-form-select>
             </div>
@@ -86,13 +86,26 @@
 </template>
 <script>
     import Community from "../views/Community";
+    import Workflow from "../views/Workflow";
 
     export default {
+        computed: {
+            community: function(){
+                 return Community.methods.getCommunity(this.$route.params.community_id)
+            },
+            workflow: function(){
+                return Workflow.methods.getWorkflow(this.$route.params.workflow_id)
+            }
+        },
         data() {
             return {
                 community_users: {},
+<<<<<<< HEAD
                 community_roles: {},
                 community_data: {},
+=======
+                community_data_types: {},
+>>>>>>> 5b297cf68ee0ba71ce51cfdebfdc834e703bbbb0
                 task_name: '',
                 task_description: '',
                 task_available: false,
@@ -124,7 +137,9 @@
             createTask() {
 
             },
+        },
+        mounted(){
+            console.log(this.community_roles)
         }
-
     }
 </script>

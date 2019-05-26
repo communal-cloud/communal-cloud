@@ -98,7 +98,7 @@ const routes = [
         }
     },
     {
-        path: '/workflow/:workflow_id/tasks',
+        path: '/community/:community_id/workflow/:workflow_id/tasks',
         name: 'tasks',
         component: Tasks,
         meta: {
@@ -106,7 +106,7 @@ const routes = [
         }
     },
     {
-        path: '/workflow/:workflow_id/task/create',
+        path: '/community/:community_id/workflow/:workflow_id/task/create',
         name: 'createTask',
         component: CreateTask,
         meta: {

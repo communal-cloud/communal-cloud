@@ -3,7 +3,7 @@
         <div class="card-body">
             <h5 class="card-title">{{workflow.Name}}</h5>
             <p class="card-text">{{workflow.Description}}</p>
-            <router-link :to="'/workflow/'+workflow.id+'/tasks/'" class="btn btn-primary">Execute</router-link>
+            <router-link :to="'/community/'+workflow.Community+'/workflow/'+workflow.id+'/tasks/'" class="btn btn-primary">Execute</router-link>
         </div>
     </div>
 </template>
@@ -14,31 +14,29 @@
 
     export default {
         props: {
-           
             workflow:{}
-
         },
         data() {
             return {
                 
             }
         },
-        mounted() {
-            /*this.getWorkflow(); */
-        },
-        /*methods: {
-            async getWorkflow() {
+        methods: {
+            async getWorkflow(id = null) {
                 try {
-                    /*const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'workflow/' + this.id + '/', {
+                    if(id === null)
+                        id = this.workflow.id
+
+                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'workflow/' + id + '/', {
                         headers: {
                             Authorization: 'token ' + store.getters.token
                         }
                     })
 
-                    const data = {
+                    /*const data = {
                         Name: "Bird Watch",
                         Description:"Watch bird for the community",
-                    }
+                    }*/
 
                     console.log(data);
 
@@ -48,6 +46,6 @@
                     this.$swal(e.message)
                 }
             }
-        }, */
+        },
     }
 </script>
