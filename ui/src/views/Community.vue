@@ -54,8 +54,42 @@
                             Authorization: 'token ' + store.getters.token
                         }
                     })
-                    console.log(data);
+
                     this.community = data
+
+                } catch (e) {
+                    this.$swal(e.message)
+                }
+            },
+            async getCommunityMembers(id = null) {
+                try {
+                    if(id === null)
+                        id = this.id
+
+                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'community/' + id + '/members/', {
+                        headers: {
+                            Authorization: 'token ' + store.getters.token
+                        }
+                    })
+
+                    return data
+
+                } catch (e) {
+                    this.$swal(e.message)
+                }
+            },
+            async getCommunityRoles(id = null) {
+                try {
+                    if(id === null)
+                        id = this.id
+
+                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'community/' + id + '/roles/', {
+                        headers: {
+                            Authorization: 'token ' + store.getters.token
+                        }
+                    })
+
+                    return data
 
                 } catch (e) {
                     this.$swal(e.message)

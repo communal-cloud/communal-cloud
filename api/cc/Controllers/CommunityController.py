@@ -41,7 +41,7 @@ class CommunityController(APIView):
 
 
 class CommunityViewSetController(ViewSet):
-	__logger = logging.getLogger('UserController')
+	__logger = logging.getLogger('CommunityViewSetController')
 	__communityService = CommunityService.Instance()
 
 	@action(detail=True, methods=['get'])

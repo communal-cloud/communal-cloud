@@ -3,7 +3,8 @@ from rest_framework.serializers import ModelSerializer
 from cc import models
 
 
-class RoleSerializer(ModelSerializer):
+class MemberSerializer(ModelSerializer):
+	IsCreator = SerializerMethodField("IsCreator")
 	class Meta:
-		model = models.Role
+		model = models.Member
 		fields = '__all__'
