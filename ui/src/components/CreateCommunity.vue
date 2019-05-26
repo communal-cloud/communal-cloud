@@ -90,13 +90,13 @@
     </b-input-group-append>
   </b-input-group>
 
-<ul id="categories">
+<ul>
       <li v-for="role in community_roles" :key="role">
         <b-button class="btn btn-primary" v-on:click="RemoveRole(role)">{{ role }}</b-button>
       </li>
     </ul>
 
-     <b-button class="next"  v-on:click="changeStep('step2')" variant="btn btn-primary">Next</b-button>
+     <b-button class="next"  v-on:click="changeStep('step2')" variant="success m-2">Next</b-button>
 
 </div>
 
@@ -126,7 +126,7 @@
 </b-list-group>
 <b-button   variant="success m-3">+ Add More Data Type</b-button>
 <br>
-     <b-button class="next" v-on:click="changeStep('step3')" variant="outline-primary">Next</b-button>
+     <b-button class="next" v-on:click="changeStep('step3')" variant="success m-2">Next</b-button>
 
 </div>
 
@@ -156,14 +156,14 @@
         <b-button v-on:click="AddEmail" variant="btn btn-primary">Invite</b-button>
       </b-input-group-append>
     </b-input-group>
-    <ul id="categories">
+    <ul>
       <li v-for="email in community_emails" :key="email">
         <b-button v-on:click="RemoveMail(email)">{{ email }}</b-button>
       </li>
     </ul>
     </b-row>
 
-     <b-button class="next"  variant="outline-primary">Finish</b-button>
+     <b-button class="next"  variant="success m-2">Finish</b-button>
     
     </div>
 

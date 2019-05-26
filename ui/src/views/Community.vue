@@ -14,7 +14,10 @@
                     {{community.Description}}
                 </b-card-text>
 
-                <b-button href="#" variant="info btn-sm">Join Community</b-button>
+                <b-button v-if="this.isMyCommunity" :href="this.getCommunityDetailsPath" variant="info btn-sm">Go To Community</b-button>
+                <template v-else>
+                    <b-button href="#" variant="info btn-sm">Join Community</b-button>
+                </template>
             </b-card>
         </div>
     </div>
@@ -27,7 +30,8 @@
 
     export default {
         props: {
-            id: 0
+            id: 0,
+            isMyCommunity: false
         },
 
         data() {
@@ -37,7 +41,11 @@
                     Purpose: '',
                     Description: ''
                 },
-
+            }
+        },
+        computed: {
+            getCommunityDetailsPath: function () {
+                return "/community/" + this.id
             }
         },
         mounted() {

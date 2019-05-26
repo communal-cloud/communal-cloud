@@ -25,7 +25,7 @@ from cc.Controllers.ExecutionController import ExecutionController
 from cc.Controllers.RoleController import RoleController
 from cc.Controllers.ServiceController import ServiceController
 from cc.Controllers.TaskController import TaskController
-from cc.Controllers.UserController import UserAPIViewController, UserViewSetController
+from cc.Controllers.UserController import UserAPIViewController, UserViewSetController, UserTaskController
 from cc.Controllers.WorkflowController import WorkflowController, CommunityWorkflowController, \
 	CommunityDataTypeController
 from cc.views import TasksController, RolesController, AllCommunitiesController, \
@@ -41,6 +41,7 @@ urlpatterns = [
 	url(r'^admin/', admin.site.urls),
 	url(r'^user/login', ObtainAuthToken.as_view()),
 	url(r'^user/$', UserAPIViewController.as_view()),
+	url(r'^user/communities/(?P<id>.+)/tasks/$', UserTaskController.as_view()),
 	url(r'^service/$', ServiceController.as_view()),
 	url(r'^category/$', CategoryController.as_view()),
 	url(r'^community/(?P<id>.+)/roles/$', RolesController.as_view()),
@@ -49,8 +50,8 @@ urlpatterns = [
 	url(r'^community/$', CommunityController.as_view()),
 	url(r'^community/(?P<id>.+)/workflow/$', CommunityWorkflowController.as_view()),
 	url(r'^community/(?P<id>.+)/datatype/$', CommunityDataTypeController.as_view()),
-	url(r'^community/(?P<id>.+)/$', CommunityController.as_view()),
 	url(r'^community/(?P<id>.+)/members', MembersOfCommunityController.as_view()),
+	url(r'^community/(?P<id>.+)/$', CommunityController.as_view()),
 	url(r'^data/(?P<id>.+)/$', FieldClassController.as_view()),
 	url(r'^execution/$', ExecutionController.as_view()),
 	url(r'^role/(?P<id>.+)/$', RoleController.as_view()),

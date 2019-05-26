@@ -1,5 +1,8 @@
 <template>
+
+    <div style="margin: 0 auto">
     <div>
+        <h1 class="text-white mt-2">Create Workflow</h1>
         <b-input-group
                 prepend="Name"
                 class="mt-3"
@@ -22,7 +25,8 @@
 
         </b-input-group>
 
-        <b-button variant="outline-primary" v-on:click="createWorkflow">Create</b-button>
+        <b-button variant="info m-4" v-on:click="createWorkflow">Create</b-button>
+    </div>
     </div>
 
 </template>
