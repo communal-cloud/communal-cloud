@@ -40,7 +40,7 @@
             <b-form-input v-model="task_available_times" type="number"/>
         </b-input-group>
 
-        <b-form-select v-model="task_users" :options="community_users" multiple></b-form-select>
+        <b-form-select v-model="task_users" :options="community_members" multiple></b-form-select>
 
         <ul id="task_users">
             <li v-for="user in task_users" :key="user.id">
@@ -48,11 +48,11 @@
             </li>
         </ul>
 
-        <b-form-select v-model="task_roles" :options="community.Roles" multiple></b-form-select>
+        <b-form-select v-model="task_roles" :options="community_roles" multiple></b-form-select>
 
         <ul id="task_roles">
             <li v-for="role in task_roles" :key="role">
-                <b-button v-on:click="RemoveTaskRole(role)">{{ role }}</b-button>
+                <b-button v-on:click="RemoveTaskRole(role)">{{ role.Name }}</b-button>
             </li>
         </ul>
 
@@ -93,13 +93,19 @@
             community: function(){
                  return Community.methods.getCommunity(this.$route.params.community_id)
             },
+            /*community_members: function(){
+                 return Community.methods.getCommunityMembers(this.$route.params.community_id)
+            },*/
+            community_roles: function(){
+                 return Community.methods.getCommunityRoles(this.$route.params.community_id)
+            },
             workflow: function(){
                 return Workflow.methods.getWorkflow(this.$route.params.workflow_id)
             }
         },
         data() {
             return {
-                community_users: {},
+                community_members: [],
                 community_data_types: {},
                 task_name: '',
                 task_description: '',
@@ -134,6 +140,7 @@
             },
         },
         mounted(){
+            //console.log(this.community_members)
             console.log(this.community_roles)
         }
     }
