@@ -181,6 +181,7 @@ class Task(BaseModel):
 	def ExecutedCount(self):
 		return Execution.objects.filter(Task=self).count()
 	
+	# Returns weather the task is available to execute
 	@property
 	def IsAvailable(self):
 		if self.AvailableTill:
