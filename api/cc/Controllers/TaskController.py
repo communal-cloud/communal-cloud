@@ -24,7 +24,7 @@ class TaskController(APIView):
 
 	def put(self, request, *args, **kwargs):
 		id = kwargs.get('id', '')
-		task = self.__taskService.Update(request, id)
+		task = self.__taskService.Update(request.data, id)
 		return Response(TaskSerializer(task).data)
 
 	def get(self,*args, **kwargs):

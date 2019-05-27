@@ -66,27 +66,27 @@ class TaskService(object):
 		model.AvailableTimes = request.get("AvailableTimes", u"")
 		model.save()
 		model.AssignedUsers.clear()
-		if "AssignedUsers" in request.data:
+		if "AssignedUsers" in request:
 			for user_id in request.get("AssignedUsers", []):
 				user = User.objects.get(pk=user_id)
 				model.AssignedUsers.add(user)
 		model.AssignedRoles.clear()
-		if "AssignedRoles" in request.data:
+		if "AssignedRoles" in request:
 			for role_id in request.get("AssignedRoles", []):
 				role = Role.objects.get(pk=role_id)
 				model.AssignedRoles.add(role)
 		model.Predecessors.clear()
-		if "Predecessors" in request.data:
+		if "Predecessors" in request:
 			for task_id in request.get("Predecessors", []):
 				prod = Task.objects.get(pk=task_id)
 				model.Predecessors.add(prod)
 		model.InputFields.clear()
-		if "InputFields" in request.data:
+		if "InputFields" in request:
 			for input_datafield_id in request.get("InputFields", []):
 				input_field = DataField.objects.get(pk=input_datafield_id)
 				model.InputFields.add(input_field)
 		model.OutputFields.clear()
-		if "OutputFields" in request.data:
+		if "OutputFields" in request:
 			for output_datafield_id in request.get("OutputFields", []):
 				output_field = DataField.objects.get(pk=output_datafield_id)
 				model.OutputFields.add(output_field)

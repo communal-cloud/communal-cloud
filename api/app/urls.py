@@ -53,6 +53,7 @@ urlpatterns = [
 	url(r'^community/(?P<id>.+)/members', MembersOfCommunityController.as_view()),
 	url(r'^community/(?P<id>.+)/$', CommunityController.as_view()),
 	url(r'^data/(?P<id>.+)/$', FieldClassController.as_view()),
+	url(r'^data/$', FieldClassController.as_view()),
 	url(r'^execution/(?P<id>.+)/$', ExecutionController.as_view()),
 	url(r'^execution/$', ExecutionController.as_view()),
 	url(r'^role/(?P<id>.+)/$', RoleController.as_view()),
