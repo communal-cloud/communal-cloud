@@ -1,6 +1,6 @@
 <template>
     <div class="card border border-success m-4" style="width: 22rem;">
-         <b-button class="mt-3" block >Edit</b-button>
+         <b-button class="mt-3" block @click="$bvModal.show(modalID+'edit')" >Edit</b-button>
         <div class="card-body">
             <h5 class="card-title">{{task.Name}}</h5>
             <p class="card-text">{{task.Description}}</p>
@@ -9,6 +9,21 @@
         </div>
     
 <div>
+
+
+
+
+  <b-modal :id="modalID+'edit'" size="xl" hide-footer>
+    <template slot="modal-title">
+       <code>{{task.Name}}</code> 
+       
+    </template>
+   
+      <create-task :taskUpdate="task"></create-task>
+  
+    <b-button class="mt-3" block @click="$bvModal.hide(modalID+'edit')">Close Me</b-button>
+  </b-modal>
+
 
 
   <b-modal :id="modalID" hide-footer>
@@ -32,11 +47,12 @@
     import axios from 'axios'
     import store from '../store'
     import ExecuteTask from '../components/ExecuteTask.vue'
-import { exec } from 'child_process';
+    import CreateTask from '../components/CreateTask.vue'
+    import { exec } from 'child_process';
 
     export default {
         components: {
-            ExecuteTask
+            ExecuteTask,CreateTask
         },
         props: {
             id: 0,
