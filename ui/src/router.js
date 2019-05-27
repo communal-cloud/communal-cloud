@@ -18,6 +18,7 @@ import Activation from './components/auth/Activation.vue'
 import Forgot from './components/auth/Forgot.vue'
 import CommunityDetails from './views/CommunityDetails'
 import MyCommunities from './views/MyCommunities'
+import SearchCommunities from './views/SearchCommunities'
 
 Vue.use(Router)
 
@@ -62,6 +63,22 @@ const routes = [
         path: '/communities/my',
         name: 'mycommunities',
         component: MyCommunities,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/search/communities/',
+        name: 'searchcommunities',
+        component: SearchCommunities,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/search/communities/:keyword',
+        name: 'searchcommunities',
+        component: SearchCommunities,
         meta: {
             requiresAuth: true
         }
