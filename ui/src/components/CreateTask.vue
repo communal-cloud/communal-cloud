@@ -36,7 +36,7 @@
                             id="task_available_till"
                             label="Enter task's last available date"
                             label-for="task_available_till">
-                        <b-form-input v-model="task_available_till" type="datetime"/>
+                        <b-form-input v-model="task_available_till" type="datetime-local"/>
                     </b-input-group>
 
                     <b-input-group
@@ -88,7 +88,8 @@
                             <b-form-select v-model="task_predecessors" :options="workflow_tasks"
                                            multiple></b-form-select>
                             <div id="task_predecessors">
-                                <b-badge class="mt-1 mr-1" size="sm" variant="dark" v-for="task in task_predecessors" :key="task">
+                                <b-badge class="mt-1 mr-1" size="sm" variant="dark" v-for="task in task_predecessors"
+                                         :key="task">
                                     {{ workflow_tasks.find((workflow_task) => {return workflow_task.value === task}).text }}
                                 </b-badge>
                             </div>
@@ -100,16 +101,32 @@
                     <b-row class="mt-2 mb-2">
                         <b-col class="text-left">
                             <label><strong>Input Fields</strong></label>
-                            <b-form-select v-model="task_datas" :options="community_data_types" multiple></b-form-select>
+                            <b-form-select v-model="task_input_fields" :options="workflow_input_fields" multiple></b-form-select>
+                            <div id="task_input_fields">
+                                <b-badge class="mt-1 mr-1" size="sm" variant="dark" v-for="data in task_input_fields" :key="data">
+                                    {{ workflow_input_fields.find((workflow_input_field) => {return workflow_input_field.value === data}).text }}
+                                </b-badge>
+                            </div>
+                        </b-col>
+                    </b-row>
+
+                    <hr/>
+
+                    <b-row class="mt-2 mb-2">
+                        <b-col class="text-left">
+                            <label><strong>Output Fields</strong></label>
+                            <b-form-select v-model="task_output_fields" :options="community_data_types"
+                                           multiple></b-form-select>
                         </b-col>
                         <b-col class="text-left">
-                            <ul id="task_datas">
-                                <li v-for="data in task_datas" :key="data">
-                                    <b-button>{{ data }}</b-button>
+                            <ul id="task_output_fields" style="list-style: none">
+                                <li v-for="data in task_output_fields" :key="data">
+                                    <b-button>{{ community_data_types.find((community_data_type) => {return community_data_type.value === data}).text }}
+                                    </b-button>
                                     <b-form-group label="Field Options">
                                         <b-form-checkbox-group
-                                                v-model="selected"
-                                                :options="community_field_options.find((field) => {return field.id === data}).options"
+                                                v-model="task_output_field_options[data]"
+                                                :options="field_options"
                                                 name="flavour-2a"
                                                 stacked
                                         ></b-form-checkbox-group>
@@ -129,6 +146,8 @@
     import Community from "../views/Community";
     import Workflow from "../views/Workflow";
     import Tasks from "../views/Tasks";
+    import axios from 'axios'
+    import store from '../store'
 
     export default {
         computed: {
@@ -145,7 +164,8 @@
                 community_members: [],
                 community_roles: [],
                 community_data_types: {},
-                community_field_options: [],
+                field_types: [],
+                field_options: [],
                 task_name: '',
                 task_description: '',
                 task_available: true,
@@ -153,51 +173,94 @@
                 task_available_times: null,
                 task_members: [],
                 task_roles: [],
-                task_data: '',
-                task_datas: [],
+                task_input_fields: [],
+                task_output_fields: [],
+                task_output_field_options: [],
                 task_predecessors: [],
+                workflow_input_fields: [],
                 workflow_tasks: []
             }
         },
         methods: {
-            AddTaskData() {
-                this.task_datas.push(this.task_data);
-            },
-            createTask() {
+            async createTask(){
+                try {
+                    const { data } = await axios.post(process.env.VUE_APP_BASE_URL+'task/'+this.$route.params.workflow_id+'/', {
+                        Name: this.task_name,
+                        Description: this.task_description,
+                        Available: this.task_available,
+                        AvailableTill: (this.task_available_till !== null) ? new Date(this.task_available_till).toISOString().slice(0, 19).replace('T', ' ') : this.task_available_till,
+                        AvailableTimes: parseInt(this.task_available_times),
+                        AssignedUsers: this.task_members.filter(Number),
+                        AssignedRoles: this.task_roles.filter(Number),
+                        Predecessors: this.task_predecessors.filter(Number),
+                        InputFields: this.task_input_fields.filter(Number),
+                        OutputFields: this.task_output_fields.filter(Number)
+                     })
 
+                    if(data) {
+                        this.$swal("Task created")
+
+                        this.$router.push('/community/'+this.$route.params.community_id+'/workflow/'+this.$route.params.workflow_id+'/tasks/')
+                    }
+                } catch (e) {
+                    this.$swal("Error when creating task")
+                }
             },
             async getDataTypes() {
                 await Community.methods.getCommunityDataTypes(this.$route.params.community_id).then((data_types) => {
                     let temp = []
-                    let temp2 = []
+                    let field_types = this.field_types
 
                     data_types.forEach(function (data_type) {
                         if (data_type.Fields.length) {
                             data_type.Fields.forEach(function (field) {
                                 temp.push({
                                     value: field.id,
-                                    text: data_type.Name + ' - ' + field.Name
-                                })
-
-                                temp2.push({
-                                    id: field.id,
-                                    options: field.Parameters
+                                    text: data_type.Name + ' - ' + field.Name + ' (' + field_types[field.Type] + ')'
                                 })
                             })
                         }
                     })
 
                     this.community_data_types = temp
-
-                    this.community_field_options = temp2
-
-                    console.log(this.community_data_types)
                 })
+            },
+            async getFieldTypes() {
+                try {
+                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'data/', {
+                        headers: {
+                            Authorization: 'token ' + store.getters.token
+                        }
+                    })
+
+                    return this.field_types = data
+                } catch (e) {
+                    this.$swal(e.message)
+                }
+            },
+            async getFieldOptions() {
+                try {
+                    /*const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'data/', {
+                        headers: {
+                            Authorization: 'token ' + store.getters.token
+                        }
+                    })*/
+
+                    const data = [
+                        'required',
+                        'hidden',
+                        'read-only'
+                    ]
+
+                    return this.field_options = data
+                } catch (e) {
+                    this.$swal(e.message)
+                }
             },
             async getMembers() {
                 await Community.methods.getCommunityMembers(this.$route.params.community_id).then((members) => {
                     this.community_members = members.map(function (member) {
-                        return {value: member.id, text: member.Name}
+                        return {value: member.User.id, text: member.User.name}
                     })
                 })
             },
@@ -213,10 +276,30 @@
                     this.workflow_tasks = tasks.map(function (task) {
                         return {value: task.id, text: task.Name}
                     })
+
+                    let temp = []
+                    let field_types = this.field_types
+
+                    tasks.forEach(function (task) {
+                        if (task.OutputFields.length) {
+                            task.OutputFields.forEach(function (field) {
+                                temp.push({
+                                    value: field.id,
+                                    text: task.Name + ' - ' + field.Name + ' (' + field_types[field.Type] + ')'
+                                })
+                            })
+                        }
+                    })
+
+                    this.workflow_input_fields = temp
                 })
             },
         },
         mounted() {
+            this.getFieldTypes()
+
+            this.getFieldOptions()
+
             this.getDataTypes()
 
             this.getMembers()
