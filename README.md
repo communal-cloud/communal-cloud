@@ -6,9 +6,9 @@ SWE 574 Project. More will be added soon!
 git clone https://github.com/communal-cloud/communal-cloud.git
 
 ### 1. Backend (Api)
-cd communal-cloud/api
+cd communal-cloud/api <br />
 pip install -r requirements.txt
 
 ### 2. Frontend (UI)
-cd communal-cloud/ui
+cd communal-cloud/ui <br />
 npm run serve
