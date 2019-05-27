@@ -48,8 +48,10 @@
                     </li>
                   </ul>
                   <b-nav-form v-if="store.getters.check">
-                    <b-form-input size="sm" class="mr-sm-2" placeholder="Search Community"></b-form-input>
+                    <b-form-input v-model="search" size="sm" class="mr-sm-2" placeholder="Search Community"></b-form-input>
+                    <router-link :to="'/search/communities/'+search">
                     <b-button size="sm" class="my-2 my-sm-0 searchButton" type="submit">Search</b-button>
+                    </router-link>
                   </b-nav-form>
                 </div>
               </div>
@@ -144,9 +146,16 @@ pre{
 
   export default {
     store:store,
-    data: () => ({
-      store:store
-    }),
+
+
+
+      data() {
+          return {
+              store:store,
+              search:""
+
+          }
+      },
     methods: {
       logout(){
         store.dispatch('logout')
