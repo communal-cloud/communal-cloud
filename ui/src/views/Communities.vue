@@ -30,7 +30,7 @@
 
     export default {
         store: store,
-        name: 'home',
+        name: 'availablecommunities',
         components: {
             Community
         },
@@ -48,7 +48,6 @@
                         }
                     })
 
-                    console.log(data)
                     this.communities = data
 
                 } catch (e) {
