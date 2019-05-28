@@ -89,10 +89,13 @@
                         if(data.email)
                             this.$swal("An activation mail has been sent to your e-mail address: " + data.email)
 
-                        else
+                        else {
+                            console.log(data)
+
                             this.$swal("Wrong Info!")
+                        }
                     } catch (e) {
-                        this.$swal("E-mail address in use!")
+                        this.$swal(e.message)
                     }
                 }
             }
