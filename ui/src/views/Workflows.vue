@@ -14,8 +14,9 @@
         </div>
         <div class="kt-portlet__body kt-portlet__body--fluid">
             <b-row>
-                 <b-col cols="4" v-for="workflow in workflows" :key="workflow.id">
-                     <workflow :workflow="workflow"></workflow>
+                 <b-col cols="4" v-for="(workflow,i) in workflows" :key="workflow.id">
+                     <workflow v-if="isMyCommunity || i==0" :workflow="workflow"></workflow>
+                 
                  </b-col>
             </b-row>
         </div>
@@ -38,7 +39,8 @@ export default {
     data() {
         return {
             community: [],
-            workflows: []
+            workflows: [],
+            isMyCommunity: false
         }
     },
     methods:{

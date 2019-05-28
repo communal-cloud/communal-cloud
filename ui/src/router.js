@@ -26,7 +26,7 @@ const routes = [
     {
         path: '/',
         name: 'home',
-        component: Home,
+        component: Communities,
         meta: {
             requiresAuth: true
         }
