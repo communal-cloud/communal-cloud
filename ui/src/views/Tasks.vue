@@ -15,7 +15,7 @@
         </div>
         <div class="kt-portlet__body kt-portlet__body--fluid">
             <b-row>
-                 <b-col cols="4" v-for="task in tasks" :key="task.id">
+                 <b-col cols="6" v-for="task in tasks" :key="task.id">
                      <task :task="task" :id="task.id"></task>
                  </b-col>
             </b-row>
