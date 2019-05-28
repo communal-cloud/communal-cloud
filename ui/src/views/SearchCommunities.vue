@@ -47,7 +47,7 @@
                         }
                     )
 
-                    if(data)
+                    if(data.length)
                         this.communities = data
 
                     else
