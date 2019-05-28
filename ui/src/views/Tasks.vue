@@ -7,10 +7,10 @@
                 </h3>
             </div>
             <div class="kt-portlet__head-toolbar">
-                <router-link :to="'/community/'+$route.params.community_id+'/workflow/'+$route.params.workflow_id+'/task/create'" class="btn btn-label-brand btn-bold btn-sm">
+                <router-link :to="'/community/'+$route.params.community_id+'/workflow/'+$route.params.workflow_id+'/task/create'" class="m-2 btn btn-label-brand btn-bold btn-sm">
                     <i class="fa fa-plus-circle"></i> Create Task
                 </router-link>
-                 <b-button id="show-btn" variant="success" @click="$bvModal.show('dataType')">Create Data Type</b-button>
+                 <b-button id="show-btn" variant="m-2 success fa fa-plus-circle btn btn-label-brand btn-bold btn-sm" @click="$bvModal.show('dataType')"> Create Data Type</b-button>
             </div>
         </div>
         <div class="kt-portlet__body kt-portlet__body--fluid">
