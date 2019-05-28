@@ -1,10 +1,15 @@
 <template>
-    <div class="card border border-success m-4" style="width: 22rem;">
+    <div class="card border border-success m-4" style="width: 32rem;">
          <b-button class="mt-3" block @click="$bvModal.show(modalID+'edit')" >Edit</b-button>
         <div class="card-body">
-            <h5 class="card-title">{{task.Name}}</h5>
+            <h2 class="card-title">{{task.Name}}</h2>
             <p class="card-text">{{task.Description}}</p>
-            
+            <h6 class="card-text">Available executions: {{task.AvailableTimes}}</h6>
+            <h5 class="card-text">Assigned Roles: {{task.AssignedRoles.map(({ Name }) => Name)}}</h5>
+            <h5 class="card-text">Assigned Users: {{task.AssignedUsers.map(({ Name }) => Name)}}</h5>
+            <h5 class="card-text">Predecessors Tasks: {{task.Predecessors.map(({ Name }) => Name)}}</h5>
+
+            <b-button id="show-btn" variant="danger mr-2 btn-sm" >Delete</b-button>
               <b-button id="show-btn" variant="success" @click="$bvModal.show(modalID)">Execute</b-button>
         </div>
     
