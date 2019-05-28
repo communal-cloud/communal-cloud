@@ -12,6 +12,8 @@ services:
 
   web:
     build: ./ui
+    environment:
+      - VUE_APP_BASE_URL=http://api.communal-cloud.com/
     restart: always
     command: sh -c "npm run serve"
     volumes:
