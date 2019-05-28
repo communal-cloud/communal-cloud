@@ -11,12 +11,12 @@ Github: http://git.communal-cloud.com <br />
 ## Instructions
 git clone https://github.com/communal-cloud/communal-cloud.git
 
-### 1. Docker way
+### 1. Docker Way 🐳
 cd communal-cloud <br />
 docker-compose build <br />
 docker-compose up <br />
 
-### 2. Old-school setup
+### 2. Old-School Setup 🦖
 #### 2.1. Backend (Api)
 cd communal-cloud/api <br />
 pip install -r requirements.txt <br />
@@ -29,7 +29,7 @@ npm run serve <br />
 Browse http://localhost:8000
 
 
-## Versions
+## Api Packege Versions
 python: 3.7 <br />
 Django>=2.1.7,<2.2.0 <br />
 djangorestframework>=3.9.1,<3.10.0 <br />
