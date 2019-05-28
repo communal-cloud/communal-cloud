@@ -167,8 +167,8 @@ class Task(BaseModel):
 	Name = models.CharField(max_length=50)
 	Description = models.CharField(max_length=5000)
 	Available = models.BooleanField(default=False)
-	AvailableTill = models.DateField(blank=True, null=True)
-	AvailableTimes = models.IntegerField(default=0)
+	AvailableTill = models.DateTimeField(blank=True, null=True)
+	AvailableTimes = models.IntegerField(blank=True, null=True)
 	Workflow = models.ForeignKey(Workflow, blank=True, on_delete=models.DO_NOTHING)
 	AssignedUsers = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
 	AssignedRoles = models.ManyToManyField(Role, blank=True)
@@ -181,11 +181,11 @@ class Task(BaseModel):
 	def ExecutedCount(self):
 		return Execution.objects.filter(Task=self).count()
 	
+	# Returns weather the task is available to execute
 	@property
 	def IsAvailable(self):
-		
 		if self.AvailableTill:
-			if datetime.datetime.now().date() > self.AvailableTill:
+			if datetime.datetime.now() > self.AvailableTill:
 				return False
 		if not self.AvailableTimes:
 			if self.ExecutedCount >= self.AvailableTimes:

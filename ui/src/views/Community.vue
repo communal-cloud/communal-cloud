@@ -16,7 +16,7 @@
 
                 <b-button v-if="this.isMyCommunity" :href="this.getCommunityDetailsPath" variant="info btn-sm">Go To Community</b-button>
                 <template v-else>
-                    <b-button href="#" variant="info btn-sm">Join Community</b-button>
+                    <b-button :href="'/community/'+community.id+'/workflows'" variant="info btn-sm">Join Community</b-button>
                 </template>
             </b-card>
         </div>
