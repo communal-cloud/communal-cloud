@@ -9,11 +9,10 @@
                 </div>
                
             </div>
-            <div class="kt-portlet__body kt-portlet__body--fluid" v-if="workflows">
+            <div class="kt-portlet__body kt-portlet__body--fluid">
                 <b-row>
-                <b-col cols="4" v-for="community in communities" :key="community.id">
-                    <community :id="community.id">
-                    </community>
+                <b-col cols="4" v-for="task in taskData" :key="task.id">
+                    {{task.Value}}
                 </b-col>
             </b-row>
             </div>
@@ -23,40 +22,33 @@
 </template>
 
 <script>
-    import Community from './Community.vue'
-    import Workflow from './Workflow.vue'
-    import Workflows from './Workflows.vue'
+    
     import store from '../store'
+      import axios from 'axios'
 
     export default {
         store: store,
-        name: 'communityDetails',
-        components: {
-            Workflow
-        },
+        name: 'ExecuteResults',
+        
         data() {
             return {
-                community: {
-                    Name: '',
-                    Purpose: '',
-                    Description: ''
-                },
-                workflows: []
+                taskData:[],
+             
             }
         },
         methods:{
-            async getCommunity(){
+            async getExecutionData(){
                try {
-                    if(id === null)
-                        id = this.id
-
-                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'community/' + id + '/', {
+                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'execution/' + this.$route.params.task_id + '/', {
                         headers: {
                             Authorization: 'token ' + store.getters.token
                         }
                     })
-
-                    return this.community = data
+                    if(data){
+                        console.log(data)
+                        this.taskData = data
+                    }
+                    
                 } catch (e) {
                     this.$swal(e.message)
                 }
@@ -64,7 +56,8 @@
             
         },
         mounted(){
-           
+            console.log("CCC")
+           this.getExecutionData()
         }
     }
 

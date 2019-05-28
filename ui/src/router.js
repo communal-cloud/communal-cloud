@@ -132,7 +132,7 @@ const routes = [
         }
     },
     {
-        path: '/community/:community_id/workflow/:workflow_id/task/:task_id/results',
+        path: '/community/:community_id/workflow/:workflow_id/tasks/:task_id/results',
         name: 'ExecuteResults',
         component: ExecuteResults,
         meta: {
