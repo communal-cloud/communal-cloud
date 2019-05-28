@@ -10,7 +10,7 @@ import Tasks from './views/Tasks.vue'
 import CreateCommunity from './components/CreateCommunity.vue'
 import CreateWorkflow from './components/CreateWorkflow.vue'
 import CreateTask from './components/CreateTask.vue'
-import ExecuteTask from './components/ExecuteTask.vue'
+import ExecuteResults from './views/ExecuteResults.vue'
 
 import SignIn from './components/auth/SignIn.vue'
 import SignUp from './components/auth/SignUp.vue'
@@ -26,7 +26,7 @@ const routes = [
     {
         path: '/',
         name: 'home',
-        component: Home,
+        component: Communities,
         meta: {
             requiresAuth: true
         }
@@ -132,9 +132,9 @@ const routes = [
         }
     },
     {
-        path: '/execute',
-        name: 'Execute',
-        component: ExecuteTask,
+        path: '/community/:community_id/workflow/:workflow_id/tasks/:task_id/results',
+        name: 'ExecuteResults',
+        component: ExecuteResults,
         meta: {
             requiresAuth: true
         }
