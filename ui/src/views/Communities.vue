@@ -30,7 +30,7 @@
 
     export default {
         store: store,
-        name: 'home',
+        name: 'availablecommunities',
         components: {
             Community
         },
@@ -42,13 +42,12 @@
         methods: {
             async getCommunities() {
                 try {
-                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'community/all/', {
+                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'community/notjoined/', {
                         headers: {
                             Authorization: 'token ' + store.getters.token
                         }
                     })
 
-                    console.log(data)
                     this.communities = data
 
                 } catch (e) {

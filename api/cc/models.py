@@ -168,7 +168,7 @@ class Task(BaseModel):
 	Description = models.CharField(max_length=5000)
 	Available = models.BooleanField(default=False)
 	AvailableTill = models.DateTimeField(blank=True, null=True)
-	AvailableTimes = models.IntegerField(default=0)
+	AvailableTimes = models.IntegerField(blank=True, null=True)
 	Workflow = models.ForeignKey(Workflow, blank=True, on_delete=models.DO_NOTHING)
 	AssignedUsers = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
 	AssignedRoles = models.ManyToManyField(Role, blank=True)

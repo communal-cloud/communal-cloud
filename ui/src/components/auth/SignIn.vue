@@ -84,6 +84,8 @@
                   }
 
                   else {
+                      console.log(data)
+
                       this.$swal('Wrong info!')
                   }
               } catch (e) {
