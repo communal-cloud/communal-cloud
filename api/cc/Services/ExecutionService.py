@@ -57,14 +57,15 @@ class ExecutionService(object):
 			model.Data.add(identifier)
 		group = identifier
 		for field in fields:
-			ed = self.SaveExecutionData(field, group)
+			ed = self.SaveExecutionData(field, model.Task, group)
 			model.Data.add(ed)
 	
-	def SaveExecutionData(self, field, group=None):
+	def SaveExecutionData(self, field, task , group=None):
 		model = ExecutionData()
 		model.DataGroup = group
 		model.Field_id = field.get("Field", None)
 		model.Value = field.get("Value", None)
+		model.Task = task
 		model.save()
 		return model
 	
