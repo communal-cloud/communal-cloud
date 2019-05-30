@@ -67,7 +67,13 @@
                   }
 
               } catch (e) {
-                  this.$swal("Token not found!")
+
+                  if(e.response.status !== 500) {
+                      this.$swal(JSON.stringify(e.response.data))
+                  }
+
+                  else
+                    this.$swal("Token not found!")
               }
           }
       },
