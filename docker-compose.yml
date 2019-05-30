@@ -19,16 +19,17 @@ services:
     volumes:
       - ./ui:/ui
     ports:
-      - "8080:8080" 
-
-  nginx:    
+<<<<<<<<< Temporary merge branch 1
+      - "8080:8080"
+  
+  nginx:
     build: ./nginx
     restart: always
     depends_on: 
       - api
     command: nginx -g 'daemon off;'
-    ports: 
+    ports:
       - "80:80"
     volumes: 
-      - ./api/static:/api/static/
+      - ./api/static/api/static/
 

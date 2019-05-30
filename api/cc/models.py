@@ -225,6 +225,7 @@ class DataType(BaseModel):
 	Name = models.CharField(max_length=50)
 	Fields = models.ManyToManyField(DataField, blank=True)
 	Community = models.ForeignKey(Community, blank=True, default=1, on_delete=models.DO_NOTHING)
+	Task = models.ForeignKey(Task, blank=True, null=True,on_delete=models.DO_NOTHING)
 	
 	def __str__(self):
 		return u'DataType {0} ({1})'.format(self.Name, self.id)

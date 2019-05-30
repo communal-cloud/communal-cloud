@@ -90,7 +90,6 @@ env.bak/
 venv.bak/
 /.vscode
 /api/.vscode
-/api/static
 
 # ide
 .idea
@@ -112,9 +111,5 @@ venv.bak/
 /api/logs
 
 # UI
+node_modules/
 ui/node_modules/
-node_modules
-
-# Documentation
-documentation
-api/app/settings.py

@@ -205,11 +205,15 @@
 
                     if(data) {
                         this.$swal("Task updated")
-
-                       
                     }
                 } catch (e) {
-                    this.$swal("Error when updating task")
+
+                    if(e.response.status !== 500) {
+                        this.$swal(JSON.stringify(e.response.data))
+                    }
+
+                    else
+                        this.$swal("Error when updating task")
                 }
             },
             async createTask(){
@@ -233,7 +237,13 @@
                         this.$router.push('/community/'+this.$route.params.community_id+'/workflow/'+this.$route.params.workflow_id+'/tasks/')
                     }
                 } catch (e) {
-                    this.$swal("Error when creating task")
+
+                    if(e.response.status !== 500) {
+                        this.$swal(JSON.stringify(e.response.data))
+                    }
+
+                    else
+                        this.$swal("Error when creating task")
                 }
             },
             async getDataTypes() {
