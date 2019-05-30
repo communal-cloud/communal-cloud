@@ -1,158 +1,128 @@
 <template>
+    <b-row class="row justify-content-center">
+        <b-col class="col-xs-12 col-sm-8 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Create Community</h3>
 
+                    <!-- Create Community Step 1 -->
+                    <div v-bind:class="{ invisibleStep: step1 }">
+                        <b-input-group
+                                prepend="Name"
+                                class="mt-3"
+                                description="name of the community"
+                                label="Enter a community name"
+                                label-for="name">
+                            <b-form-input v-model="community_name" type="text"/>
 
-    <div style="margin: 0 auto">
+                        </b-input-group>
+                        <b-input-group
+                                prepend="Purpose"
+                                class="mt-3"
+                                label="Purpose"
+                                label-for="purpose">
+                            <b-form-input v-model="community_purpose" type="text"/>
+                        </b-input-group>
 
+                        <b-input-group
+                                prepend="Categories"
+                                class="mt-3"
+                                label="Categories"
+                                label-for="categories">
+                            <b-form-input v-model="community_category" type="text"/>
+                            <b-input-group-append>
+                                <b-button v-on:click="AddCategory" variant="btn btn-primary">Add</b-button>
+                            </b-input-group-append>
+                        </b-input-group>
 
-        <h1 class="text-white mt-2">Create Community</h1>
+                        <div id="categories">
+                            <a href="javascript:" v-for="category in community_categories" :key="category" v-on:click="RemoveCategory(category)">
+                                <b-badge class="mt-1 mr-1" size="sm" variant="dark">
+                                    {{ category }}
+                                </b-badge>
+                            </a>
+                        </div>
 
-        <!-- Create Community Step 1 -->
-        <div v-bind:class="{ invisibleStep: step1 }">
-            <b-input-group
-                    prepend="Name"
-                    class="mt-3"
-                    id="name"
-                    description="name of the community"
-                    label="Enter a community name"
-                    label-for="name"
+                        <b-button class="next" v-on:click="changeStep('step1')" variant="btn btn-dark outline-primary m-2">Next
+                        </b-button>
+                    </div>
 
-            >
-                <b-form-input v-model="community_name" type="text"/>
+                    <div v-bind:class="{ invisibleStep: step2 }">
+                        <!-- Create Community Step 2 -->
 
-            </b-input-group>
-            <b-input-group
-                    prepend="Purpose"
-                    class="mt-3"
-                    id="purpose"
-                    label="Purpose"
-                    label-for="purpose"
+                        <b-input-group
+                                prepend="Description"
+                                class="mt-3"
+                                description="description of the community"
+                                label="Enter description"
+                                label-for="description">
+                            <b-form-input v-model="community_description" type="text"/>
 
-            >
-                <b-form-input v-model="community_purpose" type="text"/>
-            </b-input-group>
+                        </b-input-group>
 
-            <b-input-group
-                    prepend="Categories"
-                    class="mt-3"
-                    id="categories"
-                    label="Categories"
-                    label-for="categories"
+                        <b-input-group
+                                prepend="Roles"
+                                class="mt-3"
+                                label="Roles"
+                                label-for="roles">
+                            <b-form-input v-model="community_role" type="text"/>
+                            <b-input-group-append>
+                                <b-button v-on:click="AddRole" variant="btn btn-primary">Add</b-button>
+                            </b-input-group-append>
+                        </b-input-group>
 
-            >
-                <b-form-input v-model="community_category" type="text"/>
-                <b-input-group-append>
-                    <b-button v-on:click="AddCategory" variant="btn btn-primary">Add</b-button>
-                </b-input-group-append>
-            </b-input-group>
+                        <ul>
+                            <li v-for="role in community_roles" :key="role">
+                                <b-button class="btn btn-primary m-2" v-on:click="RemoveRole(role)">{{ role }}
+                                </b-button>
+                            </li>
+                        </ul>
 
-            <ul id="categories">
-                <li v-for="category in community_categories" :key="category">
-                    <b-button class="btn btn-primary" v-on:click="RemoveCategory(category)">{{ category }}</b-button>
-                </li>
-            </ul>
+                        <b-button class="next" v-on:click="changeStep('step2')" variant="success m-2">Next</b-button>
 
-            <b-button class="next" v-on:click="changeStep('step1')" variant="btn btn-dark outline-primary m-2">Next
-            </b-button>
+                    </div>
 
-        </div>
+                    <div v-bind:class="{ invisibleStep: step3 }">
+                        <create-data-type :community_id="communityStep.id"></create-data-type>
+                        <br />
+                        <b-button class="next" v-on:click="changeStep('step3')" variant="success m-2">Finish</b-button>
+                    </div>
 
-
-        <div v-bind:class="{ invisibleStep: step2 }">
-            <!-- Create Community Step 2 -->
-
-            <b-input-group
-                    prepend="Description"
-                    class="mt-3"
-                    id="description"
-                    description="description of the community"
-                    label="Enter description"
-                    label-for="description"
-
-            >
-                <b-form-input v-model="community_description" type="text"/>
-
-            </b-input-group>
-
-            <b-input-group
-                    prepend="Roles"
-                    class="mt-3"
-                    id="roles"
-                    label="Roles"
-                    label-for="roles"
-
-            >
-                <b-form-input v-model="community_role" type="text"/>
-                <b-input-group-append>
-                    <b-button v-on:click="AddRole" variant="btn btn-primary">Add</b-button>
-                </b-input-group-append>
-            </b-input-group>
-
-            <ul>
-                <li v-for="role in community_roles" :key="role">
-                    <b-button class="btn btn-primary m-2" v-on:click="RemoveRole(role)">{{ role }}</b-button>
-                </li>
-            </ul>
-
-            <b-button class="next" v-on:click="changeStep('step2')" variant="success m-2">Next</b-button>
-
-        </div>
-
-        <div v-bind:class="{ invisibleStep: step3 }">
-            
-
-
-
-
-          <create-data-type :community_id="communityStep.id"></create-data-type>
-
-
-
-           <br></br>
-        <b-button class="next" v-on:click="changeStep('step3')" variant="success m-2">Finish</b-button>
-        </div>
-
-        <div v-bind:class="{ invisibleStep: step4 }">
-            <!-- Create Community Step 4 -->
-
-            <b-row class="my-1">
-                <b-col sm="3">
-                    <label for="dataTypeName">Invite People :</label>
-                </b-col>
-                <b-col sm="9">
-                    <b-form-input id="dataTypeName" value="https://communal-cloud.com/12321" disabled
-                                  type="text"></b-form-input>
-                </b-col>
-            </b-row>
-            <b-row>OR</b-row>
-            <b-row>
-                <b-input-group
-                        prepend="e-mail"
-                        class="mt-3"
-                        id="email"
-                        label="E-mail"
-                        label-for="email"
-
-                >
-                    <b-form-input v-model="email" type="email"/>
-                    <b-input-group-append>
-                        <b-button v-on:click="AddEmail" variant="btn btn-primary">Invite</b-button>
-                    </b-input-group-append>
-                </b-input-group>
-                <ul>
-                    <li v-for="email in community_emails" :key="email">
-                        <b-button v-on:click="RemoveMail(email)">{{ email }}</b-button>
-                    </li>
-                </ul>
-            </b-row>
-
-        
-
-        </div>
-
-
-    </div>
-
-
+                    <div v-bind:class="{ invisibleStep: step4 }">
+                        <!-- Create Community Step 4 -->
+                        <b-row class="my-1">
+                            <b-col sm="3">
+                                <label for="dataTypeName">Invite People :</label>
+                            </b-col>
+                            <b-col sm="9">
+                                <b-form-input id="dataTypeName" value="https://communal-cloud.com/12321" disabled
+                                              type="text"></b-form-input>
+                            </b-col>
+                        </b-row>
+                        <b-row>OR</b-row>
+                        <b-row>
+                            <b-input-group
+                                    prepend="e-mail"
+                                    class="mt-3"
+                                    id="email"
+                                    label="E-mail"
+                                    label-for="email">
+                                <b-form-input v-model="email" type="email"/>
+                                <b-input-group-append>
+                                    <b-button v-on:click="AddEmail" variant="btn btn-primary">Invite</b-button>
+                                </b-input-group-append>
+                            </b-input-group>
+                            <ul>
+                                <li v-for="email in community_emails" :key="email">
+                                    <b-button v-on:click="RemoveMail(email)">{{ email }}</b-button>
+                                </li>
+                            </ul>
+                        </b-row>
+                    </div>
+                </div>
+            </div>
+        </b-col>
+    </b-row>
 </template>
 
 <script>
@@ -162,10 +132,10 @@
     import CreateDataType from './CreateDataType.vue'
 
     export default {
-      components: {
-      
-        CreateDataType
-    },
+        components: {
+
+            CreateDataType
+        },
 
         data() {
             return {
@@ -180,13 +150,13 @@
                 community_category: '',
                 community_description: '',
                 community_role: '',
-                
+
                 community_categories: [],
-                
+
                 community_roles: ['owner', 'member'],
-         
+
                 email: '',
-               
+
                 community_emails: []
 
             }
@@ -194,13 +164,24 @@
 
         methods: {
             async changeStep(step) {
-                if (step == 'step1') {
+                if (step === 'step1') {
                     this.step1 = true;
                     this.step2 = false;
 
+                    if(this.community_name === ''){
+                        this.$swal('Community Name cannot be empty!')
+
+                        return false
+                    }
+
+                    if(this.community_purpose === ''){
+                        this.$swal('Community Purpose cannot be empty!')
+
+                        return false
+                    }
 
                     try {
-                        const {data} = await axios.post(process.env.VUE_APP_BASE_URL + 'community/', {
+                        await axios.post(process.env.VUE_APP_BASE_URL + 'community/', {
                                 Name: this.community_name,
                                 Purpose: this.community_purpose,
                                 Categories: this.community_categories
@@ -210,17 +191,15 @@
                                     Authorization: 'token ' + store.getters.token
                                 }
                             }
-                        )
-
-                        if (data)
-                            console.log(data)
-                        this.communityStep = data
-                        this.$swal("Step 1 completed")
+                        ).then(data => {
+                            this.communityStep = data
+                            this.$swal("Step 1 completed")
+                        })
                     } catch (e) {
-                        this.$swal("Error occured.")
+                        this.$swal(e.message)
                     }
 
-                } else if (step == 'step2') {
+                } else if (step === 'step2') {
                     this.step2 = true;
                     this.step3 = false;
 
@@ -248,14 +227,19 @@
                     this.step3 = true;
                     this.step4 = false;
 
-                   
+
                 }
             },
             AddCategory() {
-                this.community_categories.push(this.community_category);
-            },
-            RemoveCategory() {
+                if(this.community_categories.indexOf(this.community_category) === -1)
+                    this.community_categories.push(this.community_category);
 
+                else
+                    this.$swal("You have already added this category!")
+            },
+            RemoveCategory(category) {
+                if (this.community_categories.indexOf(category) !== -1)
+                    this.community_categories.splice(this.community_categories.indexOf(category), 1);
             },
             AddRole() {
                 this.community_roles.push(this.community_role);
