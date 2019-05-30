@@ -217,7 +217,13 @@
                         this.communityStep = data
                         this.$swal("Step 1 completed")
                     } catch (e) {
-                        this.$swal("Error occured.")
+
+                        if(e.response.status !== 500) {
+                            this.$swal(JSON.stringify(e.response.data))
+                        }
+
+                        else
+                            this.$swal("Error occured.")
                     }
 
                 } else if (step == 'step2') {

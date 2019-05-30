@@ -61,7 +61,13 @@
                             this.$router.push('/community/'+this.$route.params.community_id+'/workflows')
                         }
                     } catch (e) {
-                        this.$swal("Error when creating workflow")
+
+                        if(e.response.status !== 500) {
+                            this.$swal(JSON.stringify(e.response.data))
+                        }
+
+                        else
+                            this.$swal("Error when creating workflow")
                     }
                 }
             }
