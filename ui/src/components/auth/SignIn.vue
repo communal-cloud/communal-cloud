@@ -89,9 +89,12 @@
                       this.$swal('Wrong info!')
                   }
               } catch (e) {
-                  console.log(data)
+                  if(e.response.status !== 500) {
+                      this.$swal(JSON.stringify(e.response.data))
+                  }
 
-                  this.$swal(e.message)
+                  else
+                    this.$swal(e.message)
               }
           }
       }
