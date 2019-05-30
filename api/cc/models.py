@@ -176,7 +176,9 @@ class Task(BaseModel):
 	InputFields = models.ManyToManyField(DataField, related_name="InputFields", blank=True)
 	OutputFields = models.ManyToManyField(DataField, related_name="OutputFields", blank=True)
 	Type = models.IntegerField(choices=[(choice.value, choice.name.replace("_", " ")) for choice in TaskType])
-	
+
+
+
 	@property
 	def ExecutedCount(self):
 		return Execution.objects.filter(Task=self).count()
@@ -193,7 +195,14 @@ class Task(BaseModel):
 		if not self.ArePredecessorsSatisfied:
 			return False
 		return self.Available
-	
+
+
+	@property
+	def RemainingTimes(self):
+		if self.AvailableTimes==0:
+			return "Unlimited"
+		return self.AvailableTimes - self.ExecutedCount
+
 	@property
 	def ArePredecessorsSatisfied(self):
 		predecessors = self.Predecessors
