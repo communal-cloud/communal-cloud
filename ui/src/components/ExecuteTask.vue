@@ -10,7 +10,7 @@
 
 
 <b-input-group :prepend="data.Name" class="mt-3">
-    <b-form-input :name="data.Name" :type="data.Type"></b-form-input>
+    <b-form-input :id="String(task.id)+String(data.id)+data.Name" :name="data.Name" :type="data.Type"></b-form-input>
 </b-input-group>
                
     
@@ -38,6 +38,7 @@ import store from '../store'
 
 
   export default {
+ 
   props:{
     task:{},
     execution:{}
@@ -46,8 +47,9 @@ import store from '../store'
   methods:{
   async execute() {
     var Data=[]
+    var task_id=this.task.id
       this.task.OutputFields.map(function(item) {
-        Data.push({"Field" : item.id, "Value": document.forms["myForm"][item.Name].value })
+        Data.push({"Field" : item.id, "Value": $('#'+String(task_id)+String(item.id)+item.Name).val() })
       })
 
 console.log(Data)
