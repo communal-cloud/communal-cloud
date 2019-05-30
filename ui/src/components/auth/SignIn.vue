@@ -89,6 +89,8 @@
                       this.$swal('Wrong info!')
                   }
               } catch (e) {
+                  console.log(data)
+
                   this.$swal(e.message)
               }
           }

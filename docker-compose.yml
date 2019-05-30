@@ -3,7 +3,7 @@ version: "3"
 services:
   api:
     build: ./api
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn -c gunicorn.conf app.wsgi
     restart: always
     volumes:
       - ./api:/api
@@ -19,4 +19,14 @@ services:
     volumes:
       - ./ui:/ui
     ports:
-      - "8080:8080" 
+      - "8080:8080"
+
+  nginx:
+    build: ./nginx
+    depends_on:
+      - api
+    command: nginx -g 'daemon off;'
+    ports:
+      - "80:80"
+    volumes:
+      - ./api/static:/api/static/
