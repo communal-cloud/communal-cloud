@@ -10,6 +10,7 @@ window.$ = window.jQuery = require("jquery")
 window.$.Popper = window.Popper = require("popper.js").default
 require("bootstrap")
 require("js-cookie")
+require('dotenv').config()
 
 Vue.config.productionTip = false
 

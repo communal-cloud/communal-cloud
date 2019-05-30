@@ -47,7 +47,10 @@ class CommunityViewSetController(ViewSet):
 	__communityService = CommunityService.Instance()
 	__memberService = MemberService.Instance()
 
-	@action(detail=True, methods=['get'])
+	authentication_classes = (TokenAuthentication,)
+	permission_classes = (IsAuthenticated,)
+
+	@action(detail=True, methods=['get', 'post'])
 	def search(self, request, pk=None):
 		community = self.__communityService.Search(request.data)
 		return Response(CommunitySerializer(community, many=True).data)

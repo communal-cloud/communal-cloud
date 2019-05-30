@@ -1,0 +1,69 @@
+<template>
+    <div class="kt-portlet kt-portlet--height-fluid">
+        <div class="kt-portlet kt-portlet--height-fluid">
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    <h3 class="kt-portlet__head-title">
+                        Execution Results
+                    </h3>
+                </div>
+               
+            </div>
+            <div class="kt-portlet__body kt-portlet__body--fluid">
+                <b-row>
+                <b-col cols="4" v-for="task in taskData" :key="task.id">
+                    {{task.Value}}
+                </b-col>
+            </b-row>
+            </div>
+        </div>
+
+    </div>
+</template>
+
+<script>
+    
+    import store from '../store'
+      import axios from 'axios'
+
+    export default {
+        store: store,
+        name: 'ExecuteResults',
+        
+        data() {
+            return {
+                taskData:[],
+             
+            }
+        },
+        methods:{
+            async getExecutionData(){
+               try {
+                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'execution/' + this.$route.params.task_id + '/', {
+                        headers: {
+                            Authorization: 'token ' + store.getters.token
+                        }
+                    })
+                    if(data){
+                        console.log(data)
+                        this.taskData = data
+                    }
+                    
+                } catch (e) {
+                    this.$swal(e.message)
+                }
+            },
+            
+        },
+        mounted(){
+            console.log("CCC")
+           this.getExecutionData()
+        }
+    }
+
+</script>
+
+<style scoped>
+
+
+</style>

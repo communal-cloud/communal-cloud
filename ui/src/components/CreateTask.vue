@@ -3,7 +3,9 @@
         <b-col class="col-xs-12 col-sm-8 col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="card-title">Create Task</h3>
+                   
+                    <h3 v-if="taskUpdate!=undefined" class="card-title">Update Task</h3>
+                    <h3 v-else class="card-title">Create Task</h3>
                     <b-input-group
                             prepend="Name"
                             class="mt-3"
@@ -103,7 +105,7 @@
                             <label><strong>Input Fields</strong></label>
                             <b-form-select v-model="task_input_fields" :options="workflow_input_fields" multiple></b-form-select>
                             <div id="task_input_fields">
-                                <b-badge class="mt-1 mr-1" size="sm" variant="dark" v-for="data in task_input_fields" :key="data">
+                                <b-badge class="mt-1 mr-1" size="sm" variant="dark" v-for="(data,i) in task_input_fields" :key="data+i">
                                     {{ workflow_input_fields.find((workflow_input_field) => {return workflow_input_field.value === data}).text }}
                                 </b-badge>
                             </div>
@@ -120,7 +122,7 @@
                         </b-col>
                         <b-col class="text-left">
                             <ul id="task_output_fields" style="list-style: none">
-                                <li v-for="data in task_output_fields" :key="data">
+                                <li v-for="(data,i) in task_output_fields" :key="data+i">
                                     <b-button>{{ community_data_types.find((community_data_type) => {return community_data_type.value === data}).text }}
                                     </b-button>
                                     <b-form-group label="Field Options">
@@ -136,7 +138,8 @@
                         </b-col>
                     </b-row>
 
-                    <b-button v-on:click="createTask()" variant="outline-primary">Create</b-button>
+                    <b-button v-if="taskUpdate==undefined" v-on:click="createTask()" variant="outline-primary">Create</b-button>
+                    <b-button v-else v-on:click="updateTask()" variant="outline-primary">Update</b-button>
                 </div>
             </div>
         </b-col>
@@ -157,6 +160,9 @@
             workflow: function () {
                 return Workflow.methods.getWorkflow(this.$route.params.workflow_id)
             }
+        },
+        props:{
+            taskUpdate:{}
         },
         data() {
             return {
@@ -182,6 +188,34 @@
             }
         },
         methods: {
+            async updateTask(){
+                try {
+                    const { data } = await axios.put(process.env.VUE_APP_BASE_URL+'task/'+this.taskUpdate.id+'/', {
+                        Name: this.task_name,
+                        Description: this.task_description,
+                        Available: this.task_available,
+                        AvailableTill: (this.task_available_till !== null) ? new Date(this.task_available_till).toISOString().slice(0, 19).replace('T', ' ') : this.task_available_till,
+                        AvailableTimes: parseInt(this.task_available_times),
+                        AssignedUsers: this.task_members.filter(Number),
+                        AssignedRoles: this.task_roles.filter(Number),
+                        Predecessors: this.task_predecessors.filter(Number),
+                        InputFields: this.task_input_fields.filter(Number),
+                        OutputFields: this.task_output_fields.filter(Number)
+                     })
+
+                    if(data) {
+                        this.$swal("Task updated")
+                    }
+                } catch (e) {
+
+                    if(e.response.status !== 500) {
+                        this.$swal(JSON.stringify(e.response.data))
+                    }
+
+                    else
+                        this.$swal("Error when updating task")
+                }
+            },
             async createTask(){
                 try {
                     const { data } = await axios.post(process.env.VUE_APP_BASE_URL+'task/'+this.$route.params.workflow_id+'/', {
@@ -203,7 +237,13 @@
                         this.$router.push('/community/'+this.$route.params.community_id+'/workflow/'+this.$route.params.workflow_id+'/tasks/')
                     }
                 } catch (e) {
-                    this.$swal("Error when creating task")
+
+                    if(e.response.status !== 500) {
+                        this.$swal(JSON.stringify(e.response.data))
+                    }
+
+                    else
+                        this.$swal("Error when creating task")
                 }
             },
             async getDataTypes() {
@@ -283,6 +323,7 @@
                     tasks.forEach(function (task) {
                         if (task.OutputFields.length) {
                             task.OutputFields.forEach(function (field) {
+                                
                                 temp.push({
                                     value: field.id,
                                     text: task.Name + ' - ' + field.Name + ' (' + field_types[field.Type] + ')'
@@ -290,12 +331,13 @@
                             })
                         }
                     })
-
+               
                     this.workflow_input_fields = temp
                 })
             },
         },
         mounted() {
+
             this.getFieldTypes()
 
             this.getFieldOptions()
@@ -307,6 +349,19 @@
             this.getRoles()
 
             this.getTasks()
+
+            if(this.taskUpdate!=undefined){
+                         this.task_name = this.taskUpdate.Name
+                         this.task_description=this.taskUpdate.Description
+                         this.task_available=this.taskUpdate.Available
+                         this.task_available_till =this.taskUpdate.AvailableTill
+                         this.task_available_times=this.taskUpdate.AvailableTimes
+                         this.task_roles=this.taskUpdate.AssignedRoles
+                    
+                       
+            }
+
+            
         }
     }
 </script>

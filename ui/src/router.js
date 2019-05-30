@@ -10,7 +10,7 @@ import Tasks from './views/Tasks.vue'
 import CreateCommunity from './components/CreateCommunity.vue'
 import CreateWorkflow from './components/CreateWorkflow.vue'
 import CreateTask from './components/CreateTask.vue'
-import ExecuteTask from './components/ExecuteTask.vue'
+import ExecuteResults from './views/ExecuteResults.vue'
 
 import SignIn from './components/auth/SignIn.vue'
 import SignUp from './components/auth/SignUp.vue'
@@ -18,6 +18,7 @@ import Activation from './components/auth/Activation.vue'
 import Forgot from './components/auth/Forgot.vue'
 import CommunityDetails from './views/CommunityDetails'
 import MyCommunities from './views/MyCommunities'
+import SearchCommunities from './views/SearchCommunities'
 
 Vue.use(Router)
 
@@ -62,6 +63,22 @@ const routes = [
         path: '/communities/my',
         name: 'mycommunities',
         component: MyCommunities,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/search/communities/',
+        name: 'searchcommunities',
+        component: SearchCommunities,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/search/communities/:keyword',
+        name: 'searchcommunities',
+        component: SearchCommunities,
         meta: {
             requiresAuth: true
         }
@@ -115,9 +132,9 @@ const routes = [
         }
     },
     {
-        path: '/execute',
-        name: 'Execute',
-        component: ExecuteTask,
+        path: '/community/:community_id/workflow/:workflow_id/tasks/:task_id/results',
+        name: 'ExecuteResults',
+        component: ExecuteResults,
         meta: {
             requiresAuth: true
         }

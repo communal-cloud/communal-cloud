@@ -1,28 +1,53 @@
 <template>
-    <div class="card border border-success m-4" style="width: 22rem;">
-         <b-button class="mt-3" block >Edit</b-button>
+    <div class="card border border-success m-4" style="width: 32rem;">
+        <b-button class="mt-3" block @click="$bvModal.show(modalID+'edit')">Edit</b-button>
         <div class="card-body">
-            <h5 class="card-title">{{task.Name}}</h5>
+            <h2 class="card-title">{{task.Name}}</h2>
             <p class="card-text">{{task.Description}}</p>
-            
-              <b-button id="show-btn" variant="success" @click="$bvModal.show(modalID)">Execute</b-button>
+            <h6 class="card-text">Available executions: {{task.AvailableTimes}}</h6>
+            <p class="card-text" v-if="task.AssignedRoles.length > 0">Assigned Roles:
+                <b-badge variant="dark mr-2" v-for="role in task.AssignedRoles">{{role.Name}}</b-badge>
+            </p>
+            <p v-else>No Assigned Role</p>
+            <p class="card-text" v-if="task.AssignedUsers.length > 0">Assigned Users:
+                <b-badge variant="dark mr-2" v-for="role in task.AssignedUsers">{{role.Name}}</b-badge>
+            </p>
+            <p v-else>No Assigned User</p>
+            <p class="card-text" v-if="task.Predecessors.length > 0">Predecessors Tasks:
+                <b-badge variant="dark mr-2" v-for="role in task.Predecessors">{{role.Name}}</b-badge>
+            </p>
+            <p v-else>No Predecessors Tasks</p>
+
+            <b-button id="show-btn" variant="danger mr-2 btn-sm">Delete</b-button>
+            <b-button id="show-btn" variant="success" @click="$bvModal.show(modalID)">Execute</b-button>
         </div>
-    
-<div>
+
+        <div>
 
 
-  <b-modal :id="modalID" hide-footer>
-    <template slot="modal-title">
-       <code>{{task.Name}}</code> 
-       
-    </template>
-    <div class="d-block text-center">
-      <execute-task :task="task" :execute="execution"></execute-task>
-    </div>
-    <b-button class="mt-3" block @click="$bvModal.hide(modalID)">Close Me</b-button>
-  </b-modal>
-</div>
-    
+            <b-modal :id="modalID+'edit'" size="xl" hide-footer>
+                <template slot="modal-title">
+                    <code>{{task.Name}}</code>
+
+                </template>
+
+                <create-task :taskUpdate="task"></create-task>
+
+                <b-button class="mt-3" block @click="$bvModal.hide(modalID+'edit')">Close Me</b-button>
+            </b-modal>
+
+
+            <b-modal :id="modalID" hide-footer>
+                <template slot="modal-title">
+                    <code>{{task.Name}}</code>
+
+                </template>
+                <div class="d-block text-center">
+                    <execute-task :task="task" :execute="execution"></execute-task>
+                </div>
+                <b-button class="mt-3" block @click="$bvModal.hide(modalID)">Close Me</b-button>
+            </b-modal>
+        </div>
 
 
     </div>
@@ -32,93 +57,86 @@
     import axios from 'axios'
     import store from '../store'
     import ExecuteTask from '../components/ExecuteTask.vue'
-import { exec } from 'child_process';
+    import CreateTask from '../components/CreateTask.vue'
+    import {exec} from 'child_process';
 
     export default {
         components: {
-            ExecuteTask
+            ExecuteTask, CreateTask
         },
         props: {
             id: 0,
-            task:{}
+            task: {}
         },
         data() {
-            return {
-                
-            }
+            return {}
         },
-        computed:{
-            modalID: function(){
+        computed: {
+            modalID: function () {
                 console.log(String(this.id))
                 return String(this.id)
             },
-            execution: function(){
-                var execute={};
-                execute=this.task.OutputFields.map(function(item) {
-                  if(item.Type=="1")
-                  {
-                    item.Type="number"
-                  }
-                  else if(item.Type=="2")
-                  {
-                    item.Type='text'
-                  }
-                  else if(item.Type=="8")
-                  {
-                    item.Type='img'
-                  }
-                  else if(item.Type=="4")
-                  {
-                    item.Type='date'
-                  }
-                  else if(item.Type=="5")
-                  {
-                    item.Type='geolocation'
-                  }
-                  else if(item.Type=="3")
-                  {
-                    item.Type='boolean'
-                  }
-            
-                   return { Name: item.Name, Class : item.Type };
-              })
-               return execute
-        }
+            execution: function () {
+                var execute = {};
+                execute = this.task.OutputFields.map(function (item) {
+                    if (item.Type == "1") {
+                        item.Type = "number"
+                    }
+                    else if (item.Type == "2") {
+                        item.Type = 'text'
+                    }
+                    else if (item.Type == "8") {
+                        item.Type = 'img'
+                    }
+                    else if (item.Type == "4") {
+                        item.Type = 'date'
+                    }
+                    else if (item.Type == "5") {
+                        item.Type = 'geolocation'
+                    }
+                    else if (item.Type == "3") {
+                        item.Type = 'boolean'
+                    }
+
+                    return {Name: item.Name, Class: item.Type};
+                })
+                return execute
+            }
         },
 
         mounted() {
             //this.getTask();
         },
-       /* methods: {
-            async getTask() {
-                try {
-                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'task/' + this.id + '/', {
-                        headers: {
-                            Authorization: 'token ' + store.getters.token
-                        }
-                    })
+        /* methods: {
+             async getTask() {
+                 try {
+                     const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'task/' + this.id + '/', {
+                         headers: {
+                             Authorization: 'token ' + store.getters.token
+                         }
+                     })
 
-                    const data = {
-                        Name:"Join Us Here",
-                        Description:"To join us please fill the form and submit",
-                        Available: true,
-                        AvailableTill: null,
-                        AvailableTimes: 20000,
-                        AssignedUsers: [1],
-                        AssignedRoles: [],
-                        Predecessors: [],
-                        InputFields: [],
-                        OutputFields: [15, 16 , 20]
-                    }
+                     const data = {
+                         Name:"Join Us Here",
+                         Description:"To join us please fill the form and submit",
+                         Available: true,
+                         AvailableTill: null,
+                         AvailableTimes: 20000,
+                         AssignedUsers: [1],
+                         AssignedRoles: [],
+                         Predecessors: [],
+                         InputFields: [],
+                         OutputFields: [15, 16 , 20]
+                     }
 
-                    console.log(data);
+                     console.log(data);
 
-                    this.task = data
+                     this.task = data
 
-                } catch (e) {
-                    this.$swal(e.message)
-                }
-            }
-        },*/
+                 } catch (e) {
+                     this.$swal(e.message)
+                 }
+             }
+         },*/
     }
 </script>
