@@ -1,6 +1,8 @@
 <template>
-    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--desktop kt-grid--ver-desktop kt-grid--hor-tablet-and-mobile" style="background: white;">
-        <div class="kt-grid__item  kt-grid__item--order-tablet-and-mobile-2  kt-grid kt-grid--hor kt-login__aside" style="margin: 10% auto; padding: 25px;">
+    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--desktop kt-grid--ver-desktop kt-grid--hor-tablet-and-mobile"
+         style="background: white;">
+        <div class="kt-grid__item  kt-grid__item--order-tablet-and-mobile-2  kt-grid kt-grid--hor kt-login__aside"
+             style="margin: 10% auto; padding: 25px;">
             <div class="kt-login__wrapper">
                 <div class="kt-login__container">
                     <div class="kt-login__body">
@@ -17,11 +19,14 @@
                             </div>
                             <div class="kt-login__form">
                                 <div class="kt-login__actions">
-                                    <button class="btn btn-brand btn-pill btn-elevate" v-on:click="activation()">Activate</button>
+                                    <button class="btn btn-brand btn-pill btn-elevate" v-on:click="activation()">
+                                        Activate
+                                    </button>
                                 </div>
-                                <hr />
+                                <hr/>
                                 <div class="kt-login__extra">
-                                    <router-link to="/user/login" id="kt_login_forgot">Already have an account ?</router-link>
+                                    <router-link to="/user/login" id="kt_login_forgot">Already have an account ?
+                                    </router-link>
                                 </div>
                             </div>
                         </div>
@@ -31,7 +36,8 @@
                     <span class="kt-login__account-msg">
                         Don't have an account yet ?
                     </span>&nbsp;&nbsp;
-                    <router-link to="/user/register" id="kt_login_signup" class="kt-login__account-link">Sign Up!</router-link>
+                    <router-link to="/user/register" id="kt_login_signup" class="kt-login__account-link">Sign Up!
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -39,46 +45,37 @@
 </template>
 
 <script>
-  import axios from 'axios/index'
-  import store from '../../store'
+    import axios from 'axios/index'
+    import store from '../../store'
 
-  export default {
-    computed: {},
-    data() {
-      return {
+    export default {
+        computed: {},
+        data() {
+            return {}
+        },
+        methods: {
+            async activation() {
+                try {
+                    const {data} = await axios.post(process.env.VUE_APP_BASE_URL + 'user/activation/?token=' + this.$route.params.token)
 
-      }
-    },
-      methods: {
-          async activation() {
-              try {
-                  const {data} = await axios.post(process.env.VUE_APP_BASE_URL+'user/activation/?token='+this.$route.params.token)
+                    if (data.status === "OK") {
+                        this.$swal('Success!', "Successfully activated! Please login with your account credentials.", 'success')
 
-                  if(data.status === "OK"){
-                      this.$swal("Successfully activated! Please login with your account credentials.")
+                        this.$router.push('/user/login')
+                    } else
+                        this.$swal('Error!', 'Something went wrong!', 'error')
+                } catch (e) {
+                    if (e.response.status !== 500) {
+                        Object.keys(e.response.data).forEach(key => {
+                            this.$swal(key, e.response.data[key][0], 'error')
+                        })
+                    } else
+                        this.$swal('Server Error!', e.message, 'error')
+                }
+            }
+        },
+        mounted() {
 
-                      this.$router.push('/user/login')
-                  }
-
-                  else{
-                      console.log(data)
-
-                      this.$swal(data.status)
-                  }
-
-              } catch (e) {
-
-                  if(e.response.status !== 500) {
-                      this.$swal(JSON.stringify(e.response.data))
-                  }
-
-                  else
-                    this.$swal("Token not found!")
-              }
-          }
-      },
-      mounted() {
-
-      }
-  }
+        }
+    }
 </script>

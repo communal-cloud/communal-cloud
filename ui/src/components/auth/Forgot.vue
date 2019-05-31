@@ -65,24 +65,20 @@
                   })
 
                   if(data.status === "OK"){
-                      this.$swal("A new password has been sent tou your e-mail address! Please login with your new password.")
+                      this.$swal('Success!', "A new password has been sent tou your e-mail address! Please login with your new password.", 'success')
 
                       this.$router.push('/user/login')
                   }
 
-                  else{
-                      console.log(data)
-
-                      this.$swal(data.status)
-                  }
-              } catch (e) {
-
-                  if(e.response.status !== 500) {
-                      this.$swal(JSON.stringify(e.response.data))
-                  }
-
                   else
-                    this.$swal(e.message)
+                      this.$swal('Error!', 'Something went wrong!', 'error')
+              } catch (e) {
+                  if (e.response.status !== 500) {
+                      Object.keys(e.response.data).forEach(key => {
+                          this.$swal(key, e.response.data[key][0], 'error')
+                      })
+                  } else
+                      this.$swal('Server Error!', e.message, 'error')
               }
           }
       }
