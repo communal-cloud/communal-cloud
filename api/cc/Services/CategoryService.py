@@ -18,11 +18,8 @@ class CategoryService(object):
 			raise Exception("CategoryService is a singleton, use 'CategoryService.Instance()'")
 		CategoryService.__instance = self
 	
-	def Search(self, word):
-		raise NotImplementedError
-	
-	def Create(self, category):
-		raise NotImplementedError
+	def GetList(self):
+		return Category.objects.all()
 	
 	def GetOrCreate(self, category):
 		model = Category.objects.get_or_create(Name=category)

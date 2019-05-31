@@ -10,10 +10,12 @@ from cc.Serializers.TaskSerializer import TaskSerializer
 from cc.Serializers.RoleSerializer import RoleSerializer
 from cc.Serializers.CommunitySerializer import CommunitySerializer
 from cc.Serializers.MemberSerializer import MemberSerializer
+from cc.Serializers.CategorySerializer import CategorySerializer
 
 from cc.Services.TaskService import TaskService
 from cc.Services.RoleService import RoleService
 from cc.Services.CommunityService import CommunityService
+from cc.Services.CategoryService import CategoryService
 
 from cc.models import Task
 from cc.models import Role
@@ -47,6 +49,15 @@ class AllCommunitiesController(APIView):
     def get(self, *args, **kwargs):
         communities = self.__community_service.GetList()
         return Response(CommunitySerializer(communities, many=True).data)
+
+
+class AllCategoriesController(APIView):
+    __logger = logging.getLogger('AllCategoriesController')
+    __categoryService = CategoryService.Instance()
+    
+    def get(self, *args, **kwargs):
+        categories = self.__categoryService.GetList()
+        return Response(CategorySerializer(categories, many=True).data)
     
 
 class AllActiveCommunitiesController(APIView):

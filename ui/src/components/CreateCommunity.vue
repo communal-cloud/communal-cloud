@@ -71,12 +71,13 @@
                             </b-input-group-append>
                         </b-input-group>
 
-                        <ul>
-                            <li v-for="role in community_roles" :key="role">
-                                <b-button class="btn btn-primary m-2" v-on:click="RemoveRole(role)">{{ role }}
-                                </b-button>
-                            </li>
-                        </ul>
+                        <div id="roles">
+                            <a href="javascript:" v-for="role in community_roles" :key="role" v-on:click="RemoveRole(role)">
+                                <b-badge class="mt-1 mr-1" size="sm" variant="dark">
+                                    {{ role }}
+                                </b-badge>
+                            </a>
+                        </div>
 
                         <b-button class="next" v-on:click="changeStep('step2')" variant="success m-2">Next</b-button>
 
@@ -165,9 +166,6 @@
         methods: {
             async changeStep(step) {
                 if (step === 'step1') {
-                    this.step1 = true;
-                    this.step2 = false;
-
                     if(this.community_name === ''){
                         this.$swal('Community Name cannot be empty!')
 
@@ -180,7 +178,15 @@
                         return false
                     }
 
+                    if(this.community_categories.length === 0){
+                        this.$swal('Community Categories cannot be empty!')
+
+                        return false
+                    }
+
                     try {
+                        store.commit("loading", true)
+                    
                         await axios.post(process.env.VUE_APP_BASE_URL + 'community/', {
                                 Name: this.community_name,
                                 Purpose: this.community_purpose,
@@ -192,25 +198,28 @@
                                 }
                             }
                         ).then(data => {
-                            this.communityStep = data
+                            this.communityStep = data.data
+
                             this.$swal("Step 1 completed")
+
+                            this.step1 = true;
+                            this.step2 = false;
+                            
+                            store.commit("loading", false)
                         })
                     } catch (e) {
-
-                        if(e.response.status !== 500) {
-                            this.$swal(JSON.stringify(e.response.data))
-                        }
-
-                        else
-                            this.$swal("Error occured.")
+                        this.$swal(e.message)
                     }
 
-                } else if (step == 'step2') {
-                    this.step2 = true;
-                    this.step3 = false;
+                } else if (step === 'step2') {
+                    if(this.community_description === ''){
+                        this.$swal('Community Description cannot be empty!')
+
+                        return false
+                    }
 
                     try {
-                        const {data} = await axios.put(process.env.VUE_APP_BASE_URL + 'community/' + this.communityStep.id + '/', {
+                        await axios.put(process.env.VUE_APP_BASE_URL + 'community/' + this.communityStep.id + '/', {
                                 Roles: this.community_roles,
                                 Description: this.community_description
 
@@ -219,21 +228,21 @@
                                 headers: {
                                     Authorization: 'token ' + store.getters.token
                                 }
-                            })
+                            }
+                        ).then(() => {
+                            this.$swal("Step 2 completed")
 
-                        if (data)
-                            console.log(data)
-                        this.$swal("Step 2 completed")
+                            this.step2 = true;
+                            this.step3 = false;
+                        })
                     } catch (e) {
                         this.$swal("Error when updating community")
                     }
 
 
-                } else if (step == 'step3') {
+                } else if (step === 'step3') {
                     this.step3 = true;
                     this.step4 = false;
-
-
                 }
             },
             AddCategory() {
@@ -250,8 +259,12 @@
             AddRole() {
                 this.community_roles.push(this.community_role);
             },
-            RemoveRole() {
+            RemoveRole(role) {
+                if(role === 'owner' || role === 'member')
+                    this.$swal('Pre-defined roles cannot be deleted!')
 
+                else if (this.community_roles.indexOf(role) !== -1)
+                    this.community_roles.splice(this.community_roles.indexOf(role), 1);
             },
             AddInput(type) {
                 this.community_data.push({'type': type, name: ''});

@@ -176,7 +176,9 @@ class Task(BaseModel):
 	InputFields = models.ManyToManyField(DataField, related_name="InputFields", blank=True)
 	OutputFields = models.ManyToManyField(DataField, related_name="OutputFields", blank=True)
 	Type = models.IntegerField(choices=[(choice.value, choice.name.replace("_", " ")) for choice in TaskType])
-	
+
+
+
 	@property
 	def ExecutedCount(self):
 		return Execution.objects.filter(Task=self).count()
@@ -193,7 +195,14 @@ class Task(BaseModel):
 		if not self.ArePredecessorsSatisfied:
 			return False
 		return self.Available
-	
+
+
+	@property
+	def RemainingTimes(self):
+		if self.AvailableTimes==0:
+			return "Unlimited"
+		return self.AvailableTimes - self.ExecutedCount
+
 	@property
 	def ArePredecessorsSatisfied(self):
 		predecessors = self.Predecessors
@@ -225,6 +234,7 @@ class DataType(BaseModel):
 	Name = models.CharField(max_length=50)
 	Fields = models.ManyToManyField(DataField, blank=True)
 	Community = models.ForeignKey(Community, blank=True, default=1, on_delete=models.DO_NOTHING)
+	Task = models.ForeignKey(Task, blank=True, null=True,on_delete=models.DO_NOTHING)
 	
 	def __str__(self):
 		return u'DataType {0} ({1})'.format(self.Name, self.id)

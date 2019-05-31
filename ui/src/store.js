@@ -9,12 +9,14 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: null,
-    token: Cookies.get('token')
+    token: Cookies.get('token'),
+    loading : false
   },
   getters: {
     user: state => state.user,
     token: state => state.token,
-    check: state => state.user !== null
+    check: state => state.user !== null,
+    loading: state => state.loading
   },
   mutations: {
     save_token (state, { token, remember }) {
@@ -41,6 +43,10 @@ export default new Vuex.Store({
 
     update_user (state, { user }) {
       state.user = user
+    },
+    
+    loading (state, new_state) {
+      state.loading = new_state;
     }
   },
   actions: {

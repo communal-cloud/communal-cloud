@@ -1,3 +1,4 @@
+from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 from cc import models
@@ -12,7 +13,7 @@ class TaskSerializer(ModelSerializer):
 	AssignedUsers = UserSerializer(required=False, many=True)
 	AssignedRoles = RoleSerializer(required=False, many=True)
 	Predecessors = SerializerMethodField()
-	
+	RemainingTimes = serializers.ReadOnlyField()
 	class Meta:
 		model = models.Task
 		fields = '__all__'
