@@ -196,10 +196,16 @@
                             this.$swal("Step 1 completed")
                         })
                     } catch (e) {
-                        this.$swal(e.message)
+
+                        if(e.response.status !== 500) {
+                            this.$swal(JSON.stringify(e.response.data))
+                        }
+
+                        else
+                            this.$swal("Error occured.")
                     }
 
-                } else if (step === 'step2') {
+                } else if (step == 'step2') {
                     this.step2 = true;
                     this.step3 = false;
 
