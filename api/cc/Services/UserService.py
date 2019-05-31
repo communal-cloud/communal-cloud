@@ -28,7 +28,11 @@ class UserService(object):
 		registerSerializer = RegisterSerializer(data = userData)
 		registerSerializer.is_valid(raise_exception=True)
 		user = CreateNewUser(registerSerializer.data)
-		SendActivationEmail(user)
+		try:
+			SendActivationEmail(user)
+		except:
+			user.is_active = True
+			user.save()
 		return user
 	
 	def UpdateUser(self, user, updateData):
