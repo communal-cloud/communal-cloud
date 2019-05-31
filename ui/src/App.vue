@@ -88,6 +88,14 @@
         </div>
       </div>
     </div>
+            <div v-if="store.getters.loading" data-backdrop="static" data-keyboard="false" tabindex="-1" class="modal fade loading-modal show" style="display: block;" aria-modal="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content" style="width: 48px;">
+                    <span class="fa fa-spinner fa-spin fa-3x"></span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-backdrop fade show" v-if="store.getters.loading"></div>
   </div>
 </template>
 
@@ -138,6 +146,18 @@
 }
 pre{
   text-align: left;
+}
+
+.loading-modal .modal-dialog{
+  display: table;
+  position: relative;
+  margin: 0 auto;
+  top: calc(50% - 24px);
+}
+
+.loading-modal .modal-dialog .modal-content{
+  background-color: transparent;
+  border: none;
 }
 </style>
 
