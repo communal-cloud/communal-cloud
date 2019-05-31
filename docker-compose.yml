@@ -19,7 +19,6 @@ services:
     volumes:
       - ./ui:/ui
     ports:
-<<<<<<<<< Temporary merge branch 1
       - "8080:8080"
   
   nginx:
