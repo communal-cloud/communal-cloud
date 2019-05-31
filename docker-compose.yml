@@ -30,5 +30,5 @@ services:
     ports:
       - "80:80"
     volumes: 
-      - ./api/static/api/static/
+      - ./api/static:/api/static/
 
