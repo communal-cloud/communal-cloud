@@ -3,7 +3,7 @@ version: "3"
 services:
   api:
     build: ./api
-    command: gunicorn -c gunicorn.conf app.wsgi
+    command: python manage.py runserver 0.0.0.0:8000
     restart: always
     volumes:
       - ./api:/api
@@ -13,20 +13,10 @@ services:
   web:
     build: ./ui
     environment:
-      - VUE_APP_BASE_URL=http://api.communal-cloud.com/
+      - VUE_APP_BASE_URL=http://localhost:8000/
     restart: always
     command: sh -c "npm run serve"
     volumes:
       - ./ui:/ui
     ports:
       - "8080:8080"
-
-  nginx:
-    build: ./nginx
-    depends_on:
-      - api
-    command: nginx -g 'daemon off;'
-    ports:
-      - "80:80"
-    volumes:
-      - ./api/static:/api/static/
