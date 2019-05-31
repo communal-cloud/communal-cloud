@@ -185,6 +185,8 @@
                     }
 
                     try {
+                        store.commit("loading", true)
+                    
                         await axios.post(process.env.VUE_APP_BASE_URL + 'community/', {
                                 Name: this.community_name,
                                 Purpose: this.community_purpose,
@@ -202,6 +204,8 @@
 
                             this.step1 = true;
                             this.step2 = false;
+                            
+                            store.commit("loading", false)
                         })
                     } catch (e) {
                         this.$swal(e.message)
