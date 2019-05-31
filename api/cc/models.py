@@ -169,7 +169,7 @@ class Task(BaseModel):
 	Available = models.BooleanField(default=False)
 	AvailableTill = models.DateTimeField(blank=True, null=True)
 	AvailableTimes = models.IntegerField(blank=True, null=True)
-	Workflow = models.ForeignKey(Workflow, blank=True, on_delete=models.DO_NOTHING)
+	Workflow = models.ForeignKey(Workflow, blank=True, on_delete=models.CASCADE)
 	AssignedUsers = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
 	AssignedRoles = models.ManyToManyField(Role, blank=True)
 	Predecessors = models.ManyToManyField("self", blank=True, symmetrical=False)

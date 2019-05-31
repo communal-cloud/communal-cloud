@@ -18,20 +18,25 @@ class WorkflowController(APIView):
 	__workflowService = WorkflowService.Instance()
 	#authentication_classes = (TokenAuthentication,)
 	#permission_classes = (IsAuthenticated,)
-
+	
+	def get(self, *args, **kwargs):
+		id = kwargs.get("id", "")
+		workflow = self.__workflowService.Detail(id)
+		return Response(WorkflowSerializer(workflow).data)
+	
 	def post(self,request, *args, **kwargs):
 		id = kwargs.get('id', '')
 		workflow = self.__workflowService.Create(request.data, id)
 		return Response(WorkflowSerializer(workflow).data)
 
-	def put(self,request,*args,**kwargs):
+	def put(self,request, *args, **kwargs):
 		id=kwargs.get('id','')
 		workflow=self.__workflowService.Update(request.data, id)
-		return Response(workflow)
-
-	def get(self, *args, **kwargs):
-		id = kwargs.get("id", "")
-		workflow = self.__workflowService.Detail(id)
+		return Response(WorkflowSerializer(workflow).data)
+	
+	def delete(self, request, *args, **kwargs):
+		id = kwargs.get('id', '')
+		workflow = self.__workflowService.Delete(id)
 		return Response(WorkflowSerializer(workflow).data)
 
 
