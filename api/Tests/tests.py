@@ -7,7 +7,7 @@ from cc.Services.CommunityService import CommunityService
 from cc.models import Community
 
 
-class TestAuthentication(TestCase):
+class Test(TestCase):
 	user = {
 			"username": "Jane Doe",
 			"email": "janedoe@fake.com",

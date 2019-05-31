@@ -1,5 +1,5 @@
 import logging
-from cc.models import Workflow, Community
+from cc.models import Workflow, Community, Task
 
 
 class WorkflowService(object):
@@ -32,6 +32,16 @@ class WorkflowService(object):
         if "Description" in request:
             workflow.Description = request.get("Description", u"")
         workflow.save()
+        return workflow
+    
+    def Delete(self, id):
+        workflow = self.Detail(id)
+        workflow.Deleted = 1
+        workflow.save()
+        tasks = Task.objects.filter(Workflow_id=id)
+        for i in tasks:
+            i.Deleted = 1
+            i.save()
         return workflow
 
     def Detail(self, id):

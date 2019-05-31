@@ -209,7 +209,9 @@
                 } catch (e) {
 
                     if(e.response.status !== 500) {
-                        this.$swal(JSON.stringify(e.response.data))
+                        Object.keys(e.response.data).forEach(key => {
+    this.$swal(key, e.response.data[key][0], 'error')
+})
                     }
 
                     else
@@ -239,7 +241,9 @@
                 } catch (e) {
 
                     if(e.response.status !== 500) {
-                        this.$swal(JSON.stringify(e.response.data))
+                        Object.keys(e.response.data).forEach(key => {
+    this.$swal(key, e.response.data[key][0], 'error')
+})
                     }
 
                     else

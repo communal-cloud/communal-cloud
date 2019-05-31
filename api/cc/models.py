@@ -169,14 +169,16 @@ class Task(BaseModel):
 	Available = models.BooleanField(default=False)
 	AvailableTill = models.DateTimeField(blank=True, null=True)
 	AvailableTimes = models.IntegerField(blank=True, null=True)
-	Workflow = models.ForeignKey(Workflow, blank=True, on_delete=models.DO_NOTHING)
+	Workflow = models.ForeignKey(Workflow, blank=True, on_delete=models.CASCADE)
 	AssignedUsers = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
 	AssignedRoles = models.ManyToManyField(Role, blank=True)
 	Predecessors = models.ManyToManyField("self", blank=True, symmetrical=False)
 	InputFields = models.ManyToManyField(DataField, related_name="InputFields", blank=True)
 	OutputFields = models.ManyToManyField(DataField, related_name="OutputFields", blank=True)
 	Type = models.IntegerField(choices=[(choice.value, choice.name.replace("_", " ")) for choice in TaskType])
-	
+
+
+
 	@property
 	def ExecutedCount(self):
 		return Execution.objects.filter(Task=self).count()
@@ -193,7 +195,14 @@ class Task(BaseModel):
 		if not self.ArePredecessorsSatisfied:
 			return False
 		return self.Available
-	
+
+
+	@property
+	def RemainingTimes(self):
+		if self.AvailableTimes==0:
+			return "Unlimited"
+		return self.AvailableTimes - self.ExecutedCount
+
 	@property
 	def ArePredecessorsSatisfied(self):
 		predecessors = self.Predecessors

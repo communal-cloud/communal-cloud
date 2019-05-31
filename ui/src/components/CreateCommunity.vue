@@ -36,14 +36,16 @@
                         </b-input-group>
 
                         <div id="categories">
-                            <a href="javascript:" v-for="category in community_categories" :key="category" v-on:click="RemoveCategory(category)">
+                            <a href="javascript:" v-for="category in community_categories" :key="category"
+                               v-on:click="RemoveCategory(category)">
                                 <b-badge class="mt-1 mr-1" size="sm" variant="dark">
                                     {{ category }}
                                 </b-badge>
                             </a>
                         </div>
 
-                        <b-button class="next" v-on:click="changeStep('step1')" variant="btn btn-dark outline-primary m-2">Next
+                        <b-button class="next" v-on:click="changeStep('step1')"
+                                  variant="btn btn-dark outline-primary m-2">Next
                         </b-button>
                     </div>
 
@@ -71,12 +73,14 @@
                             </b-input-group-append>
                         </b-input-group>
 
-                        <ul>
-                            <li v-for="role in community_roles" :key="role">
-                                <b-button class="btn btn-primary m-2" v-on:click="RemoveRole(role)">{{ role }}
-                                </b-button>
-                            </li>
-                        </ul>
+                        <div id="roles">
+                            <a href="javascript:" v-for="role in community_roles" :key="role"
+                               v-on:click="RemoveRole(role)">
+                                <b-badge class="mt-1 mr-1" size="sm" variant="dark">
+                                    {{ role }}
+                                </b-badge>
+                            </a>
+                        </div>
 
                         <b-button class="next" v-on:click="changeStep('step2')" variant="success m-2">Next</b-button>
 
@@ -84,7 +88,7 @@
 
                     <div v-bind:class="{ invisibleStep: step3 }">
                         <create-data-type :community_id="communityStep.id"></create-data-type>
-                        <br />
+                        <br/>
                         <b-button class="next" v-on:click="changeStep('step3')" variant="success m-2">Finish</b-button>
                     </div>
 
@@ -165,22 +169,27 @@
         methods: {
             async changeStep(step) {
                 if (step === 'step1') {
-                    this.step1 = true;
-                    this.step2 = false;
-
-                    if(this.community_name === ''){
-                        this.$swal('Community Name cannot be empty!')
+                    if (this.community_name === '') {
+                        this.$swal('Error!', 'Community Name cannot be empty!', 'error')
 
                         return false
                     }
 
-                    if(this.community_purpose === ''){
-                        this.$swal('Community Purpose cannot be empty!')
+                    if (this.community_purpose === '') {
+                        this.$swal('Error!', 'Community Purpose cannot be empty!', 'error')
+
+                        return false
+                    }
+
+                    if (this.community_categories.length === 0) {
+                        this.$swal('Error!', 'Community Categories cannot be empty!', 'error')
 
                         return false
                     }
 
                     try {
+                        store.commit("loading", true)
+
                         await axios.post(process.env.VUE_APP_BASE_URL + 'community/', {
                                 Name: this.community_name,
                                 Purpose: this.community_purpose,
@@ -192,60 +201,89 @@
                                 }
                             }
                         ).then(data => {
-                            this.communityStep = data
-                            this.$swal("Step 1 completed")
+                            this.communityStep = data.data
+
+                            this.$swal('Success!', "Step 1 completed", 'success')
+
+                            this.step1 = true;
+                            this.step2 = false;
+
+                            store.commit("loading", false)
                         })
                     } catch (e) {
-                        this.$swal(e.message)
+                        if (e.response.status !== 500) {
+                            Object.keys(e.response.data).forEach(key => {
+                                this.$swal(key, e.response.data[key][0], 'error')
+                            })
+                        } else
+                            this.$swal('Server Error!', e.message, 'error')
                     }
 
                 } else if (step === 'step2') {
-                    this.step2 = true;
-                    this.step3 = false;
+                    if (this.community_description === '') {
+                        this.$swal('Error!', 'Community Description cannot be empty!', 'error')
+
+                        return false
+                    }
 
                     try {
-                        const {data} = await axios.put(process.env.VUE_APP_BASE_URL + 'community/' + this.communityStep.id + '/', {
+                        store.commit("loading", true)
+
+                        await axios.put(process.env.VUE_APP_BASE_URL + 'community/' + this.communityStep.id + '/', {
                                 Roles: this.community_roles,
                                 Description: this.community_description
-
                             },
                             {
                                 headers: {
                                     Authorization: 'token ' + store.getters.token
                                 }
-                            })
+                            }
+                        ).then(() => {
+                            this.$swal('Success!', "Step 2 completed", 'success')
 
-                        if (data)
-                            console.log(data)
-                        this.$swal("Step 2 completed")
+                            this.step2 = true;
+                            this.step3 = false;
+
+                            store.commit("loading", false)
+                        })
                     } catch (e) {
-                        this.$swal("Error when updating community")
+                        if (e.response.status !== 500) {
+                            Object.keys(e.response.data).forEach(key => {
+                                this.$swal(key, e.response.data[key][0], 'error')
+                            })
+                        } else
+                            this.$swal('Server Error!', e.message, 'error')
                     }
-
-
-                } else if (step == 'step3') {
+                } else if (step === 'step3') {
                     this.step3 = true;
+
                     this.step4 = false;
-
-
                 }
             },
             AddCategory() {
-                if(this.community_categories.indexOf(this.community_category) === -1)
+                if (this.community_categories.indexOf(this.community_category) === -1)
                     this.community_categories.push(this.community_category);
 
                 else
-                    this.$swal("You have already added this category!")
+                    this.$swal('Error!', "You have already added this category!", 'error')
             },
             RemoveCategory(category) {
                 if (this.community_categories.indexOf(category) !== -1)
                     this.community_categories.splice(this.community_categories.indexOf(category), 1);
             },
             AddRole() {
-                this.community_roles.push(this.community_role);
-            },
-            RemoveRole() {
+                if (this.community_roles.indexOf(this.community_role) === -1)
+                    this.community_roles.push(this.community_role);
 
+                else
+                    this.$swal('Error!', "You have already added this role!", 'error')
+            },
+            RemoveRole(role) {
+                if (role === 'owner' || role === 'member')
+                    this.$swal('Error!', 'Pre-defined roles cannot be deleted!', 'error')
+
+                else if (this.community_roles.indexOf(role) !== -1)
+                    this.community_roles.splice(this.community_roles.indexOf(role), 1);
             },
             AddInput(type) {
                 this.community_data.push({'type': type, name: ''});
@@ -263,22 +301,8 @@
             RemoveMail() {
 
             },
-
-
         }
-
     }
-
-
-    /* toggleModal(step) {
-      // We pass the ID of the button that we want to return focus to
-      // when the modal has hidden
-      console.log(this.$refs)
-      this.$root.$emit('bv::toggle::modal', step)
-     // this.$refs[step].toggle('#'+step)
-    }
-
-*/
 </script>
 <style>
     body {
