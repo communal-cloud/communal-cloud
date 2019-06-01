@@ -1,7 +1,10 @@
 import logging
+from itertools import groupby
+
+from django.db.models.expressions import RawSQL
 
 from cc.Services.MemberService import MemberService
-from cc.models import Execution, Task, ExecutionData, DataField, DataType, TaskType, Community, BaseModel
+from cc.models import Execution, Task, ExecutionData, DataField, DataType, TaskType, Community, BaseModel, ClassEnum
 
 
 class ExecutionService(object):
@@ -20,19 +23,35 @@ class ExecutionService(object):
 			raise Exception("ExecutionService is a singleton, use 'ExecutionService.Instance()'")
 		ExecutionService.__instance = self
 	
-	def Get(self, user, id):
-		query = '''SELECT d.*
-				FROM cc_execution e
-				  LEFT JOIN cc_execution_Data ed ON e.basemodel_ptr_id = ed.execution_id
-				  LEFT JOIN cc_executiondata d ON d.basemodel_ptr_id = ed.executiondata_id
-				
-				WHERE Field_id IN (SELECT f.datafield_id
-                   FROM cc_task t
-                     LEFT JOIN cc_task_InputFields f ON t.basemodel_ptr_id = f.task_id
-                   WHERE t.basemodel_ptr_id =%s)
+	def groupInputs(self, x):
+		if x.DataGroup == None:
+			x.DataGroup = x
+		return int(x.DataGroup.Value)
+	
+	def Get(self, taskId, filter, user):
+		query = '''
+SELECT d.*
+FROM cc_execution e
+  LEFT JOIN cc_execution_Data ed ON e.basemodel_ptr_id = ed.execution_id
+  LEFT JOIN cc_executiondata d ON d.basemodel_ptr_id = ed.executiondata_id
+
+WHERE Field_id  IN (SELECT f.datafield_id FROM cc_task t
+     LEFT JOIN cc_task_InputFields f ON t.basemodel_ptr_id = f.task_id
+   WHERE t.basemodel_ptr_id = %s)
+ORDER BY d.DataGroup_id
 '''
-		inputs = ExecutionData.objects.raw(query, [id])
-		return inputs
+		
+		inputs = list(ExecutionData.objects.raw(query, [taskId]))
+		for f in filter:
+			field = DataField.objects.get(pk=f.get("Field", None))
+			value = f.get("Value", None)
+			if not value and field.Type is ClassEnum.User.value:
+				value = user.pk
+			groups = [x.DataGroup.Value for x in inputs if x.Field_id == field.id and x.Value == value]
+			inputs = [x for x in inputs if x.DataGroup.Value in groups]
+		
+		groupedInputs = [list(v) for k, v in groupby(inputs, key=self.groupInputs)]
+		return groupedInputs
 	
 	def Save(self, execution, user):
 		model = Execution()
@@ -54,13 +73,21 @@ class ExecutionService(object):
 				newIdx = lastExecution.id
 			
 			identifier = ExecutionData.objects.create(Field=identifierField, Value=newIdx)
+			identifier.DataGroup = identifier
+			identifier.save()
+			
 			model.Data.add(identifier)
 		group = identifier
 		for field in fields:
+			fieldModel = DataField.objects.get(pk=field.get("Field", None))
+			if not field.get("Value", None) and fieldModel.Type is ClassEnum.User.value:
+				field["Value"] = user.id
+				
 			ed = self.SaveExecutionData(field, model.Task, group)
 			model.Data.add(ed)
+			return model
 	
-	def SaveExecutionData(self, field, task , group=None):
+	def SaveExecutionData(self, field, task, group=None):
 		model = ExecutionData()
 		model.DataGroup = group
 		model.Field_id = field.get("Field", None)

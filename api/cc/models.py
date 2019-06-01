@@ -73,6 +73,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 	REQUIRED_FIELDS = ['name']
 	
 	objects = UserManager()
+	
+	def __str__(self):
+		return u'{0} ({1})'.format(self.email, self.id)
+	
+	def __unicode__(self):
+		return u'{0} ({1})'.format(self.email, self.id)
 
 
 class ActivationToken(models.Model):
@@ -176,9 +182,7 @@ class Task(BaseModel):
 	InputFields = models.ManyToManyField(DataField, related_name="InputFields", blank=True)
 	OutputFields = models.ManyToManyField(DataField, related_name="OutputFields", blank=True)
 	Type = models.IntegerField(choices=[(choice.value, choice.name.replace("_", " ")) for choice in TaskType])
-
-
-
+	
 	@property
 	def ExecutedCount(self):
 		return Execution.objects.filter(Task=self).count()
@@ -195,14 +199,13 @@ class Task(BaseModel):
 		if not self.ArePredecessorsSatisfied:
 			return False
 		return self.Available
-
-
+	
 	@property
 	def RemainingTimes(self):
-		if self.AvailableTimes==0:
+		if self.AvailableTimes == 0:
 			return "Unlimited"
 		return self.AvailableTimes - self.ExecutedCount
-
+	
 	@property
 	def ArePredecessorsSatisfied(self):
 		predecessors = self.Predecessors
@@ -222,19 +225,31 @@ class ExecutionData(BaseModel):
 	Field = models.ForeignKey(DataField, blank=True, on_delete=models.DO_NOTHING)
 	DataGroup = models.ForeignKey("self", blank=True, null=True, on_delete=models.DO_NOTHING)
 	Value = JSONField(default="{}")
+	
+	def __str__(self):
+		return u"{0} ({1}) field's value is {2} ({3})".format(self.Field.Name, self.Field.id, self.Value, self.id)
+	
+	def __unicode__(self):
+		return u"{0} ({1}) field's value is {2} ({3})".format(self.Field.Name, self.Field.id, self.Value, self.id)
 
 
 class Execution(BaseModel):
 	Task = models.ForeignKey(Task, blank=True, on_delete=models.DO_NOTHING)
 	Data = models.ManyToManyField(ExecutionData, blank=True)
 	ExecutedBy = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.DO_NOTHING)
+	
+	def __str__(self):
+		return u'Execution for {0} ({1})'.format(self.Task.Name, self.id)
+	
+	def __unicode__(self):
+		return u'Execution for {0} ({1})'.format(self.Task.Name, self.id)
 
 
 class DataType(BaseModel):
 	Name = models.CharField(max_length=50)
 	Fields = models.ManyToManyField(DataField, blank=True)
 	Community = models.ForeignKey(Community, blank=True, default=1, on_delete=models.DO_NOTHING)
-	Task = models.ForeignKey(Task, blank=True, null=True,on_delete=models.DO_NOTHING)
+	Task = models.ForeignKey(Task, blank=True, null=True, on_delete=models.DO_NOTHING)
 	
 	def __str__(self):
 		return u'DataType {0} ({1})'.format(self.Name, self.id)

@@ -2,6 +2,9 @@ from django.contrib import admin
 
 from .models import *
 
+class BaseModelAdmin(admin.ModelAdmin):
+	readonly_fields = ('CreatedOn', 'ModifiedOn')
+
 admin.site.register(BaseModel)
 admin.site.register(Role)
 admin.site.register(Category)
@@ -15,3 +18,5 @@ admin.site.register(Workflow)
 admin.site.register(Community)
 admin.site.register(Member)
 admin.site.register(User)
+
+
