@@ -105,14 +105,12 @@ ORDER BY d.DataGroup_id
 			fieldModel = DataField.objects.get(pk=field.get("Field", None))
 			if not field.get("Value", None) and fieldModel.Type is ClassEnum.User.value:
 				field["Value"] = user.id
+			updetableField=ExecutionData.objects.filter(Field=field.get("Field", "")).first()
+			ed = self.UpdateExecutionData(field, execution.Task, updetableField, group)
+		return execution
 
-			ed = self.UpdateExecutionData(field, execution.Task, group)
-			execution.Data.add(ed)
-			return execution
-
-	def UpdateExecutionData(self, field, task, group=None):
-		model = ExecutionData()
-		model.DataGroup = group
+	def UpdateExecutionData(self, field, task, updetableField, group=None):
+		model = updetableField
 		model.Field_id = field.get("Field", None)
 		model.Value = field.get("Value", None)
 		model.Task = task
