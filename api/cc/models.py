@@ -208,9 +208,9 @@ class Task(BaseModel):
 	
 	@property
 	def ArePredecessorsSatisfied(self):
-		predecessors = self.Predecessors
+		predecessors = self.Predecessors.all()
 		for pred in predecessors:
-			if not Execution.objects.filter(Task=pred):
+			if not Execution.objects.all().filter(Task=pred):
 				return False
 		return True
 	
