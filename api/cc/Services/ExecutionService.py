@@ -95,6 +95,29 @@ ORDER BY d.DataGroup_id
 		model.Task = task
 		model.save()
 		return model
+
+	def Update(self, request, execution, user):
+		fields = request.get("Data", [])
+		dataFields = DataField.objects.filter(pk__in=[i.get("Field") for i in fields])
+		identifier = dataFields.filter(Name="Identifier").first()
+		group = identifier
+		for field in fields:
+			fieldModel = DataField.objects.get(pk=field.get("Field", None))
+			if not field.get("Value", None) and fieldModel.Type is ClassEnum.User.value:
+				field["Value"] = user.id
+
+			ed = self.UpdateExecutionData(field, execution.Task, group)
+			execution.Data.add(ed)
+			return execution
+
+	def UpdateExecutionData(self, field, task, group=None):
+		model = ExecutionData()
+		model.DataGroup = group
+		model.Field_id = field.get("Field", None)
+		model.Value = field.get("Value", None)
+		model.Task = task
+		model.save()
+		return model
 	
 	def GetIdentifierField(self, id):
 		task = Task.objects.get(pk=id)

@@ -11,6 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from cc.Serializers.ExecutionDataSerializer import ExecutionDataSerializer, GroupedExecutionDataSerializer
 from cc.Serializers.ExecutionSerializer import ExecutionSerializer
 from cc.Services.ExecutionService import ExecutionService
+from cc.models import Execution
 
 
 class ExecutionController(APIView):
@@ -28,6 +29,12 @@ class ExecutionController(APIView):
 		response = self.__executionService.Save(request.data, request.user)
 		return Response(ExecutionSerializer(response).data)
 
+	def put(self, request, *args, **kwargs):
+		id = kwargs.get("id", "")
+		execution=Execution.objects.get(pk=id)
+		response = self.__executionService.Update(request.data, execution, request.user)
+		return Response(ExecutionSerializer(response).data)
+
 
 class ExecutionDataController(APIView):
 	__logger = logging.getLogger('ExecutionDataController')
@@ -39,3 +46,4 @@ class ExecutionDataController(APIView):
 		id = kwargs.get("id", "")
 		response = self.__executionService.Get(id, request.data, request.user)
 		return Response(GroupedExecutionDataSerializer(response).data.get("Items"))
+
