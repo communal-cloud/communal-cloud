@@ -59,17 +59,27 @@ export default {
     },
     methods:{
         async getTasks(id = null){
+          
             try {
                 if(id === null)
-                    id = this.$route.params.workflow_id
-
-               const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'workflow/' + id + '/tasks/', {
+                    id = this.$route.params.community_id
+                    
+              
+               const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'user/communities/' + id + '/tasks/', {
                     headers: {
                         Authorization: 'token ' + store.getters.token
                     }
                 })
 
-                return this.tasks = data
+            if(data){
+                let w_id=this.$route.params.workflow_id
+                data.forEach(element => {
+                    if(element.Workflow==w_id){
+                        this.tasks.push(element)
+                    }
+                });
+            }
+                
 
             } catch (e) {
                 this.$swal(e.message)

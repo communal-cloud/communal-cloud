@@ -39,7 +39,7 @@
         methods:{
             async getExecutionData(){
                try {
-                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'execution/' + this.$route.params.task_id + '/', {
+                    const {data} = await axios.post(process.env.VUE_APP_BASE_URL + 'executiondata/' + this.$route.params.task_id + '/', {
                         headers: {
                             Authorization: 'token ' + store.getters.token
                         }
