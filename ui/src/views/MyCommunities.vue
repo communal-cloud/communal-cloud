@@ -8,15 +8,17 @@
             </div>
         </div>
         <div class="kt-portlet__body kt-portlet__body--fluid">
-
-            <b-row>
+            <b-row v-if="communities.length > 0">
                 <b-col cols="4" v-for="community in communities" :key="community.id">
                     <community :id="community.id" :isMyCommunity=true>
                     </community>
                 </b-col>
             </b-row>
-
-
+            <b-row v-else>
+                <b-col>
+                    <p class="text-black-50">You are not member of any communities.</p>
+                </b-col>
+            </b-row>
         </div>
     </div>
 </template>
@@ -28,34 +30,41 @@
 
     export default {
         store: store,
-        name: 'home',
+        name: 'mycommunities',
         components: {
             Community
         },
         data() {
             return {
+                store: store,
                 communities: []
             }
         },
         methods: {
             async getCommunities() {
                 try {
-                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'member/'+store.getters.user.id+'/communities/', {
+                    const {data} = await axios.get(process.env.VUE_APP_BASE_URL + 'member/' + store.getters.user.id + '/communities/', {
                         headers: {
                             Authorization: 'token ' + store.getters.token
                         }
                     })
 
-                    console.log(data)
-                    this.communities = data
-
+                    if (data.length > 0)
+                        this.communities = data
                 } catch (e) {
-                    this.$swal(e.message)
+                    if (e.response.status !== 500) {
+                        Object.keys(e.response.data).forEach(key => {
+                            this.$swal(key, e.response.data[key][0], 'error')
+                        })
+                    } else
+                        this.$swal('Server Error!', e.message, 'error')
                 }
             }
         },
         mounted() {
-            this.getCommunities()
+            store.dispatch('fetchUser').then(() => {
+                this.getCommunities()
+            })
         }
     }
 </script>

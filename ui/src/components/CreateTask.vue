@@ -3,8 +3,7 @@
         <b-col class="col-xs-12 col-sm-8 col-md-6">
             <div class="card">
                 <div class="card-body">
-                   
-                    <h3 v-if="taskUpdate!=undefined" class="card-title">Update Task</h3>
+                    <h3 v-if="taskUpdate !== undefined" class="card-title">Update Task</h3>
                     <h3 v-else class="card-title">Create Task</h3>
                     <b-input-group
                             prepend="Name"
@@ -92,7 +91,8 @@
                             <div id="task_predecessors">
                                 <b-badge class="mt-1 mr-1" size="sm" variant="dark" v-for="task in task_predecessors"
                                          :key="task">
-                                    {{ workflow_tasks.find((workflow_task) => {return workflow_task.value === task}).text }}
+                                    {{ workflow_tasks.find((workflow_task) => {return workflow_task.value ===
+                                    task}).text }}
                                 </b-badge>
                             </div>
                         </b-col>
@@ -103,10 +103,13 @@
                     <b-row class="mt-2 mb-2">
                         <b-col class="text-left">
                             <label><strong>Input Fields</strong></label>
-                            <b-form-select v-model="task_input_fields" :options="workflow_input_fields" multiple></b-form-select>
+                            <b-form-select v-model="task_input_fields" :options="workflow_input_fields"
+                                           multiple></b-form-select>
                             <div id="task_input_fields">
-                                <b-badge class="mt-1 mr-1" size="sm" variant="dark" v-for="(data,i) in task_input_fields" :key="data+i">
-                                    {{ workflow_input_fields.find((workflow_input_field) => {return workflow_input_field.value === data}).text }}
+                                <b-badge class="mt-1 mr-1" size="sm" variant="dark"
+                                         v-for="(data,i) in task_input_fields" :key="data+i">
+                                    {{ workflow_input_fields.find((workflow_input_field) => {return
+                                    workflow_input_field.value === data}).text }}
                                 </b-badge>
                             </div>
                         </b-col>
@@ -123,7 +126,8 @@
                         <b-col class="text-left">
                             <ul id="task_output_fields" style="list-style: none">
                                 <li v-for="(data,i) in task_output_fields" :key="data+i">
-                                    <b-button>{{ community_data_types.find((community_data_type) => {return community_data_type.value === data}).text }}
+                                    <b-button>{{ community_data_types.find((community_data_type) => {return
+                                        community_data_type.value === data}).text }}
                                     </b-button>
                                     <b-form-group label="Field Options">
                                         <b-form-checkbox-group
@@ -138,7 +142,8 @@
                         </b-col>
                     </b-row>
 
-                    <b-button v-if="taskUpdate==undefined" v-on:click="createTask()" variant="outline-primary">Create</b-button>
+                    <b-button v-if="taskUpdate === undefined" v-on:click="createTask()" variant="outline-primary">Create
+                    </b-button>
                     <b-button v-else v-on:click="updateTask()" variant="outline-primary">Update</b-button>
                 </div>
             </div>
@@ -161,8 +166,8 @@
                 return Workflow.methods.getWorkflow(this.$route.params.workflow_id)
             }
         },
-        props:{
-            taskUpdate:{}
+        props: {
+            taskUpdate: {}
         },
         data() {
             return {
@@ -188,9 +193,9 @@
             }
         },
         methods: {
-            async updateTask(){
+            async updateTask() {
                 try {
-                    const { data } = await axios.put(process.env.VUE_APP_BASE_URL+'task/'+this.taskUpdate.id+'/', {
+                    const {data} = await axios.put(process.env.VUE_APP_BASE_URL + 'task/' + this.taskUpdate.id + '/', {
                         Name: this.task_name,
                         Description: this.task_description,
                         Available: this.task_available,
@@ -201,26 +206,23 @@
                         Predecessors: this.task_predecessors.filter(Number),
                         InputFields: this.task_input_fields.filter(Number),
                         OutputFields: this.task_output_fields.filter(Number)
-                     })
+                    })
 
-                    if(data) {
+                    if (data) {
                         this.$swal("Task updated")
                     }
                 } catch (e) {
-
-                    if(e.response.status !== 500) {
+                    if (e.response.status !== 500) {
                         Object.keys(e.response.data).forEach(key => {
-    this.$swal(key, e.response.data[key][0], 'error')
-})
-                    }
-
-                    else
+                            this.$swal(key, e.response.data[key][0], 'error')
+                        })
+                    } else
                         this.$swal("Error when updating task")
                 }
             },
-            async createTask(){
+            async createTask() {
                 try {
-                    const { data } = await axios.post(process.env.VUE_APP_BASE_URL+'task/'+this.$route.params.workflow_id+'/', {
+                    const {data} = await axios.post(process.env.VUE_APP_BASE_URL + 'task/' + this.$route.params.workflow_id + '/', {
                         Name: this.task_name,
                         Description: this.task_description,
                         Available: this.task_available,
@@ -231,28 +233,26 @@
                         Predecessors: this.task_predecessors.filter(Number),
                         InputFields: this.task_input_fields.filter(Number),
                         OutputFields: this.task_output_fields.filter(Number)
-                     })
+                    })
 
-                    if(data) {
+                    if (data) {
                         this.$swal("Task created")
 
-                        this.$router.push('/community/'+this.$route.params.community_id+'/workflow/'+this.$route.params.workflow_id+'/tasks/')
+                        this.$router.push('/community/' + this.$route.params.community_id + '/workflow/' + this.$route.params.workflow_id + '/tasks/')
                     }
                 } catch (e) {
-
-                    if(e.response.status !== 500) {
+                    if (e.response.status !== 500) {
                         Object.keys(e.response.data).forEach(key => {
-    this.$swal(key, e.response.data[key][0], 'error')
-})
-                    }
-
-                    else
+                            this.$swal(key, e.response.data[key][0], 'error')
+                        })
+                    } else
                         this.$swal("Error when creating task")
                 }
             },
             async getDataTypes() {
                 await Community.methods.getCommunityDataTypes(this.$route.params.community_id).then((data_types) => {
                     let temp = []
+
                     let field_types = this.field_types
 
                     data_types.forEach(function (data_type) {
@@ -322,12 +322,12 @@
                     })
 
                     let temp = []
+
                     let field_types = this.field_types
 
                     tasks.forEach(function (task) {
                         if (task.OutputFields.length) {
                             task.OutputFields.forEach(function (field) {
-                                
                                 temp.push({
                                     value: field.id,
                                     text: task.Name + ' - ' + field.Name + ' (' + field_types[field.Type] + ')'
@@ -335,13 +335,12 @@
                             })
                         }
                     })
-               
+
                     this.workflow_input_fields = temp
                 })
             },
         },
         mounted() {
-
             this.getFieldTypes()
 
             this.getFieldOptions()
@@ -354,18 +353,14 @@
 
             this.getTasks()
 
-            if(this.taskUpdate!=undefined){
-                         this.task_name = this.taskUpdate.Name
-                         this.task_description=this.taskUpdate.Description
-                         this.task_available=this.taskUpdate.Available
-                         this.task_available_till =this.taskUpdate.AvailableTill
-                         this.task_available_times=this.taskUpdate.AvailableTimes
-                         this.task_roles=this.taskUpdate.AssignedRoles
-                    
-                       
+            if (this.taskUpdate !== undefined) {
+                this.task_name = this.taskUpdate.Name
+                this.task_description = this.taskUpdate.Description
+                this.task_available = this.taskUpdate.Available
+                this.task_available_till = this.taskUpdate.AvailableTill
+                this.task_available_times = this.taskUpdate.AvailableTimes
+                this.task_roles = this.taskUpdate.AssignedRoles
             }
-
-            
         }
     }
 </script>
