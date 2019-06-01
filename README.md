@@ -17,7 +17,7 @@ docker-compose build <br />
 docker-compose up <br />
 
 ### 2. Old-School Setup 🦖
-#### 2.1. Backend (Api)
+#### 2.1. Backend (API)
 cd communal-cloud/api <br />
 pip install -r requirements.txt <br />
 python manage.py runserver 0.0.0.0:8000
@@ -29,7 +29,7 @@ npm run serve <br />
 Browse http://localhost:8000
 
 
-## Api Packege Versions
+## Api Package Versions
 python: 3.7 <br />
 Django>=2.1.7,<2.2.0 <br />
 djangorestframework>=3.9.1,<3.10.0 <br />
