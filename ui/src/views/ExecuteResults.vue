@@ -38,12 +38,11 @@
         },
         methods:{
             async getExecutionData(){
+                var config = {
+                    headers: { 'Authorization' : 'token ' + store.getters.token }
+                }
                try {
-                    const {data} = await axios.post(process.env.VUE_APP_BASE_URL + 'executiondata/' + this.$route.params.task_id + '/', {
-                        headers: {
-                            Authorization: 'token ' + store.getters.token
-                        }
-                    })
+                    const {data} = await axios.post(process.env.VUE_APP_BASE_URL + 'executiondata/' + this.$route.params.task_id + '/', config)
                     if(data){
                         console.log(data)
                         this.taskData = data
@@ -56,7 +55,7 @@
             
         },
         mounted(){
-            console.log("CCC")
+           
            this.getExecutionData()
         }
     }

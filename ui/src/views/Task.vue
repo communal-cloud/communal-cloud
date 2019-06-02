@@ -1,6 +1,8 @@
 <template>
     <div class="card border border-success m-4" style="width: 32rem;">
         <b-button class="mt-3" block @click="$bvModal.show(modalID+'edit')">Edit</b-button>
+        <router-link :to="'/community/'+$route.params.community_id+'/workflow/'+$route.params.workflow_id+'/tasks/'+id+'/results'" class="btn btn-primary">Execution Data</router-link>
+
         <div class="card-body">
             <h2 class="card-title">{{task.Name}}</h2>
             <p class="card-text">{{task.Description}}</p>
