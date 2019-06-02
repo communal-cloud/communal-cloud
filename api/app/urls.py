@@ -21,7 +21,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from cc.Controllers.CategoryController import CategoryController
 from cc.Controllers.CommunityController import CommunityController, CommunityViewSetController
 from cc.Controllers.FieldClassController import FieldClassController
-from cc.Controllers.ExecutionController import ExecutionController
+from cc.Controllers.ExecutionController import ExecutionController, ExecutionDataController
 from cc.Controllers.RoleController import RoleController
 from cc.Controllers.ServiceController import ServiceController
 from cc.Controllers.TaskController import TaskController
@@ -55,6 +55,7 @@ urlpatterns = [
 	url(r'^community/(?P<id>.+)/$', CommunityController.as_view()),
 	url(r'^data/(?P<id>.+)/$', FieldClassController.as_view()),
 	url(r'^data/$', FieldClassController.as_view()),
+	url(r'^executiondata/(?P<id>.+)/$', ExecutionDataController.as_view()),
 	url(r'^execution/(?P<id>.+)/$', ExecutionController.as_view()),
 	url(r'^execution/$', ExecutionController.as_view()),
 	url(r'^role/(?P<id>.+)/$', RoleController.as_view()),

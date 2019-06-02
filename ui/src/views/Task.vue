@@ -21,35 +21,14 @@
             <b-button id="show-btn" variant="danger mr-2 btn-sm">Delete</b-button>
             <b-button id="show-btn" variant="success" @click="$bvModal.show(modalID)">Execute</b-button>
         </div>
-
-        <div>
-
-
-            <b-modal :id="modalID+'edit'" size="xl" hide-footer>
-                <template slot="modal-title">
-                    <code>{{task.Name}}</code>
-
-                </template>
-
-                <create-task :taskUpdate="task"></create-task>
-
-                <b-button class="mt-3" block @click="$bvModal.hide(modalID+'edit')">Close Me</b-button>
-            </b-modal>
-
-
-            <b-modal :id="modalID" hide-footer>
-                <template slot="modal-title">
-                    <code>{{task.Name}}</code>
-
-                </template>
-                <div class="d-block text-center">
-                    <execute-task :task="task" :execute="execution"></execute-task>
-                </div>
-                <b-button class="mt-3" block @click="$bvModal.hide(modalID)">Close Me</b-button>
-            </b-modal>
-        </div>
-
-
+        <b-modal :id="modalID+'edit'" size="xl" hide-footer>
+            <create-task :taskUpdate="task"></create-task>
+        </b-modal>
+        <b-modal :id="modalID" hide-footer>
+            <div class="d-block text-center">
+                <execute-task :task="task" :execute="execution"></execute-task>
+            </div>
+        </b-modal>
     </div>
 </template>
 
@@ -73,7 +52,6 @@
         },
         computed: {
             modalID: function () {
-                console.log(String(this.id))
                 return String(this.id)
             },
             execution: function () {
