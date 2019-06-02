@@ -171,6 +171,8 @@
         },
         data() {
             return {
+                community_id:0,
+                workflow_id:0,
                 community_data: {},
                 community_members: [],
                 community_roles: [],
@@ -315,17 +317,16 @@
                     })
                 })
             },
-            async getTasks() {
-                await Tasks.methods.getTasks(this.$route.params.workflow_id).then((tasks) => {
-                    this.workflow_tasks = tasks.map(function (task) {
-                        return {value: task.id, text: task.Name}
-                    })
+            async getTasks(community_id,workflow_id,_this) {
 
-                    let temp = []
-
-                    let field_types = this.field_types
-
-                    tasks.forEach(function (task) {
+                const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'user/communities/' + community_id + '/tasks/', {
+                    headers: {
+                        Authorization: 'token ' + store.getters.token
+                    }
+                })
+                let temp=[]
+                let field_types = this.field_types
+                data.forEach(function (task) {
                         if (task.OutputFields.length) {
                             task.OutputFields.forEach(function (field) {
                                 temp.push({
@@ -337,10 +338,13 @@
                     })
 
                     this.workflow_input_fields = temp
-                })
+
+                
             },
         },
         mounted() {
+            this.community_id=this.$route.params.community_id
+            this.workflow_id=this.$route.params.workflow_id
             this.getFieldTypes()
 
             this.getFieldOptions()
@@ -351,7 +355,9 @@
 
             this.getRoles()
 
-            this.getTasks()
+            this.getTasks(this.community_id,this.workflow_id,this)
+            
+            
 
             if (this.taskUpdate !== undefined) {
                 this.task_name = this.taskUpdate.Name

@@ -53,31 +53,54 @@ export default {
     },
     data() {
         return {
-           
+           id:0,
+           idd:0,
             tasks: []
         }
     },
     methods:{
-        async getTasks(id = null){
+       
+         getTasks: async function(id = null,idd=null,_this){
+            console.log(this)
             try {
                 if(id === null)
-                    id = this.$route.params.workflow_id
-
-               const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'workflow/' + id + '/tasks/', {
+                    id = this.id
+                
+                if(idd === null)
+                    idd = this.idd
+                
+                    
+              
+               const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'user/communities/' + idd + '/tasks/', {
                     headers: {
                         Authorization: 'token ' + store.getters.token
                     }
                 })
 
-                return this.tasks = data
+            if(data){
+                
+                data.forEach(element => {
+                    if(element.Workflow==id){
+                        _this.tasks.push(element)
+                    }
+                });
+                console.log(_this.tasks)
+                return _this.tasks
+            }
+            else{
+                return {}
+            }
+                
 
             } catch (e) {
-                this.$swal(e.message)
+                console.log(e.message)
             }
         }
     },
     mounted(){
-        this.getTasks()
+        this.id=this.$route.params.workflow_id
+        this.idd=this.$route.params.community_id
+        this.getTasks(this.id,this.idd,this)
     }
 }
 </script>
