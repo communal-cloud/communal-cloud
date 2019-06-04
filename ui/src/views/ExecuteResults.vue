@@ -49,7 +49,7 @@
 
                     if (data)
                         this.taskData = data
-                        console.log(data)
+                        console.log("data")
                 } catch (e) {
                     this.$swal(e.message)
                 }
