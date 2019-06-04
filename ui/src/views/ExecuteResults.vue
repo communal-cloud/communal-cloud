@@ -12,9 +12,7 @@
             <div class="kt-portlet__body kt-portlet__body--fluid">
                 <b-row>
                 <b-col cols="4" v-for="task in taskData" :key="task.id">
-                    <b-row v-for="exec in task" :key="String(exec.id)">
-                    {{exec.Value}}
-                     </b-row>
+                    {{task.Value}}
                 </b-col>
             </b-row>
             </div>
@@ -40,23 +38,20 @@
         },
         methods:{
             async getExecutionData(){
-                try {
-                    const {data} = await axios.post(process.env.VUE_APP_BASE_URL + 'executiondata/' + this.$route.params.task_id + '/', {},{
-                        headers: {
-                            Authorization: 'token ' + store.getters.token
-                        }
-                    })
-
-                    if (data)
-                        this.taskData = data
+                var config = {
+                    headers: { 'Authorization' : 'token ' + store.getters.token }
+                }
+               try {
+                    const {data} = await axios.post(process.env.VUE_APP_BASE_URL + 'executiondata/' + this.$route.params.task_id + '/', config)
+                    if(data){
                         console.log(data)
+                        this.taskData = data
+                    }
+                    
                 } catch (e) {
                     this.$swal(e.message)
                 }
-
-
-            }
-              
+            },
             
         },
         mounted(){
