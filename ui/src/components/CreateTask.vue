@@ -324,6 +324,10 @@
                         Authorization: 'token ' + store.getters.token
                     }
                 })
+
+                 this.workflow_tasks = data.map(function (task) {
+                        return {value: task.id, text: task.Name}
+                    })
                 let temp=[]
                 let field_types = this.field_types
                 data.forEach(function (task) {
