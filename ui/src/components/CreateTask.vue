@@ -319,7 +319,7 @@
             },
             async getTasks(community_id,workflow_id,_this) {
 
-                const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'user/communities/' + community_id + '/tasks/', {
+                const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'workflow/' + workflow_id + '/tasks/', {
                     headers: {
                         Authorization: 'token ' + store.getters.token
                     }
