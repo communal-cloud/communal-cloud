@@ -71,7 +71,7 @@ export default {
                 
                     
               
-               const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'user/communities/' + idd + '/tasks/', {
+               const {data} = await axios.get(process.env.VUE_APP_BASE_URL+'workflow/' + id + '/tasks/', {
                     headers: {
                         Authorization: 'token ' + store.getters.token
                     }
