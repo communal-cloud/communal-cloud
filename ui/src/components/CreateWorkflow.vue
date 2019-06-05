@@ -91,7 +91,7 @@
                         if (data.data) {
                             this.$swal('Success!', "Workflow created", 'success')
 
-                            this.$router.push('/community/' + this.$route.params.community_id + '/workflows')
+                            this.$router.push('/community/' + this.$route.params.community_id)
                         }
                     })
                 } catch (e) {
