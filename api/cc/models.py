@@ -202,7 +202,7 @@ class Task(BaseModel):
 	
 	@property
 	def RemainingTimes(self):
-		if self.AvailableTimes == 0:
+		if self.AvailableTimes == None:
 			return "Unlimited"
 		return self.AvailableTimes - self.ExecutedCount
 	
