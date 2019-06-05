@@ -6,7 +6,7 @@
         <div class="card-body">
             <h2 class="card-title">{{task.Name}}</h2>
             <p class="card-text">{{task.Description}}</p>
-            <h6 class="card-text">Available executions: {{task.AvailableTimes}}</h6>
+            <h6 class="card-text">Available executions: {{task.AvailableTimes || 'unlimited'}}</h6>
             <p class="card-text" v-if="task.AssignedRoles.length > 0">Assigned Roles:
                 <b-badge variant="dark mr-2" v-for="role in task.AssignedRoles">{{role.Name}}</b-badge>
             </p>
